@@ -92,14 +92,14 @@
       left: 0;
       right: 0;
       bottom: 0;
-      width: 100vw;
-      height: 100vh;
+      width: 100vw; /* 確実にビューポートの幅に合わせる */
+      height: 100vh; /* 確実にビューポートの高さに合わせる */
       background-color: #000; /* より深い黒 */
       color: #ff3300; /* より強調された赤 */
       z-index: 999999;
       font-family: 'Courier New', Courier, monospace; /* より機械的なフォント */
       font-size: 1.2rem; /* 少し大きく */
-      overflow: hidden;
+      overflow: hidden; /* 横スクロール禁止を徹底 */
       text-align: center;
       display: flex;
       flex-direction: column;
@@ -107,7 +107,7 @@
       justify-content: center;
       box-sizing: border-box;
       pointer-events: none; /* 下の要素をクリックできるように */
-      animation: noise 0.1s infinite; /* ノイズアニメーションを適用 */
+      animation: noise 0.1s infinite, flicker 0.2s infinite alternate; /* flickerアニメーションを追加 */
     }
 
     /* ノイズ効果のための ::before 要素は、背景のパターンとして機能 */
@@ -137,6 +137,7 @@
       width: 90%; /* 少し幅を狭める */
       text-align: center;
       box-sizing: border-box;
+      text-shadow: 0 0 10px #f00, 0 0 20px #f00; /* より強い影 */
     }
 
     /* カウントダウン表示のスタイル */
@@ -149,7 +150,7 @@
       width: 90%; /* 少し幅を狭める */
       text-align: center;
       box-sizing: border-box;
-      animation: glitch 0.3s infinite alternate; /* グリッチアニメーション追加 */
+      animation: glitch 0.3s infinite alternate, scanlines 0.1s infinite; /* グリッチアニメーション追加, scanlinesアニメーションを追加 */
     }
 
     /* 種明かしメッセージのスタイル */
@@ -202,6 +203,19 @@
       90% { opacity: 0.11; }
       100% { opacity: 0.04; }
     }
+
+    /* 新しいアニメーション: 画面全体のフリッカー */
+    @keyframes flicker {
+        0%, 100% { opacity: 1; }
+        50% { opacity: 0.8; }
+    }
+
+    /* 新しいアニメーション: 走査線効果 */
+    @keyframes scanlines {
+        0% { background-position: 0 0; }
+        100% { background-position: 0 20px; } /* 20pxは適宜調整 */
+    }
+
 
     /* リリーフ画面 */
     #relief-screen {
@@ -262,10 +276,10 @@
       cursor: pointer;
       background-color: #28a745; /* 緑系のボタン */
       border: none;
-      border-radius: 8px; /* 角を丸く */
+      border-radius: 8倍; /* 角を丸く */
       color: #fff;
       font-weight: 600; /* 少し太く */
-      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1); /* 控えめなシャadow */
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1); /* 控えめなシャドウ */
       transition: background-color 0.2s ease-in-out, transform 0.1s ease-in-out; /* ホバーエフェクト */
     }
 
@@ -500,7 +514,7 @@
 
         // <h2>要素を作成し追加
         virusTitle = document.createElement("h2");
-        virusTitle.textContent = "⚠ ウイルスに感染しました";
+        virusTitle.textContent = "⚠ ウイルスに感染しました"; // ここを修正
         virusScreen.appendChild(virusTitle);
 
         // カウントダウン要素を作成し追加
