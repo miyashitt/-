@@ -82,12 +82,13 @@
       padding: 1rem;
       font-family: monospace;
       font-size: 1rem;
-      overflow-y: auto;
-      text-align: left;
+      overflow-y: hidden; /* ウイルス画面ではスクロールなし */
+      text-align: center; /* 中央寄せ */
       flex-direction: column;
       display: none;
       position: relative;
-      overflow: hidden;
+      align-items: center; /* 垂直方向も中央に */
+      justify-content: center; /* 水平方向も中央に */
     }
 
     #virus-screen::before {
@@ -110,32 +111,35 @@
     }
 
     #virus-screen h2 {
-      text-align: center;
       font-size: 2rem;
-      margin-bottom: 1rem;
+      margin-bottom: 2rem; /* カウントダウンとの間隔 */
       animation: blink-fast 0.5s infinite alternate;
     }
 
-    #error-messages {
-      white-space: pre-wrap;
-      background: #111;
-      padding: 1rem;
-      border: 1px solid #f00;
-      border-radius: 10px;
-      box-shadow: 0 0 10px red;
-      max-height: 50vh;
-      overflow-y: auto;
-      margin-bottom: 0.5rem;
-      font-size: 0.9rem;
-      user-select: text;
-      animation: blink 1s infinite alternate;
+    /* カウントダウン表示のスタイル */
+    #countdown {
+      font-size: 5rem; /* 大きく表示 */
+      font-weight: bold;
+      color: lime; /* 緑色で表示 */
+      text-shadow: 0 0 10px lime, 0 0 20px lime;
+      margin-bottom: 2rem;
     }
 
-    @keyframes blink {
-      0% { opacity: 1; }
-      49% { opacity: 1; }
-      50% { opacity: 0.7; }
-      100% { opacity: 1; }
+    /* 種明かしメッセージのスタイル */
+    #reveal-message {
+      font-size: 1.5rem;
+      color: white;
+      background-color: rgba(0, 0, 0, 0.7);
+      padding: 1rem;
+      border-radius: 10px;
+      display: none; /* 初期は非表示 */
+      margin-top: 2rem; /* カウントダウンとの間隔 */
+      animation: fade-in 1s forwards;
+    }
+
+    @keyframes fade-in {
+        from { opacity: 0; }
+        to { opacity: 1; }
     }
 
     @keyframes blink-fast {
@@ -143,84 +147,6 @@
       49% { opacity: 1; }
       50% { opacity: 0.5; }
       100% { opacity: 1; }
-    }
-
-    #progress-bar {
-      width: 80%;
-      height: 20px;
-      background: #222;
-      border: 2px solid red;
-      margin: 1rem auto 2rem auto;
-      position: relative;
-      border-radius: 5px;
-      overflow: hidden;
-    }
-
-    #progress-bar-inner {
-      height: 100%;
-      width: 0%;
-      background: lime;
-      transition: width 0.3s ease-out;
-    }
-
-    #progress-percent {
-      position: absolute;
-      top: 0;
-      left: 50%;
-      transform: translateX(-50%);
-      color: red;
-      font-weight: bold;
-      font-size: 0.9rem;
-      line-height: 20px;
-    }
-
-    /* カスタムアラート（モーダル）のスタイル */
-    #custom-alert-overlay {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
-      background-color: rgba(0, 0, 0, 0.8);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      z-index: 1000000; /* ウイルス画面よりさらに上 */
-    }
-
-    #custom-alert-box {
-      background-color: #333;
-      color: #f00;
-      border: 2px solid #f00;
-      border-radius: 10px;
-      padding: 20px;
-      text-align: center;
-      box-shadow: 0 0 20px #f00;
-      max-width: 80vw;
-      animation: blink-fast 0.5s infinite alternate; /* 点滅アニメーション */
-    }
-
-    #custom-alert-box h3 {
-      margin-top: 0;
-      font-size: 1.5rem;
-    }
-
-    #custom-alert-box button {
-      background-color: #0066aa;
-      border: none;
-      padding: 0.8rem 2rem;
-      font-size: 1.2rem;
-      font-weight: bold;
-      border-radius: 8px;
-      color: #fff;
-      cursor: pointer;
-      box-shadow: 0 4px #004488;
-      margin-top: 15px;
-      transition: background-color 0.3s;
-    }
-
-    #custom-alert-box button:hover {
-      background-color: #0099dd;
     }
 
     #relief-screen {
@@ -353,18 +279,9 @@
 
   <div id="virus-screen" role="alert" aria-live="assertive" aria-atomic="true" class="hidden">
     <h2>⚠ ウイルスに感染しました</h2>
-    <div id="error-messages" aria-live="polite"></div>
-    <div id="progress-bar" aria-label="削除進行状況">
-      <div id="progress-bar-inner"></div>
-      <div id="progress-percent">0%</div>
-    </div>
-  </div>
-
-  <div id="custom-alert-overlay" class="hidden" role="dialog" aria-modal="true" aria-labelledby="custom-alert-title">
-    <div id="custom-alert-box">
-      <h3 id="custom-alert-title">⚠ 警告</h3>
-      <p id="custom-alert-message">すべてのデータを削除しました。</p>
-      <button id="custom-alert-ok-btn" type="button">OK</button>
+    <div id="countdown">5</div>
+    <div id="reveal-message" class="hidden">
+      ご安心ください！これは文化祭の面白い仕掛けです。<br>あなたのデータは無事です！
     </div>
   </div>
 
@@ -394,22 +311,14 @@
   <script>
     (() => {
       const localStorageKey = "bunkasai_visited";
-      // ウイルスログを短縮
-      const logs = [
-        "[CRITICAL ERROR] System halted.",
-        "[FATAL] Data wipe sequence initiated.",
-        "[SYSTEM] All user data wiped."
-      ];
-      const totalLogSteps = logs.length;
 
       const body = document.body;
       const fakeSite = document.getElementById("fake-site");
       const virusScreen = document.getElementById("virus-screen");
-      const errorMessages = document.getElementById("error-messages");
-      const progressBarInner = document.getElementById("progress-bar-inner");
-      const progressPercent = document.getElementById("progress-percent");
-      const customAlertOverlay = document.getElementById("custom-alert-overlay");
-      const customAlertOkBtn = document.getElementById("custom-alert-ok-btn");
+      const countdownElement = document.getElementById("countdown"); // カウントダウン要素
+      const revealMessageElement = document.getElementById("reveal-message"); // 種明かしメッセージ要素
+      // const customAlertOverlay = document.getElementById("custom-alert-overlay"); // 使わないのでコメントアウト
+      // const customAlertOkBtn = document.getElementById("custom-alert-ok-btn"); // 使わないのでコメントアウト
       const reliefScreen = document.getElementById("relief-screen");
       const mainScreen = document.getElementById("main");
       const repeatVirusBtn = document.getElementById("repeat-virus-btn");
@@ -417,13 +326,11 @@
       const shareButtons = document.getElementById("share-buttons");
       const startBtn = document.getElementById("start-btn");
 
-      let pct = 0;
       let synth = window.speechSynthesis;
       let utterance = null;
       let alarmAudio = null;
       let voiceLoopRunning = false;
-      let intervalId = null;
-      let logIndex = 0;
+      let countdownIntervalId = null; // カウントダウン用のインターバルID
       let isLine = false;
 
       // LINEブラウザ判定
@@ -491,7 +398,7 @@
         if (isLine) return null;
 
         try {
-          const audio = new Audio("https://upload.wikimedia.wikimedia.org/wikipedia/commons/b/b2/Sos-morse-code.ogg");
+          const audio = new Audio("https://upload.wikimedia.org/wikipedia/commons/b/b2/Sos-morse-code.ogg");
           audio.loop = true;
           audio.volume = 1.0;
           await audio.play();
@@ -500,22 +407,6 @@
           console.error("Failed to play alarm sound:", e);
           return null;
         }
-      }
-
-      function updateBar() {
-        progressBarInner.style.width = pct + "%";
-        progressPercent.textContent = Math.floor(pct) + "%";
-      }
-
-      function showCustomAlert(message) {
-        document.getElementById("custom-alert-message").textContent = message;
-        customAlertOverlay.classList.remove("hidden");
-        customAlertOverlay.style.display = "flex";
-      }
-
-      function hideCustomAlert() {
-        customAlertOverlay.classList.add("hidden");
-        customAlertOverlay.style.display = "none";
       }
 
       function startVirus() {
@@ -530,10 +421,9 @@
         mainScreen.classList.add("hidden");
         virusScreen.classList.remove("hidden");
         virusScreen.classList.add("visible");
-        errorMessages.textContent = "";
-        pct = 0;
-        logIndex = 0;
-        updateBar();
+        
+        countdownElement.classList.remove("hidden"); // カウントダウン表示
+        revealMessageElement.classList.add("hidden"); // 種明かしを非表示に
 
         // LINEブラウザでない場合のみ音声再生
         if (!isLine) {
@@ -541,28 +431,23 @@
             playAlarmSound().then(audio => { alarmAudio = audio; });
         }
 
+        let count = 5;
+        countdownElement.textContent = count; // 初期表示
 
-        if (intervalId !== null) {
-          clearInterval(intervalId);
+        // 既存のインターバルをクリア
+        if (countdownIntervalId !== null) {
+          clearInterval(countdownIntervalId);
         }
 
-        const runVirusSimulation = () => {
-          if (logIndex < totalLogSteps) {
-            // ログの表示間隔を非常に短く設定
-            const duration = 500; // 0.5秒間隔でログを表示
+        countdownIntervalId = setInterval(() => {
+          count--;
+          if (count >= 0) {
+            countdownElement.textContent = count;
+          }
 
-            errorMessages.textContent += logs[logIndex] + "\n";
-            errorMessages.scrollTop = errorMessages.scrollHeight;
-            logIndex++;
-            pct = (logIndex / totalLogSteps) * 100;
-            updateBar();
-
-            clearInterval(intervalId);
-            intervalId = setTimeout(runVirusSimulation, duration);
-
-          } else {
-            clearInterval(intervalId);
-            intervalId = null;
+          if (count === 0) {
+            clearInterval(countdownIntervalId);
+            countdownIntervalId = null;
 
             // LINEブラウザでない場合のみ音声停止
             if (!isLine) {
@@ -574,16 +459,21 @@
                 }
             }
 
-            showCustomAlert("すべてのデータを削除しました。");
+            countdownElement.classList.add("hidden"); // カウントダウンを非表示
+            revealMessageElement.classList.remove("hidden"); // 種明かしを表示
+            
             localStorage.setItem(localStorageKey, "1");
-          }
-        };
 
-        // 最初のログ表示をすぐに開始
-        intervalId = setTimeout(runVirusSimulation, 100); // 100ms後に最初のログを表示
+            // 種明かし表示後、少し待ってメイン画面へ遷移
+            setTimeout(() => {
+              showReliefScreen(); // リリーフ画面（今回は「異常なし」）を経由してメインへ
+            }, 2000); // 2秒間種明かしを表示
+          }
+        }, 1000); // 1秒ごとにカウントダウン
       }
 
       function showReliefScreen() {
+        // ウイルス画面を非表示に
         virusScreen.classList.remove("visible");
         virusScreen.classList.add("hidden");
 
@@ -596,7 +486,7 @@
           showMainScreen();
           showShareButtons();
           body.classList.remove('virus-active');
-        }, 3000);
+        }, 3000); // 3秒間「異常は検出されませんでした」を表示
       }
 
       function showMainScreen() {
@@ -664,11 +554,6 @@
 
       repeatVirusBtn.addEventListener("click", () => {
         startVirus();
-      });
-
-      customAlertOkBtn.addEventListener("click", () => {
-        hideCustomAlert();
-        showReliefScreen();
       });
 
       window.showSchedule = showSchedule;
