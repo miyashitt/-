@@ -265,7 +265,7 @@
       border-radius: 8px; /* 角を丸く */
       color: #fff;
       font-weight: 600; /* 少し太く */
-      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1); /* 控えめなシャドウ */
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1); /* 控えめなシャadow */
       transition: background-color 0.2s ease-in-out, transform 0.1s ease-in-out; /* ホバーエフェクト */
     }
 
@@ -515,27 +515,6 @@
         revealMessageElement.innerHTML = "ご安心ください！これは文化祭の面白い仕掛けです。<br>あなたのデータは無事です！";
         virusScreen.appendChild(revealMessageElement);
         
-        // ノイズ効果の div 要素を動的に生成し、#virus-screen の子要素として追加 (CSSで制御)
-        // CSSの noise アニメーションが #virus-screen 自体に適用されているため、
-        // ここで個別のノイズ要素をJavaScriptで生成する必要はなくなりました。
-        // ただし、以前のコードでランダムなノイズ要素を配置していた場合の名残として
-        // もし必要なら以下のようなコードを再導入できますが、
-        // 現状のCSSアニメーションで十分な場合は不要です。
-        /*
-        for (let i = 0; i < 50; i++) { // ノイズの数を減らすなど調整可能
-            const noiseDot = document.createElement('div');
-            noiseDot.style.position = 'absolute';
-            noiseDot.style.width = '1px';
-            noiseDot.style.height = '1px';
-            noiseDot.style.backgroundColor = 'rgba(255, 255, 255, 0.8)'; // 白い点
-            noiseDot.style.top = Math.random() * 100 + '%';
-            noiseDot.style.left = Math.random() * 100 + '%';
-            noiseDot.style.opacity = Math.random();
-            noiseDot.classList.add('noise-dot'); // CSSでさらにアニメーションを適用するため
-            virusScreen.appendChild(noiseDot);
-        }
-        */
-
         if (!isLine) {
             startJapaneseVoiceLoop();
             playAlarmSound().then(audio => { alarmAudio = audio; });
