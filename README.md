@@ -59,9 +59,9 @@
       display: none !important;
     }
 
-    /* ウイルス画面のスタイル（変更なし） */
+    /* Virus Screen styles */
     #virus-screen {
-      position: fixed;
+      position: fixed; /* 全画面表示 */
       top: 0;
       left: 0;
       right: 0;
@@ -216,24 +216,26 @@
     #main {
       padding: 2.5rem; /* 適度なパディング */
       background: transparent; /* 背景を透明に */
-      min-height: auto;
+      min-height: 100vh; /* 全画面表示 */
+      width: 100vw; /* 全画面表示 */
+      position: fixed; /* 全画面表示 */
+      top: 0;
+      left: 0;
       color: var(--text-dark);
       user-select: none;
       display: none; /* 初期は非表示 */
       border-radius: 16px;
       box-shadow: none; /* 影も削除 */
-      max-width: 90%;
       margin-top: 0; /* マージンを削除 */
       box-sizing: border-box;
       animation: fadeInScale 0.8s ease-out forwards;
       justify-content: center; /* ボタン群を中央に */
       align-items: center; /* ボタン群を中央に */
-      height: 100vh; /* 画面いっぱいにボタン群を中央配置 */
+      flex-direction: column; /* 縦並びにするため */
     }
 
     #main.visible {
-      display: flex; /* Flexboxに変更 */
-      flex-direction: column; /* 縦並びにするため */
+      display: flex;
     }
 
     /* メインナビゲーションボタンのスタイル */
@@ -354,8 +356,7 @@
         <span class="share-icon">💬</span> LINEで共有
       </button>
     </div>
-
-    </div>
+  </div>
 
   <script>
     document.addEventListener("DOMContentLoaded", () => {
@@ -363,19 +364,13 @@
       const VIRUS_COUNTDOWN_SECONDS = 5;
 
       const body = document.body;
-      // const fakeSite = document.getElementById("fake-site"); // 削除
       const virusScreen = document.getElementById("virus-screen");
       const reliefScreen = document.getElementById("relief-screen");
       const mainScreen = document.getElementById("main");
       const repeatVirusBtn = document.getElementById("repeat-virus-btn");
-      // const instagramFeedContainer = document.getElementById("instagram-feed-container"); // 削除
-      // const shareButtons = document.getElementById("share-buttons"); // 削除
-
-      // const startBtn = document.getElementById("start-btn"); // 削除
 
       const showBunkasaiInfoBtn = document.getElementById("show-bunkasai-info-btn");
       const showQuizMinigameBtn = document.getElementById("show-quiz-minigame-btn");
-      // const scheduleContent = document.getElementById("schedule-content"); // 削除
 
       let synth = window.speechSynthesis;
       let utterance = null;
@@ -386,13 +381,13 @@
 
       // ジャンプ先のクイズサイトURL
       const QUIZ_SITE_URL = "https://miyashitt.github.io/Shit/";
-      // 文化祭公式InstagramアカウントのURL (ボタンからは直接リンクしないためコメントアウト)
-      // const BUNKASAI_INSTAGRAM_URL = "https://www.instagram.com/kenryo_fes_78th?utm_source=ig_web_button_share_sheet&igsh=MWkyZDRrbjRuYnl6ag==";
+      // 文化祭公式InstagramアカウントのURL
+      const BUNKASAI_INSTAGRAM_URL = "https://www.instagram.com/kenryo_fes_78th?utm_source=ig_web_button_share_sheet&igsh=MWkyZDRrbjRuYnl6ag==";
 
       // LINEブラウザ判定
       isLineBrowserDetected = navigator.userAgent.includes("Line");
 
-      // ウイルス演出の関数 (変更なし)
+      // ウイルス演出の関数
       function startVirusSimulation() {
         body.classList.add("virus-active");
         mainScreen.classList.add("hidden"); // mainScreenを非表示に
@@ -405,10 +400,13 @@
             <p><strong>文化祭の日程や見どころはInstagram公式アカウントをチェック！</strong></p>
             <p>最新情報をGETして文化祭を楽しもう！</p>
             <p>※偽のウイルス演出はこれで終了です。</p>
-            <a href="https://www.instagram.com/kenryo_fes_78th?utm_source=ig_web_button_share_sheet&igsh=MWkyZDRrbjRuYnl6ag==" target="_blank" style="color: #66ccff; text-decoration: underline; font-weight: bold;">Instagram公式アカウントへ</a>
+            <a href="${BUNKASAI_INSTAGRAM_URL}" target="_blank" style="color: #66ccff; text-decoration: underline; font-weight: bold;">Instagram公式アカウントへ</a>
           </div>
         `;
-        speak(`警告。システムに異常を検知しました。`);
+
+        if (!isLineBrowserDetected) { // LINEブラウザでない場合のみ音声再生
+          speak(`警告。システムに異常を検知しました。`);
+        }
 
         let countdown = VIRUS_COUNTDOWN_SECONDS;
         const countdownElement = document.getElementById("countdown");
@@ -428,8 +426,10 @@
             if (revealMessage) {
               revealMessage.classList.remove("hidden");
             }
-            stopVoiceLoop();
-            speak("警告は解除されました。文化祭をお楽しみください。"); // 演出終了のメッセージ
+            if (!isLineBrowserDetected) { // LINEブラウザでない場合のみ音声停止
+              stopVoiceLoop();
+              speak("警告は解除されました。文化祭をお楽しみください。"); // 演出終了のメッセージ
+            }
             virusScreen.style.pointerEvents = 'auto'; // クリック可能に
 
             // 一定時間後に自動で relief-screen を表示し、その後 mainScreen を表示する
@@ -450,11 +450,13 @@
           }
         }, 1000);
 
-        startVoiceLoop();
-        playAlarmSound();
+        if (!isLineBrowserDetected) { // LINEブラウザでない場合のみ音声ループとアラーム音
+          startVoiceLoop();
+          playAlarmSound();
+        }
       }
 
-      // 音声読み上げの関数 (変更なし)
+      // 音声読み上げの関数
       function speak(text) {
         if (synth.speaking) {
           synth.cancel();
@@ -467,7 +469,7 @@
         synth.speak(utterance);
       }
 
-      // 音声ループの開始と停止 (変更なし)
+      // 音声ループの開始と停止
       function startVoiceLoop() {
         voiceLoopRunning = true;
         loopVoice();
@@ -494,7 +496,7 @@
         };
       }
 
-      // 警告音の再生 (変更なし)
+      // 警告音の再生
       function playAlarmSound() {
         if (alarmAudio) {
           alarmAudio.pause();
@@ -509,18 +511,12 @@
       // ページ読み込み時に実行される処理
       body.classList.add("loaded"); // ロード完了時にフェードイン
 
-      // 既存のstart-btnは削除されたため、ここでは直接mainScreenを表示する
-      // ただし、ウイルス演出は初回訪問時のみにしたいので、localStorageを確認
+      // 初回訪問時のみウイルス演出を開始
       if (localStorage.getItem(localStorageKey) === "true") {
           mainScreen.classList.remove("hidden");
           mainScreen.classList.add("visible");
-          // scheduleContent.classList.add("active"); // Instagramフィードを表示
-          // loadInstagramPosts(); // Instagramフィードを読み込む
       } else {
-          // 初回訪問時のみウイルス演出を開始
-          // body.style.display = 'flex'; // bodyをflexにする
-          // fakeSite.style.display = 'flex'; // フェイクサイトを表示 (今回は直接ウイルス演出へ)
-          startVirusSimulation(); // サイトを見るボタンクリックで演出開始だったが、今回は自動で開始
+          startVirusSimulation(); // 自動で開始
       }
 
       // 各ボタンのイベントリスナー
@@ -540,7 +536,7 @@
 
       showBunkasaiInfoBtn.addEventListener("click", () => {
         // 文化祭情報はInstagram公式アカウントへ誘導
-        window.open("https://www.instagram.com/kenryo_fes_78th?utm_source=ig_web_button_share_sheet&igsh=MWkyZDRrbjRuYnl6ag==", "_blank");
+        window.open(BUNKASAI_INSTAGRAM_URL, "_blank");
       });
 
       showQuizMinigameBtn.addEventListener("click", () => {
