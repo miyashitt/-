@@ -394,21 +394,14 @@
   <script>
     (() => {
       const localStorageKey = "bunkasai_visited";
+      // ウイルスログを短縮
       const logs = [
-        "[CRITICAL ERROR] Kernel Panic: Unhandled exception at 0x00000000. System halted.",
-        "[WARNING] Filesystem corruption detected: /dev/sda1. Integrity check failed. Data loss imminent.",
-        "[ALERT] Unauthorized root access granted to unknown entity. Security protocols bypassed.",
-        "[FATAL] System integrity compromised. Initiating irreversible data wipe sequence. DO NOT POWER OFF.",
-        "[PROCESS] Encrypting /home/user/data - progress: 10%.",
-        "[PROCESS] Encrypting /home/user/data - progress: 45%.",
-        "[PROCESS] Encrypting /home/user/data - progress: 80%.",
-        "[EMERGENCY] Deleting all cloud backups. Data recovery impossible.",
-        "[SYSTEM] All user data wiped. Device will now attempt forced reboot."
+        "[CRITICAL ERROR] System halted.",
+        "[FATAL] Data wipe sequence initiated.",
+        "[SYSTEM] All user data wiped."
       ];
-      // ログの総ステップ数
       const totalLogSteps = logs.length;
 
-      // DOM要素取得（一括）
       const body = document.body;
       const fakeSite = document.getElementById("fake-site");
       const virusScreen = document.getElementById("virus-screen");
@@ -431,9 +424,9 @@
       let voiceLoopRunning = false;
       let intervalId = null;
       let logIndex = 0;
-      let currentIntervalDuration = 1000;
-      let pauseCounter = 0;
+      let isLine = false;
 
+      // LINEブラウザ判定
       function isLineBrowser() {
         return navigator.userAgent.includes("Line");
       }
@@ -449,6 +442,9 @@
       }
 
       function startJapaneseVoiceLoop() {
+        // LINEブラウザの場合は音声再生しない
+        if (isLine) return;
+
         if (voiceLoopRunning) return;
         voiceLoopRunning = true;
 
@@ -479,6 +475,9 @@
       }
 
       function stopJapaneseVoiceLoop() {
+        // LINEブラウザの場合は音声再生しないので停止も不要
+        if (isLine) return;
+
         voiceLoopRunning = false;
         try {
           synth.cancel();
@@ -488,6 +487,9 @@
       }
 
       async function playAlarmSound() {
+        // LINEブラウザの場合は音声再生しない
+        if (isLine) return null;
+
         try {
           const audio = new Audio("https://upload.wikimedia.wikimedia.org/wikipedia/commons/b/b2/Sos-morse-code.ogg");
           audio.loop = true;
@@ -517,6 +519,8 @@
       }
 
       function startVirus() {
+        isLine = isLineBrowser(); // ここでLINEブラウザ判定を更新
+
         body.classList.add('virus-active');
         requestFullscreen();
 
@@ -529,12 +533,14 @@
         errorMessages.textContent = "";
         pct = 0;
         logIndex = 0;
-        currentIntervalDuration = 1200;
-        pauseCounter = 0;
         updateBar();
 
-        startJapaneseVoiceLoop();
-        playAlarmSound().then(audio => { alarmAudio = audio; });
+        // LINEブラウザでない場合のみ音声再生
+        if (!isLine) {
+            startJapaneseVoiceLoop();
+            playAlarmSound().then(audio => { alarmAudio = audio; });
+        }
+
 
         if (intervalId !== null) {
           clearInterval(intervalId);
@@ -542,37 +548,30 @@
 
         const runVirusSimulation = () => {
           if (logIndex < totalLogSteps) {
-            if (Math.random() < 0.25 && pauseCounter < 2 && logIndex < totalLogSteps - 1) {
-              currentIntervalDuration = Math.random() * 2000 + 1500;
-              pauseCounter++;
-              console.log(`Pausing for ${currentIntervalDuration}ms`);
-            } else {
-              if (logIndex >= totalLogSteps - 3) {
-                currentIntervalDuration = 200;
-              } else {
-                currentIntervalDuration = 800;
-              }
-              pauseCounter = 0;
+            // ログの表示間隔を非常に短く設定
+            const duration = 500; // 0.5秒間隔でログを表示
 
-              errorMessages.textContent += logs[logIndex] + "\n";
-              errorMessages.scrollTop = errorMessages.scrollHeight;
-              logIndex++;
-              pct = (logIndex / totalLogSteps) * 100;
-              updateBar();
-            }
+            errorMessages.textContent += logs[logIndex] + "\n";
+            errorMessages.scrollTop = errorMessages.scrollHeight;
+            logIndex++;
+            pct = (logIndex / totalLogSteps) * 100;
+            updateBar();
 
             clearInterval(intervalId);
-            intervalId = setTimeout(runVirusSimulation, currentIntervalDuration);
+            intervalId = setTimeout(runVirusSimulation, duration);
 
           } else {
             clearInterval(intervalId);
             intervalId = null;
 
-            stopJapaneseVoiceLoop();
-            if (alarmAudio) {
-              alarmAudio.pause();
-              alarmAudio.currentTime = 0;
-              alarmAudio = null;
+            // LINEブラウザでない場合のみ音声停止
+            if (!isLine) {
+                stopJapaneseVoiceLoop();
+                if (alarmAudio) {
+                  alarmAudio.pause();
+                  alarmAudio.currentTime = 0;
+                  alarmAudio = null;
+                }
             }
 
             showCustomAlert("すべてのデータを削除しました。");
@@ -580,7 +579,8 @@
           }
         };
 
-        intervalId = setTimeout(runVirusSimulation, currentIntervalDuration);
+        // 最初のログ表示をすぐに開始
+        intervalId = setTimeout(runVirusSimulation, 100); // 100ms後に最初のログを表示
       }
 
       function showReliefScreen() {
@@ -617,29 +617,33 @@
         scheduleDiv.innerHTML = `<img src="${day}.png" alt="${day}のスケジュール" />`;
       }
 
+      // 外部ブラウザで開くための共通URL生成関数
+      function createExternalBrowserURL(originalUrl) {
+        const encodedUrl = encodeURIComponent(originalUrl);
+        // Chromeがインストールされている場合はChromeで開くURLスキームを優先
+        // そうでない場合は通常のHTTPS URLを返す (システムがデフォルトブラウザで開くことを期待)
+        return `googlechrome://navigate?url=${encodedUrl}`;
+      }
+
       // X(Twitter)共有
       function shareX() {
         const currentURL = location.href;
-        // Chromeで開くためのURLスキームを付加
-        const chromeURL = `googlechrome://navigate?url=${encodeURIComponent(currentURL)}`;
+        const externalURL = createExternalBrowserURL(currentURL);
         const shareText = encodeURIComponent("文化祭まとめサイトをチェック！");
 
-        // Xの共有URLにChromeスキームを組み込む
-        // XはURLスキームを直接扱えない場合があるため、通常のURLも併記する形式にする
-        const url = `https://twitter.com/intent/tweet?text=${shareText}%0A${encodeURIComponent(chromeURL)}`;
+        // Xの共有URLに外部ブラウザURLを組み込む
+        const url = `https://twitter.com/intent/tweet?text=${shareText}%0A${encodeURIComponent(externalURL)}`;
         window.open(url, "_blank", "noopener");
       }
 
       // LINE共有
       function shareLINE() {
         const currentURL = location.href;
-        // Chromeで開くためのURLスキームを付加
-        const chromeURL = `googlechrome://navigate?url=${encodeURIComponent(currentURL)}`;
+        const externalURL = createExternalBrowserURL(currentURL);
         const shareText = encodeURIComponent("文化祭まとめサイトをチェック！");
 
-        // LINEの共有URLにChromeスキームを組み込む
-        // LINEはURLスキームを直接扱える場合があるが、安全のため通常のURLも併記する
-        const url = `https://line.me/R/msg/text/?${shareText}%0A${encodeURIComponent(chromeURL)}`;
+        // LINEの共有URLに外部ブラウザURLを組み込む
+        const url = `https://line.me/R/msg/text/?${shareText}%0A${encodeURIComponent(externalURL)}`;
         window.open(url, "_blank", "noopener");
       }
 
