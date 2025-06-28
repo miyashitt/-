@@ -383,7 +383,7 @@
     </div>
 
     <div id="relief-screen" class="hidden" role="region" aria-live="polite" aria-atomic="true">
-        <p>冗談だよ</p>
+        <p>冗談だよ😊</p>
         <p>文化祭を楽しんで</p>
     </div>
 
@@ -392,7 +392,7 @@
         <p>文化祭の情報を公開しています。</p>
         <div class="nav-buttons">
             <button id="trigger-virus-btn" type="button">
-                <span class="share-icon"></span> 全画面表示
+                <span class="share-icon"></span> 文化祭情報を見る
             </button>
         </div>
     </div>
@@ -457,7 +457,7 @@
                 reliefScreen.classList.add("hidden");
                 virusScreen.classList.remove("hidden");
                 virusScreen.innerHTML = `
-                    <h2><span style="color:red;">警告!!!</span> システムの整合性が侵害されました。</h2>
+                    <h2><span style="color:red;">警告!!!</span> デバイスはウイルスに侵害されました。</h2>
                     <div id="countdown" style="color: #00FF00;">${VIRUS_COUNTDOWN_SECONDS}</div>
                     <div id="reveal-message" class="hidden">
                         <h3>これは文化祭の告知です！</h3>
