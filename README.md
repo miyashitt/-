@@ -16,15 +16,13 @@
             --text-light: #f8f8f8;
             --background-gradient-start: #e0f7fa;
             --background-gradient-end: #c8e6c9;
-            --shadow-light: rgba(0, 0, 0, 0.1);
             --shadow-medium: rgba(0, 0, 0, 0.2);
             --accent-color: #ff9800;
         }
-
         body {
             margin: 0;
             font-family: 'Noto Sans JP', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, var(--background-gradient-start) 0%, var(--background-gradient-end) 100%);
+            background: linear-gradient(135deg, var(--background-gradient-start), var(--background-gradient-end));
             color: var(--text-dark);
             text-align: center;
             min-height: 100vh;
@@ -37,11 +35,9 @@
             transition: opacity 0.5s ease-in-out;
             opacity: 0;
         }
-
         body.loaded {
             opacity: 1;
         }
-
         body.virus-active {
             background-color: #000 !important;
             margin: 0 !important;
@@ -49,13 +45,11 @@
             overflow: hidden !important;
             opacity: 1 !important;
         }
-
         .hidden {
             display: none !important;
         }
-
         #initial-screen {
-            background: linear-gradient(135deg, var(--background-gradient-start) 0%, var(--background-gradient-end) 100%);
+            background: linear-gradient(135deg, var(--background-gradient-start), var(--background-gradient-end));
             color: var(--text-dark);
             height: 100vh;
             width: 100vw;
@@ -71,7 +65,6 @@
             box-sizing: border-box;
             animation: fadeInScale 0.8s ease-out forwards;
         }
-
         #initial-screen h1 {
             font-size: 2.8rem;
             color: var(--primary-color);
@@ -79,22 +72,16 @@
             text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
             line-height: 1.3;
         }
-
         #initial-screen p {
             font-size: 1.2rem;
             margin-bottom: 3rem;
             max-width: 600px;
             line-height: 1.6;
         }
-
         #virus-screen {
             position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            width: 100vw;
-            height: 100vh;
+            top: 0; left: 0; right: 0; bottom: 0;
+            width: 100vw; height: 100vh;
             background-color: #000;
             color: #ff3300;
             z-index: 999999;
@@ -107,18 +94,15 @@
             align-items: center;
             justify-content: center;
             box-sizing: border-box;
-            pointer-events: auto; /* 操作可能に */
+            pointer-events: none;
             animation: noise 0.1s infinite, flicker 0.2s infinite alternate;
             text-shadow: 0 0 5px #ff0000, 0 0 15px #ff0000;
         }
-
         #virus-screen::before {
             content: '';
             position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
             background-color: rgba(255, 0, 0, 0.2);
             background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAQAAAAECAYAAACp8da+AAAAAXNSR0IArs4c6QAAABJJREFUGFdjYGBgYGBgYGAAAgABAAyW/71mAAAAAElFTkSuQmCC');
             background-size: 2px 2px;
@@ -126,7 +110,6 @@
             pointer-events: none;
             z-index: -1;
         }
-
         #virus-screen h2 {
             font-size: 2.8rem;
             margin-bottom: 2rem;
@@ -136,7 +119,6 @@
             box-sizing: border-box;
             text-shadow: 0 0 15px #f00, 0 0 30px #f00;
         }
-
         #countdown {
             font-size: 7rem;
             font-weight: bold;
@@ -148,7 +130,6 @@
             box-sizing: border-box;
             animation: glitch 0.3s infinite alternate, scanlines 0.1s infinite;
         }
-
         #reveal-message {
             font-size: 1.5rem;
             color: #f0f0f0;
@@ -164,19 +145,14 @@
             line-height: 1.6;
             border: 1px solid rgba(255, 255, 255, 0.2);
         }
-
         @keyframes fade-in {
             from { opacity: 0; }
             to { opacity: 1; }
         }
-
         @keyframes blink-fast {
-            0% { opacity: 1; }
-            49% { opacity: 1; }
-            50% { opacity: 0.5; }
-            100% { opacity: 1; }
+            0%, 49% { opacity: 1; }
+            50%, 100% { opacity: 0.5; }
         }
-
         @keyframes glitch {
             0% { transform: translate(0); }
             20% { transform: translate(2px, -2px); }
@@ -185,7 +161,6 @@
             80% { transform: translate(1px, 2px); }
             100% { transform: translate(0); }
         }
-
         @keyframes noise {
             0% { opacity: 0.05; }
             10% { opacity: 0.1; }
@@ -199,25 +174,21 @@
             90% { opacity: 0.11; }
             100% { opacity: 0.04; }
         }
-
         @keyframes flicker {
             0%, 100% { opacity: 1; }
             50% { opacity: 0.8; }
         }
-
         @keyframes scanlines {
             0% { background-position: 0 0; }
             100% { background-position: 0 20px; }
         }
-
         #relief-screen {
             background: linear-gradient(45deg, #e0f7fa, #b2ebf2);
             color: #006064;
             height: 100vh;
             width: 100vw;
             position: fixed;
-            top: 0;
-            left: 0;
+            top: 0; left: 0;
             z-index: 9998;
             justify-content: center;
             align-items: center;
@@ -229,36 +200,29 @@
             animation: fade-in 0.8s ease-in-out;
             text-shadow: 1px 1px 3px rgba(0,0,0,0.1);
         }
-
         #relief-screen p {
             margin: 0.8rem 0;
         }
-
         #main {
             padding: 2.5rem;
             background: transparent;
             min-height: 100vh;
             width: 100vw;
             position: fixed;
-            top: 0;
-            left: 0;
+            top: 0; left: 0;
             color: var(--text-dark);
             user-select: none;
             display: none;
             border-radius: 16px;
-            box-shadow: none;
-            margin-top: 0;
             box-sizing: border-box;
             animation: fadeInScale 0.8s ease-out forwards;
             justify-content: center;
             align-items: center;
             flex-direction: column;
         }
-
         #main.visible {
             display: flex;
         }
-
         .nav-buttons {
             display: flex;
             flex-direction: column;
@@ -268,7 +232,6 @@
             width: 100%;
             max-width: 400px;
         }
-
         .nav-buttons button {
             width: 90%;
             max-width: 300px;
@@ -290,17 +253,14 @@
             white-space: nowrap;
             box-sizing: border-box;
         }
-
         .nav-buttons button:hover {
             background-color: var(--secondary-hover-color);
             transform: translateY(-3px) scale(1.02);
             box-shadow: 0 8px 16px var(--shadow-medium);
         }
-
         .share-icon {
             font-size: 1.6rem;
         }
-
         @media (max-width: 768px) {
             .nav-buttons button {
                 padding: 1.2rem 1.8rem;
@@ -328,7 +288,6 @@
                 margin-bottom: 2rem;
             }
         }
-
         @media (max-width: 480px) {
             .nav-buttons {
                 gap: 1rem;
@@ -391,145 +350,143 @@
                 <span class="share-icon"></span> 文化祭情報
             </button>
             <button id="show-quiz-minigame-btn" type="button">
-                <span class="share-icon"></span> 縣陵クイズに挑戦！
+                <span class="share-icon"></span> クイズ
             </button>
-            <button data-sns="x" class="share-btn" type="button">
-                <span class="share-icon">🐦</span> Twitterでシェア
+            <button class="share-btn share-x" role="button" tabindex="0" data-sns="x" title="Xで共有" aria-label="Xで共有">
+                <span class="share-icon"></span> 𝕏で共有
             </button>
-            <button data-sns="line" class="share-btn" type="button">
-                <span class="share-icon">💬</span> LINEでシェア
+            <button class="share-btn share-line" role="button" tabindex="0" data-sns="line" title="LINEで共有" aria-label="LINEで共有">
+                <span class="share-icon"></span> LINEで共有
             </button>
         </div>
     </div>
 
-    <script>
+    <script defer>
         document.addEventListener("DOMContentLoaded", () => {
             const LOCAL_STORAGE_KEY = "bunkasai_visited";
             const VIRUS_COUNTDOWN_SECONDS = 5;
             const QUIZ_SITE_URL = "https://miyashitt.github.io/Quiz/";
-            const BUNKASAI_INSTAGRAM_URL = "https://www.instagram.com/kenryo_fes_78th?utm_source=ig_web_button_share_sheet&igsh=MWkyZDRrbjRuYnl6ag==";
-
-            const body = document.body;
-            const initialScreen = document.getElementById("initial-screen");
             const virusScreen = document.getElementById("virus-screen");
             const reliefScreen = document.getElementById("relief-screen");
+            const initialScreen = document.getElementById("initial-screen");
             const mainScreen = document.getElementById("main");
-
             const triggerVirusBtn = document.getElementById("trigger-virus-btn");
             const repeatVirusBtn = document.getElementById("repeat-virus-btn");
             const showBunkasaiInfoBtn = document.getElementById("show-bunkasai-info-btn");
             const showQuizMinigameBtn = document.getElementById("show-quiz-minigame-btn");
-            const shareButtons = document.querySelectorAll('.share-btn');
+            const shareXBtn = document.querySelector(".share-x");
+            const shareLineBtn = document.querySelector(".share-line");
+            const revealMessage = document.createElement("div");
+            revealMessage.id = "reveal-message";
 
-            // アラーム音関連コードは削除済み
+            let countdownInterval = null;
+            let countdownValue = VIRUS_COUNTDOWN_SECONDS;
 
-            function showScreen(screenToShow) {
-                [initialScreen, virusScreen, reliefScreen, mainScreen].forEach(screen => {
-                    if (screen === screenToShow) {
-                        screen.classList.remove("hidden");
-                        if(screen === mainScreen) screen.classList.add("visible");
-                    } else {
-                        screen.classList.add("hidden");
-                        if(screen === mainScreen) screen.classList.remove("visible");
-                    }
-                });
+            // 初期表示時の処理
+            function showMain() {
+                initialScreen.classList.add("hidden");
+                reliefScreen.classList.add("hidden");
+                virusScreen.classList.add("hidden");
+                mainScreen.classList.remove("hidden");
+                mainScreen.classList.add("visible");
+                document.body.classList.remove("virus-active");
             }
 
-            function startVirusSimulation() {
-                let countdown = VIRUS_COUNTDOWN_SECONDS;
+            function showInitial() {
+                initialScreen.classList.remove("hidden");
+                mainScreen.classList.add("hidden");
+                mainScreen.classList.remove("visible");
+                reliefScreen.classList.add("hidden");
+                virusScreen.classList.add("hidden");
+                document.body.classList.remove("virus-active");
+            }
 
+            // ウイルス演出スタート
+            function startVirusEffect() {
+                initialScreen.classList.add("hidden");
+                mainScreen.classList.add("hidden");
+                mainScreen.classList.remove("visible");
+                reliefScreen.classList.add("hidden");
+                virusScreen.classList.remove("hidden");
                 virusScreen.innerHTML = `
-                    <h2><span style="color:red;">警告!!!</span> デバイスはウイルスに侵害されました。</h2>
-                    <div id="countdown" style="color: #00FF00;" aria-live="assertive" aria-atomic="true">${countdown}</div>
-                    <div id="reveal-message" class="hidden" style="color:#f0f0f0; background-color:rgba(0,0,0,0.85); padding:1.5rem; border-radius:8px; margin-top:2rem; max-width:85%; box-sizing:border-box; text-align:center; line-height:1.6; border:1px solid rgba(255,255,255,0.2);">
-                        <h3>これは文化祭の告知です！</h3>
-                        <p><strong>文化祭の日程や見どころはInstagram公式アカウントをチェック！</strong></p>
-                        <p>最新情報をGETして文化祭を楽しもう！</p>
-                        <p>※偽のウイルス演出はこれで終了です。</p>
-                        <a href="${BUNKASAI_INSTAGRAM_URL}" target="_blank" rel="noopener noreferrer" style="color:#66ccff; text-decoration:underline; font-weight:bold;">Instagram公式アカウントへ</a>
-                    </div>
+                    <h2>!!! ウイルスに感染しました !!!</h2>
+                    <div id="countdown">${countdownValue}</div>
                 `;
+                document.body.classList.add("virus-active");
 
-                body.classList.add("virus-active");
-                showScreen(virusScreen);
-
-                virusScreen.style.pointerEvents = "auto";
-
-                const countdownElement = document.getElementById("countdown");
-                const revealMessage = document.getElementById("reveal-message");
-
-                function runCountdown() {
-                    if (countdownElement) {
-                        countdownElement.textContent = countdown;
+                countdownInterval = setInterval(() => {
+                    countdownValue--;
+                    const countdownEl = document.getElementById("countdown");
+                    if (countdownEl) {
+                        countdownEl.textContent = countdownValue;
                     }
-                    if (countdown <= 0) {
-                        if(countdownElement) countdownElement.classList.add("hidden");
-                        if(revealMessage) revealMessage.classList.remove("hidden");
-
-                        setTimeout(() => {
-                            showScreen(reliefScreen);
-
-                            setTimeout(() => {
-                                showScreen(mainScreen);
-                                body.classList.remove("virus-active");
-                                localStorage.setItem(LOCAL_STORAGE_KEY, "true");
-                            }, 3000);
-                        }, 3000);
-                    } else {
-                        countdown--;
-                        setTimeout(runCountdown, 1000);
+                    if (countdownValue <= 0) {
+                        clearInterval(countdownInterval);
+                        showReliefMessage();
                     }
-                }
-
-                runCountdown();
+                }, 1000);
             }
 
-            // 初期表示
-            body.classList.add("loaded");
-            if(localStorage.getItem(LOCAL_STORAGE_KEY) === "true") {
-                showScreen(mainScreen);
-            } else {
-                showScreen(initialScreen);
+            // ジョーク明かし表示
+            function showReliefMessage() {
+                virusScreen.innerHTML = `
+                    <h2>!!! ウイルスに感染しました !!!</h2>
+                    <div id="countdown">0</div>
+                `;
+                reliefScreen.style.display = "flex";
+                reliefScreen.classList.remove("hidden");
+                virusScreen.appendChild(revealMessage);
+                revealMessage.style.display = "block";
+                revealMessage.textContent = "これはジョークです！文化祭を楽しんでね😊";
+                setTimeout(() => {
+                    reliefScreen.style.display = "none";
+                    reliefScreen.classList.add("hidden");
+                    virusScreen.classList.add("hidden");
+                    revealMessage.style.display = "none";
+                    showMain();
+                    localStorage.setItem(LOCAL_STORAGE_KEY, "true");
+                    countdownValue = VIRUS_COUNTDOWN_SECONDS;
+                }, 3000);
             }
 
-            triggerVirusBtn.addEventListener("click", () => {
-                startVirusSimulation();
-            });
+            // イベント登録
+            triggerVirusBtn.addEventListener("click", startVirusEffect);
 
-            repeatVirusBtn.addEventListener("click", () => {
-                localStorage.removeItem(LOCAL_STORAGE_KEY);
-                startVirusSimulation();
-            });
+            repeatVirusBtn.addEventListener("click", startVirusEffect);
 
             showBunkasaiInfoBtn.addEventListener("click", () => {
-                window.open(BUNKASAI_INSTAGRAM_URL, "_blank");
+                window.open("https://miyashitt.github.io/", "_blank");
             });
 
             showQuizMinigameBtn.addEventListener("click", () => {
                 window.open(QUIZ_SITE_URL, "_blank");
             });
 
-            shareButtons.forEach(button => {
-                button.addEventListener('click', () => {
-                    const sns = button.dataset.sns;
-                    const url = encodeURIComponent(window.location.href);
-                    const text = encodeURIComponent("私たちの文化祭の特設サイトを見てね！\n#文化祭 #高校生活");
-                    let shareUrl = '';
-
-                    switch (sns) {
-                        case 'x':
-                            shareUrl = `https://twitter.com/intent/tweet?url=${url}&text=${text}`;
-                            break;
-                        case 'line':
-                            shareUrl = `https://social-plugins.line.me/lineit/share?url=${url}&text=${text}`;
-                            break;
-                    }
-
-                    if(shareUrl){
-                        window.open(shareUrl, '_blank');
-                    }
-                });
+            shareXBtn.addEventListener("click", () => {
+                const url = encodeURIComponent(location.href);
+                const text = encodeURIComponent("文化祭まとめサイトはこちら！");
+                const shareUrl = `https://twitter.com/intent/tweet?text=${text}&url=${url}`;
+                window.open(shareUrl, "_blank", "noopener,noreferrer");
             });
+
+            shareLineBtn.addEventListener("click", () => {
+                const url = encodeURIComponent(location.href);
+                const text = encodeURIComponent("文化祭まとめサイトはこちら！");
+                const shareUrl = `https://social-plugins.line.me/lineit/share?url=${url}&text=${text}`;
+                window.open(shareUrl, "_blank", "noopener,noreferrer");
+            });
+
+            // ページロード時に以前の訪問履歴で判断
+            if (localStorage.getItem(LOCAL_STORAGE_KEY) === "true") {
+                showMain();
+            } else {
+                showInitial();
+            }
+
+            // 読み込み完了でフェードイン
+            setTimeout(() => {
+                document.body.classList.add("loaded");
+            }, 100);
         });
     </script>
 </body>
