@@ -435,9 +435,27 @@
             let countdownTimerId = null; // Stores the setTimeout ID for the countdown
 
             /**
+             * Requests fullscreen mode for the document body.
+             */
+            function requestFullscreen() {
+                if (document.documentElement.requestFullscreen) {
+                    document.documentElement.requestFullscreen();
+                } else if (document.documentElement.mozRequestFullScreen) { /* Firefox */
+                    document.documentElement.mozRequestFullScreen();
+                } else if (document.documentElement.webkitRequestFullscreen) { /* Chrome, Safari & Opera */
+                    document.documentElement.webkitRequestFullscreen();
+                } else if (document.documentElement.msRequestFullscreen) { /* IE/Edge */
+                    document.documentElement.msRequestFullscreen();
+                }
+            }
+
+            /**
              * Resets and initiates the virus simulation.
              */
             function startVirusSimulation() {
+                // 全画面表示をリクエスト
+                requestFullscreen();
+
                 // Clear any ongoing countdown
                 if (countdownTimerId) {
                     clearTimeout(countdownTimerId);
