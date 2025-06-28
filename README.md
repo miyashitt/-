@@ -70,11 +70,17 @@
 
     #virus-screen {
       position: fixed;
-      top: 0; left: 0;
-      width: 100vw; height: 100vh;
-      background: #000;
+      /* 画面全体を覆うようにtop, left, right, bottomを0に設定 */
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      width: 100vw; /* ビューポート幅 */
+      height: 100vh; /* ビューポート高さ */
+      background: #000; /* 黒い背景で確実に覆い隠す */
       color: #f00;
-      z-index: 9999;
+      /* z-indexをさらに大きくして最前面に表示 */
+      z-index: 999999;
       padding: 1rem;
       font-family: monospace;
       font-size: 1rem;
@@ -82,7 +88,6 @@
       text-align: left;
       flex-direction: column;
       display: none;
-      /* ウイルス画面の視覚効果 */
       position: relative; /* 疑似要素のために必要 */
       overflow: hidden; /* ノイズがはみ出さないように */
     }
@@ -347,7 +352,7 @@
         "[EMERGENCY] Deleting all cloud backups. Data recovery impossible.",
         "[SYSTEM] All user data wiped. Device will now attempt forced reboot."
       ];
-      // ログの総ステップ数（一時停止を考慮）
+      // ログの総ステップ数
       const totalLogSteps = logs.length;
 
       // DOM要素取得（一括）
