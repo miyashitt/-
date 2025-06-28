@@ -297,7 +297,7 @@
       text-shadow: 1px 1px 3px var(--shadow-light);
     }
 
-    /* Main Navigation Buttons (only for Quiz button now) */
+    /* Main Navigation Buttons */
     .main-nav-buttons {
       display: flex;
       justify-content: center;
@@ -310,7 +310,7 @@
       padding: 1.4rem 3rem; /* Larger button */
       font-size: 1.6rem; /* Larger font */
       cursor: pointer;
-      background-color: var(--secondary-color); /* Use secondary color for this button */
+      background-color: var(--secondary-color); /* Use secondary color for these buttons */
       border: none;
       border-radius: 10px;
       color: var(--text-light);
@@ -325,9 +325,9 @@
       transform: translateY(-2px) scale(1.01);
       box-shadow: 0 6px 12px var(--shadow-medium);
     }
-
-    /* Schedule Content Styles */
-    #schedule-content {
+    
+    /* スケジュール/Instagramフィードのコンテンツスタイル */
+    #schedule-content { /* ID名は schedule-content のままですが、内容が変わっています */
       background: var(--card-background);
       padding: 2.5rem; /* More padding */
       border-radius: 12px; /* Consistent border-radius */
@@ -336,49 +336,42 @@
       min-height: 350px; /* Slightly larger min-height */
       display: none;
       width: 100%;
-      max-width: 800px;
+      max-width: 800px; /* ある程度の最大幅 */
       box-sizing: border-box;
       border: 1px solid var(--border-color); /* Subtle border */
+      flex-direction: column; /* 内容を縦に並べる */
+      align-items: center; /* 中央揃え */
     }
 
     #schedule-content.active {
-      display: block;
+      display: flex; /* Flexboxに変更 */
     }
 
-    #schedule-content .schedule-nav-buttons {
-        margin-bottom: 2rem; /* More margin */
+    #schedule-content p {
+        margin-bottom: 1rem; /* パラグラフ間の余白 */
+        line-height: 1.6;
+        font-size: 1.1rem;
+    }
+
+    #instagram-feed-container {
         display: flex;
-        flex-wrap: wrap;
-        justify-content: center;
-        gap: 0.8rem; /* Consistent gap */
+        flex-direction: column;
+        align-items: center;
+        gap: 2rem; /* 間隔を追加 */
+        margin-top: 2rem;
+        width: 100%; /* 親要素の幅いっぱいに */
     }
 
-    #schedule-content .schedule-nav-buttons button {
-        background-color: #78909c; /* Blue-grey for schedule buttons */
-        color: white;
-        border: none;
-        padding: 0.9rem 1.8rem; /* Larger padding */
-        border-radius: 6px;
-        cursor: pointer;
-        font-size: 1.2rem; /* Larger font */
-        font-weight: 500;
-        transition: background-color 0.2s ease, transform 0.1s ease;
-        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-    }
-    #schedule-content .schedule-nav-buttons button:hover {
-        background-color: #607d8b;
-        transform: translateY(-1px);
-    }
-
-    #schedule-image-container img {
-      max-width: 100%; /* Ensure it fits container */
-      height: auto; /* Maintain aspect ratio */
-      max-height: 75vh; /* Allow it to be taller */
-      border: 3px solid var(--border-color); /* Thicker border */
-      border-radius: 10px; /* More rounded */
-      box-shadow: 0 5px 15px var(--shadow-light); /* Deeper shadow */
-      margin-top: 2rem;
-      object-fit: contain; /* Ensure image fits without cropping */
+    /* Instagram埋め込み投稿のスタイル調整 */
+    .instagram-media {
+        max-width: 100%; /* 親要素に収まるように */
+        width: 320px !important; /* Instagramの埋め込みのデフォルト幅に近づける */
+        min-width: 280px; /* 小さすぎないように */
+        margin: 0 auto !important; /* 中央寄せ */
+        border: 1px solid var(--border-color); /* 枠線を追加 */
+        border-radius: 8px; /* 角を丸く */
+        box-shadow: 0 4px 10px var(--shadow-light); /* 影を追加 */
+        overflow: hidden; /* はみ出しを防ぐ */
     }
 
     /* Share Buttons Styles */
@@ -465,10 +458,6 @@
         #schedule-content {
             padding: 1.8rem;
         }
-        #schedule-content .schedule-nav-buttons button {
-            padding: 0.7rem 1.4rem;
-            font-size: 1rem;
-        }
         .share-btn {
             padding: 1rem 1.8rem;
             font-size: 1.2rem;
@@ -527,16 +516,6 @@
       #schedule-content {
           padding: 1rem;
       }
-      #schedule-content .schedule-nav-buttons {
-          flex-direction: row; /* Keep schedule day buttons horizontal if space allows */
-          flex-wrap: wrap;
-          justify-content: center;
-          gap: 0.5rem;
-      }
-      #schedule-content .schedule-nav-buttons button {
-          padding: 0.6rem 1.1rem;
-          font-size: 0.95rem;
-      }
       .share-btn {
           padding: 0.7rem 1.2rem;
           font-size: 1rem;
@@ -565,7 +544,7 @@
       <span style="display:block;">ようこそ</span>
       <span style="display:block;">文化祭まとめサイトへ</span>
     </h1>
-    <button id="start-btn" type="button">スケジュールを見る</button>
+    <button id="start-btn" type="button">サイトを見る</button>
   </div>
 
   <div id="virus-screen" role="alert" aria-live="assertive" aria-atomic="true" class="hidden">
@@ -580,18 +559,17 @@
     <button id="repeat-virus-btn" type="button">もう一度ウイルス演出を見る</button>
     
     <div class="main-nav-buttons">
+      <button id="show-bunkasai-info-btn" type="button">文化祭情報</button>
       <button id="show-quiz-minigame-btn" type="button">クイズ＆ミニゲーム</button>
     </div>
 
     <div id="schedule-content" class="active">
-      <h1>文化祭スケジュール</h1>
-      <div class="schedule-nav-buttons">
-        <button id="schedule-junbi" type="button">準備日</button>
-        <button id="schedule-day1" type="button">一日目</button>
-        <button id="schedule-day2" type="button">二日目</button>
-        <button id="schedule-kataduke" type="button">片付け日</button>
-      </div>
-      <div id="schedule-image-container" aria-live="polite" aria-atomic="true"></div>
+      <h1>文化祭の最新情報</h1>
+      <p>文化祭の日程や見どころは、以下の公式Instagramアカウントで随時更新中！</p>
+      <p>すべての投稿をチェックして、文化祭を最大限に楽しもう！</p>
+      
+      <div id="instagram-feed-container" aria-live="polite" aria-atomic="true">
+        </div>
     </div>
 
     <div id="share-buttons" aria-label="SNS共有ボタン" aria-hidden="true">
@@ -604,6 +582,8 @@
     </div>
   </div>
 
+  <script async src="//www.instagram.com/embed.js"></script>
+
   <script>
     document.addEventListener("DOMContentLoaded", () => {
       const localStorageKey = "bunkasai_visited";
@@ -615,14 +595,13 @@
       const reliefScreen = document.getElementById("relief-screen");
       const mainScreen = document.getElementById("main");
       const repeatVirusBtn = document.getElementById("repeat-virus-btn");
-      const scheduleImageContainer = document.getElementById("schedule-image-container");
+      const instagramFeedContainer = document.getElementById("instagram-feed-container"); // 新しいコンテナ
       const shareButtons = document.getElementById("share-buttons");
       const startBtn = document.getElementById("start-btn");
 
-      // const showScheduleBtn = document.getElementById("show-schedule-btn"); // スケジュールボタンは削除
+      const showBunkasaiInfoBtn = document.getElementById("show-bunkasai-info-btn"); // 新しい文化祭情報ボタン
       const showQuizMinigameBtn = document.getElementById("show-quiz-minigame-btn");
-
-      const scheduleContent = document.getElementById("schedule-content");
+      const scheduleContent = document.getElementById("schedule-content"); // Instagramフィード表示用
 
       let synth = window.speechSynthesis;
       let utterance = null;
@@ -633,6 +612,25 @@
 
       // ジャンプ先のクイズサイトURL
       const QUIZ_SITE_URL = "https://miyashitt.github.io/Shit/";
+      // 文化祭公式InstagramアカウントのURL
+      const BUNKASAI_INSTAGRAM_URL = "https://www.instagram.com/kenryo_fes_78th?utm_source=ig_web_button_share_sheet&igsh=MWkyZDRrbjRuYnl6ag==";
+
+      // ここに表示したいInstagram投稿の埋め込みHTMLを配列で追加します。
+      // 各投稿の埋め込みコードをInstagramから取得し、`<blockquote>` タグ部分をコピーして貼り付けてください。
+      // 例: <blockquote class="instagram-media" ... > ... </blockquote>
+      const instagramPosts = [
+        // 例示用のダミー投稿
+        `
+        <blockquote class="instagram-media" data-instgrm-permalink="https://www.instagram.com/p/C75uC2cSm2Z/?utm_source=ig_embed&amp;utm_campaign=loading" data-instgrm-version="14" style=" background:#FFF; border:0; border-radius:3px; box-shadow:0 0 1px 0 rgba(0,0,0,0.5),0 1px 10px 0 rgba(0,0,0,0.15); margin: 1px; max-width:540px; min-width:326px; padding:0; width:99.375%; width:-webkit-calc(100% - 2px); width:calc(100% - 2px);"><div style="padding:16px;"> <a href="https://www.instagram.com/p/C75uC2cSm2Z/?utm_source=ig_embed&amp;utm_campaign=loading" style=" background:#FFFFFF; line-height:0; padding:0 0; text-align:center; text-decoration:none; width:100%;" target="_blank"> <div style=" display: flex; flex-direction: row; align-items: center;"> <div style="background-color: #F4F4F4; border-radius: 50%; flex-grow: 0; height: 40px; margin-right: 14px; width: 40px;"></div> <div style="display: flex; flex-direction: column; flex-grow: 1; justify-content: center;"> <div style=" background-color: #F4F4F4; border-radius: 4px; height: 14px; margin-bottom: 6px; width: 100px;"></div> <div style=" background-color: #F4F4F4; border-radius: 4px; height: 14px; width: 60px;"></div></div></div><div style="padding: 19% 0;"></div> <div style="display:block; height:50px; margin:0 auto; width:50px;"><svg width="50px" height="50px" viewBox="0 0 60 60" version="1.1" xmlns="https://www.w3.org/2000/svg" xmlns:xlink="https://www.w3.org/1999/xlink"><g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g transform="translate(-511.000000, -20.000000)" fill="#000000"><g><path d="M556.869,30.41 C554.814,30.41 553.148,32.076 553.148,34.131 C553.148,36.186 554.814,37.852 556.869,37.852 C558.924,37.852 560.59,36.186 560.59,34.131 C560.59,32.076 558.924,30.41 556.869,30.41 M541,60.657 C535.114,60.657 530.342,55.887 530.342,50 C530.342,44.114 535.114,39.342 541,39.342 C546.887,39.342 551.658,44.114 551.658,50 C551.658,55.887 546.887,60.657 541,60.657 M541,33.886 C532.1,33.886 524.886,41.1 524.886,50 C524.886,58.9 532.1,66.113 541,66.113 C549.9,66.113 557.114,58.9 557.114,50 C557.114,41.1 549.9,33.886 541,33.886 M565.378,62.101 C565.244,65.045 564.756,66.654 564.346,67.663 C563.803,69.06 563.154,70.057 562.106,71.106 C561.058,72.155 560.06,72.803 558.662,73.347 C557.653,73.757 556.044,74.244 553.101,74.378 C549.404,74.536 548.283,74.556 541,74.556 C533.717,74.556 532.596,74.536 528.898,74.378 C525.955,74.244 524.346,73.757 523.338,73.347 C521.94,72.803 520.942,72.155 519.894,71.106 C518.846,70.057 518.197,69.06 517.654,67.663 C517.244,66.654 516.755,65.045 516.621,62.101 C516.463,58.404 516.484,57.283 516.484,50 C516.484,42.717 516.463,41.596 516.621,37.899 C516.755,34.955 517.244,33.346 517.654,32.338 C518.197,30.94 518.846,29.942 519.894,28.894 C520.942,27.846 521.94,27.196 523.338,26.654 C524.346,26.244 525.955,25.756 528.898,25.622 C532.596,25.464 533.717,25.444 541,25.444 C548.283,25.444 549.404,25.464 553.101,25.622 C556.045,25.756 557.654,26.244 558.662,26.654 C560.06,27.196 561.058,27.846 562.106,28.894 C563.154,29.942 563.803,30.94 564.346,32.338 C564.756,33.346 565.244,34.955 565.378,37.899 C565.536,41.596 565.556,42.717 565.556,50 C565.556,57.283 565.536,58.404 565.378,62.101 M570.82,37.631 C570.674,34.438 570.167,32.258 569.425,30.349 C568.659,28.377 567.633,26.702 565.965,25.035 C564.297,23.368 562.623,22.342 560.652,21.575 C558.743,20.834 556.562,20.326 553.369,20.18 C549.665,20.019 548.475,20 541,20 C533.525,20 532.335,20.019 528.631,20.18 C525.438,20.326 523.257,20.834 521.349,21.575 C519.376,22.342 517.703,23.368 516.035,25.035 C514.368,26.702 513.342,28.377 512.574,30.349 C511.834,32.258 511.326,34.438 511.181,37.631 C511.019,41.335 511,42.525 511,50 C511,57.474 511.019,58.665 511.181,62.369 C511.326,65.562 511.834,67.743 512.574,69.651 C513.342,71.625 514.368,73.296 516.035,74.965 C517.703,76.634 519.376,77.658 521.349,78.425 C523.257,79.167 525.438,79.673 528.631,79.82 C532.335,79.981 533.525,80 541,80 C548.475,80 549.665,79.981 553.369,79.82 C556.562,79.673 558.743,79.167 560.652,78.425 C562.623,77.658 564.297,76.634 565.965,74.965 C567.633,73.296 568.659,71.625 569.425,69.651 C570.167,67.743 570.674,65.562 570.82,62.369 C570.981,58.665 571,57.474 571,50 C571,42.525 570.981,41.335 570.82,37.631"></path></g></g></g></svg></div><div style="padding-top: 8px;"> <div style=" color:#3897f0; font-family:Arial,sans-serif; font-size:14px; font-style:normal; font-weight:550; line-height:18px;">この投稿をInstagramで見る</div></div><div style="padding: 12.5% 0;"></div> <div style="display: flex; flex-direction: row; margin-bottom: 14px; align-items: center;"><div> <div style="background-color: #F4F4F4; border-radius: 50%; height: 12.5px; width: 12.5px; transform: translateX(0px) translateY(7px);"></div> <div style="background-color: #F4F4F4; height: 12.5px; transform: rotate(-45deg) translateX(3px) translateY(1px); width: 12.5px; flex-grow: 0; margin-right: 14px; margin-left: 2px;"></div> <div style="background-color: #F4F4F4; border-radius: 50%; height: 12.5px; width: 12.5px; transform: translateX(9px) translateY(-18px);"></div></div><div style="margin-left: 8px;"> <div style=" background-color: #F4F4F4; border-radius: 4px; height: 12.5px; width: 150px;"></div> <div style=" background-color: #F4F4F4; border-radius: 4px; height: 12.5px; width: 100px;"></div></div></div><div style="padding-bottom: 12px;"> <div style=" background-color: #F4F4F4; border-radius: 4px; height: 12.5px; width: 100%;"></div> <div style=" background-color: #F4F4F4; border-radius: 4px; height: 12.5px; width: 80%;"></div></div></div></a> <p style=" color:#c9c8cd; font-family:Arial,sans-serif; font-size:14px; line-height:17px; margin-bottom:0; margin-top:8px; overflow:hidden; padding:8px 0 7px; text-align:center; text-overflow:ellipsis; white-space:nowrap;"><a href="https://www.instagram.com/p/C75uC2cSm2Z/?utm_source=ig_embed&amp;utm_campaign=loading" style=" color:#c9c8cd; font-family:Arial,sans-serif; font-size:14px; font-style:normal; font-weight:normal; line-height:17px; text-decoration:none;" target="_blank">example_bunkasai</a>がシェアした投稿</p></div></blockquote>
+        `,
+        `
+        <blockquote class="instagram-media" data-instgrm-permalink="https://www.instagram.com/p/C75e_S5yb2A/?utm_source=ig_embed&amp;utm_campaign=loading" data-instgrm-version="14" style=" background:#FFF; border:0; border-radius:3px; box-shadow:0 0 1px 0 rgba(0,0,0,0.5),0 1px 10px 0 rgba(0,0,0,0.15); margin: 1px; max-width:540px; min-width:326px; padding:0; width:99.375%; width:-webkit-calc(100% - 2px); width:calc(100% - 2px);"><div style="padding:16px;"> <a href="https://www.instagram.com/p/C75e_S5yb2A/?utm_source=ig_embed&amp;utm_campaign=loading" style=" background:#FFFFFF; line-height:0; padding:0 0; text-align:center; text-decoration:none; width:100%;" target="_blank"> <div style=" display: flex; flex-direction: row; align-items: center;"> <div style="background-color: #F4F4F4; border-radius: 50%; flex-grow: 0; height: 40px; margin-right: 14px; width: 40px;"></div> <div style="display: flex; flex-direction: column; flex-grow: 1; justify-content: center;"> <div style=" background-color: #F4F4F4; border-radius: 4px; height: 14px; margin-bottom: 6px; width: 100px;"></div> <div style=" background-color: #F4F4F4; border-radius: 4px; height: 14px; width: 60px;"></div></div></div><div style="padding: 19% 0;"></div> <div style="display:block; height:50px; margin:0 auto; width:50px;"><svg width="50px" height="50px" viewBox="0 0 60 60" version="1.1" xmlns="https://www.w3.org/2000/svg" xmlns:xlink="https://www.w3.org/1999/xlink"><g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g transform="translate(-511.000000, -20.000000)" fill="#000000"><g><path d="M556.869,30.41 C554.814,30.41 553.148,32.076 553.148,34.131 C553.148,36.186 554.814,37.852 556.869,37.852 C558.924,37.852 560.59,36.186 560.59,34.131 C560.59,32.076 558.924,30.41 556.869,30.41 M541,60.657 C535.114,60.657 530.342,55.887 530.342,50 C530.342,44.114 535.114,39.342 541,39.342 C546.887,39.342 551.658,44.114 551.658,50 C551.658,55.887 546.887,60.657 541,60.657 M541,33.886 C532.1,33.886 524.886,41.1 524.886,50 C524.886,58.9 532.1,66.113 541,66.113 C549.9,66.113 557.114,58.9 557.114,50 C557.114,41.1 549.9,33.886 541,33.886 M565.378,62.101 C565.244,65.045 564.756,66.654 564.346,67.663 C563.803,69.06 563.154,70.057 562.106,71.106 C561.058,72.155 560.06,72.803 558.662,73.347 C557.653,73.757 556.044,74.244 553.101,74.378 C549.404,74.536 548.283,74.556 541,74.556 C533.717,74.556 532.596,74.536 528.898,74.378 C525.955,74.244 524.346,73.757 523.338,73.338 C521.94,72.803 520.942,72.155 519.894,71.106 C518.846,70.057 518.197,69.06 517.654,67.663 C517.244,66.654 516.755,65.045 516.621,62.101 C516.463,58.404 516.484,57.283 516.484,50 C516.484,42.717 516.463,41.596 516.621,37.899 C516.755,34.955 517.244,33.346 517.654,32.338 C518.197,30.94 518.846,29.942 519.894,28.894 C520.942,27.846 521.94,27.196 523.338,26.654 C524.346,26.244 525.955,25.756 528.898,25.622 C532.596,25.464 533.717,25.444 541,25.444 C548.283,25.444 549.404,25.464 553.101,25.622 C556.045,25.756 557.654,26.244 558.662,26.654 C560.06,27.196 561.058,27.846 562.106,28.894 C563.154,29.942 563.803,30.94 564.346,32.338 C564.756,33.346 565.244,34.955 565.378,37.899 C565.536,41.596 565.556,42.717 565.556,50 C565.556,57.283 565.536,58.404 565.378,62.101 M570.82,37.631 C570.674,34.438 570.167,32.258 569.425,30.349 C568.659,28.377 567.633,26.702 565.965,25.035 C564.297,23.368 562.623,22.342 560.652,21.575 C558.743,20.834 556.562,20.326 553.369,20.18 C549.665,20.019 548.475,20 541,20 C533.525,20 532.335,20.019 528.631,20.18 C525.438,20.326 523.257,20.834 521.349,21.575 C519.376,22.342 517.703,23.368 516.035,25.035 C514.368,26.702 513.342,28.377 512.574,30.349 C511.834,32.258 511.326,34.438 511.181,37.631 C511.019,41.335 511,42.525 511,50 C511,57.474 511.019,58.665 511.181,62.369 C511.326,65.562 511.834,67.743 512.574,69.651 C513.342,71.625 514.368,73.296 516.035,74.965 C517.703,76.634 519.376,77.658 521.349,78.425 C523.257,79.167 525.438,79.673 528.631,79.82 C532.335,79.981 533.525,80 541,80 C548.475,80 549.665,79.981 553.369,79.82 C556.562,79.673 558.743,79.167 560.652,78.425 C562.623,77.658 564.297,76.634 565.965,74.965 C567.633,73.296 568.659,71.625 569.425,69.651 C570.167,67.743 570.674,65.562 570.82,62.369 C570.981,58.665 571,57.474 571,50 C571,42.525 570.981,41.335 570.82,37.631"></path></g></g></g></svg></div><div style="padding-top: 8px;"> <div style=" color:#3897f0; font-family:Arial,sans-serif; font-size:14px; font-style:normal; font-weight:550; line-height:18px;">この投稿をInstagramで見る</div></div><div style="padding: 12.5% 0;"></div> <div style="display: flex; flex-direction: row; margin-bottom: 14px; align-items: center;"><div> <div style="background-color: #F4F4F4; border-radius: 50%; height: 12.5px; width: 12.5px; transform: translateX(0px) translateY(7px);"></div> <div style="background-color: #F4F4F4; height: 12.5px; transform: rotate(-45deg) translateX(3px) translateY(1px); width: 12.5px; flex-grow: 0; margin-right: 14px; margin-left: 2px;"></div> <div style="background-color: #F4F4F4; border-radius: 50%; height: 12.5px; width: 12.5px; transform: translateX(9px) translateY(-18px);"></div></div><div style="margin-left: 8px;"> <div style=" background-color: #F4F4F4; border-radius: 4px; height: 12.5px; width: 150px;"></div> <div style=" background-color: #F4F4F4; border-radius: 4px; height: 12.5px; width: 100px;"></div></div></div><div style="padding-bottom: 12px;"> <div style=" background-color: #F4F4F4; border-radius: 4px; height: 12.5px; width: 100%;"></div> <div style=" background-color: #F4F4F4; border-radius: 4px; height: 12.5px; width: 80%;"></div></div></div></a> <p style=" color:#c9c8cd; font-family:Arial,sans-serif; font-size:14px; line-height:17px; margin-bottom:0; margin-top:8px; overflow:hidden; padding:8px 0 7px; text-align:center; text-overflow:ellipsis; white-space:nowrap;"><a href="https://www.instagram.com/p/C75e_S5yb2A/?utm_source=ig_embed&amp;utm_campaign=loading" style=" color:#c9c8cd; font-family:Arial,sans-serif; font-size:14px; font-style:normal; font-weight:normal; line-height:17px; text-decoration:none;" target="_blank">example_bunkasai</a>がシェアした投稿</p></div></blockquote>
+        `,
+        `
+        <blockquote class="instagram-media" data-instgrm-permalink="https://www.instagram.com/p/C75c-51Sj1X/?utm_source=ig_embed&amp;utm_campaign=loading" data-instgrm-version="14" style=" background:#FFF; border:0; border-radius:3px; box-shadow:0 0 1px 0 rgba(0,0,0,0.5),0 1px 10px 0 rgba(0,0,0,0.15); margin: 1px; max-width:540px; min-width:326px; padding:0; width:99.375%; width:-webkit-calc(100% - 2px); width:calc(100% - 2px);"><div style="padding:16px;"> <a href="https://www.instagram.com/p/C75c-51Sj1X/?utm_source=ig_embed&amp;utm_campaign=loading" style=" background:#FFFFFF; line-height:0; padding:0 0; text-align:center; text-decoration:none; width:100%;" target="_blank"> <div style=" display: flex; flex-direction: row; align-items: center;"> <div style="background-color: #F4F4F4; border-radius: 50%; flex-grow: 0; height: 40px; margin-right: 14px; width: 40px;"></div> <div style="display: flex; flex-direction: column; flex-grow: 1; justify-content: center;"> <div style=" background-color: #F4F4F4; border-radius: 4px; height: 14px; margin-bottom: 6px; width: 100px;"></div> <div style=" background-color: #F4F4F4; border-radius: 4px; height: 14px; width: 60px;"></div></div></div><div style="padding: 19% 0;"></div> <div style="display:block; height:50px; margin:0 auto; width:50px;"><svg width="50px" height="50px" viewBox="0 0 60 60" version="1.1" xmlns="https://www.w3.org/2000/svg" xmlns:xlink="https://www.w3.org/1999/xlink"><g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g transform="translate(-511.000000, -20.000000)" fill="#000000"><g><path d="M556.869,30.41 C554.814,30.41 553.148,32.076 553.148,34.131 C553.148,36.186 554.814,37.852 556.869,37.852 C558.924,37.852 560.59,36.186 560.59,34.131 C560.59,32.076 558.924,30.41 556.869,30.41 M541,60.657 C535.114,60.657 530.342,55.887 530.342,50 C530.342,44.114 535.114,39.342 541,39.342 C546.887,39.342 551.658,44.114 551.658,50 C551.658,55.887 546.887,60.657 541,60.657 M541,33.886 C532.1,33.886 524.886,41.1 524.886,50 C524.886,58.9 532.1,66.113 541,66.113 C549.9,66.113 557.114,58.9 557.114,50 C557.114,41.1 549.9,33.886 541,33.886 M565.378,62.101 C565.244,65.045 564.756,66.654 564.346,67.663 C563.803,69.06 563.154,70.057 562.106,71.106 C561.058,72.155 560.06,72.803 558.662,73.347 C557.653,73.757 556.044,74.244 553.101,74.378 C549.404,74.536 548.283,74.556 541,74.556 C533.717,74.556 532.596,74.536 528.898,74.378 C525.955,74.244 524.346,73.757 523.338,73.338 C521.94,72.803 520.942,72.155 519.894,71.106 C518.846,70.057 518.197,69.06 517.654,67.663 C517.244,66.654 516.755,65.045 516.621,62.101 C516.463,58.404 516.484,57.283 516.484,50 C516.484,42.717 516.463,41.596 516.621,37.899 C516.755,34.955 517.244,33.346 517.654,32.338 C518.197,30.94 518.846,29.942 519.894,28.894 C520.942,27.846 521.94,27.196 523.338,26.654 C524.346,26.244 525.955,25.756 528.898,25.622 C532.596,25.464 533.717,25.444 541,25.444 C548.283,25.444 549.404,25.464 553.101,25.622 C556.045,25.756 557.654,26.244 558.662,26.654 C560.06,27.196 561.058,27.846 562.106,28.894 C563.154,29.942 563.803,30.94 564.346,32.338 C564.756,33.346 565.244,34.955 565.378,37.899 C565.536,41.596 565.556,42.717 565.556,50 C565.556,57.283 565.536,58.404 565.378,62.101 M570.82,37.631 C570.674,34.438 570.167,32.258 569.425,30.349 C568.659,28.377 567.633,26.702 565.965,25.035 C564.297,23.368 562.623,22.342 560.652,21.575 C558.743,20.834 556.562,20.326 553.369,20.18 C549.665,20.019 548.475,20 541,20 C533.525,20 532.335,20.019 528.631,20.18 C525.438,20.326 523.257,20.834 521.349,21.575 C519.376,22.342 517.703,23.368 516.035,25.035 C514.368,26.702 513.342,28.377 512.574,30.349 C511.834,32.258 511.326,34.438 511.181,37.631 C511.019,41.335 511,42.525 511,50 C511,57.474 511.019,58.665 511.181,62.369 C511.326,65.562 511.834,67.743 512.574,69.651 C513.342,71.625 514.368,73.296 516.035,74.965 C517.703,76.634 519.376,77.658 521.349,78.425 C523.257,79.167 525.438,79.673 528.631,79.82 C532.335,79.981 533.525,80 541,80 C548.475,80 549.665,79.981 553.369,79.82 C556.562,79.673 558.743,79.167 560.652,78.425 C562.623,77.658 564.297,76.634 565.965,74.965 C567.633,73.296 568.659,71.625 569.425,69.651 C570.167,67.743 570.674,65.562 570.82,62.369 C570.981,58.665 571,57.474 571,50 C571,42.525 570.981,41.335 570.82,37.631"></path></g></g></g></svg></div><div style="padding-top: 8px;"> <div style=" color:#3897f0; font-family:Arial,sans-serif; font-size:14px; font-style:normal; font-weight:550; line-height:18px;">この投稿をInstagramで見る</div></div><div style="padding: 12.5% 0;"></div> <div style="display: flex; flex-direction: row; margin-bottom: 14px; align-items: center;"><div> <div style="background-color: #F4F4F4; border-radius: 50%; height: 12.5px; width: 12.5px; transform: translateX(0px) translateY(7px);"></div> <div style="background-color: #F4F4F4; height: 12.5px; transform: rotate(-45deg) translateX(3px) translateY(1px); width: 12.5px; flex-grow: 0; margin-right: 14px; margin-left: 2px;"></div> <div style="background-color: #F4F4F4; border-radius: 50%; height: 12.5px; width: 12.5px; transform: translateX(9px) translateY(-18px);"></div></div><div style="margin-left: 8px;"> <div style=" background-color: #F4F4F4; border-radius: 4px; height: 12.5px; width: 150px;"></div> <div style=" background-color: #F4F4F4; border-radius: 4px; height: 12.5px; width: 100px;"></div></div></div><div style="padding-bottom: 12px;"> <div style=" background-color: #F4F4F4; border-radius: 4px; height: 12.5px; width: 100%;"></div> <div style=" background-color: #F4F4F4; border-radius: 4px; height: 12.5px; width: 80%;"></div></div></div></a> <p style=" color:#c9c8cd; font-family:Arial,sans-serif; font-size:14px; line-height:17px; margin-bottom:0; margin-top:8px; overflow:hidden; padding:8px 0 7px; text-align:center; text-overflow:ellipsis; white-space:nowrap;"><a href="https://www.instagram.com/p/C75c-51Sj1X/?utm_source=ig_embed&amp;utm_campaign=loading" style=" color:#c9c8cd; font-family:Arial,sans-serif; font-size:14px; font-style:normal; font-weight:normal; line-height:17px; text-decoration:none;" target="_blank">example_bunkasai</a>がシェアした投稿</p></div></blockquote>
+        `
+        // 実際のInstagram埋め込みコードをここに追加してください
+      ];
 
       // --- Helper Functions ---
       function isLineBrowser() {
@@ -804,29 +802,38 @@
       function showMainScreen() {
         mainScreen.classList.remove("hidden");
         mainScreen.classList.add("visible");
-        showContent('schedule'); // 初期表示はスケジュールコンテンツ
+        showContent('schedule'); // 初期表示はInstagramフィード (スケジュールコンテンツ)
       }
 
       function showShareButtons() {
         shareButtons.classList.add("visible");
         shareButtons.setAttribute("aria-hidden", "false");
       }
+      
+      // Instagramフィードを埋め込む関数
+      function loadInstagramFeed() {
+        instagramFeedContainer.innerHTML = ''; // 既存のコンテンツをクリア
 
-      function showScheduleImage(day) {
-        if (!day) {
-          scheduleImageContainer.innerHTML = "<p>上記ボタンからスケジュールを選択してください。</p>";
-          return;
+        if (instagramPosts.length === 0) {
+            instagramFeedContainer.innerHTML = "<p>表示できるInstagram投稿がありません。</p>";
+            return;
         }
-        const imgPath = `${day}.png`;
-        const img = new Image();
-        img.onload = () => {
-          scheduleImageContainer.innerHTML = `<img src="${imgPath}" alt="${day}のスケジュール" />`;
-        };
-        img.onerror = () => {
-          scheduleImageContainer.innerHTML = `<p>スケジュール画像 (${imgPath}) が見つかりませんでした。</p>`;
-          console.error(`Error loading image: ${imgPath}`);
-        };
-        img.src = imgPath;
+
+        instagramPosts.forEach(postHtml => {
+          const div = document.createElement('div');
+          div.innerHTML = postHtml;
+          instagramFeedContainer.appendChild(div);
+        });
+
+        // Instagramの埋め込みスクリプトを再実行して、新しく追加された投稿をレンダリング
+        // window.instgrm.Embeds が利用可能になるまで待つ必要があるため、setTimeout で遅延させる
+        setTimeout(() => {
+            if (window.instgrm && window.instgrm.Embeds) {
+                window.instgrm.Embeds.process();
+            } else {
+                console.warn("Instagram Embeds script not loaded yet.");
+            }
+        }, 500); // 少し遅延させて確実に読み込まれるのを待つ
       }
 
       function createExternalBrowserURL(originalUrl) {
@@ -848,32 +855,32 @@
       }
 
       function showContent(contentId) {
-        const contents = [scheduleContent];
+        // 現在、表示するメインコンテンツはInstagramフィードのみなので、常にそれを表示する
+        // 将来的に他のコンテンツを追加する場合は、ここで切り替えるロジックを実装
+        const contents = [scheduleContent]; // scheduleContent は Instagramフィードのコンテナとして使用
+
         contents.forEach(content => {
           content.classList.remove('active');
           content.classList.add('hidden');
         });
 
-        if (contentId === 'schedule') {
+        if (contentId === 'schedule') { // contentId が 'schedule' の場合に Instagramフィードを表示
           scheduleContent.classList.add('active');
           scheduleContent.classList.remove('hidden');
-          showScheduleImage('day1');
+          loadInstagramFeed(); // Instagramフィードを読み込む
         }
       }
 
       // --- Event Listeners ---
       startBtn.addEventListener("click", startVirusSimulation);
       repeatVirusBtn.addEventListener("click", startVirusSimulation);
-
-      document.getElementById('schedule-junbi').addEventListener('click', () => showScheduleImage('junbi'));
-      document.getElementById('schedule-day1').addEventListener('click', () => showScheduleImage('day1'));
-      document.getElementById('schedule-day2').addEventListener('click', () => showScheduleImage('day2'));
-      document.getElementById('schedule-kataduke').addEventListener('click', () => showScheduleImage('kataduke'));
-
-      // スケジュールボタンは削除されたため、このイベントリスナーは不要
-      // showScheduleBtn.addEventListener("click", () => showContent('schedule')); 
       
-      // クイズ＆ミニゲームボタンの挙動をサイトジャンプに変更
+      // 新しい「文化祭情報」ボタンの挙動（Instagramアカウントへジャンプ）
+      showBunkasaiInfoBtn.addEventListener("click", () => {
+        window.open(BUNKASAI_INSTAGRAM_URL, "_blank", "noopener");
+      });
+
+      // クイズ＆ミニゲームボタンの挙動
       showQuizMinigameBtn.addEventListener("click", () => {
         window.open(QUIZ_SITE_URL, "_blank", "noopener");
       });
@@ -892,6 +899,7 @@
         const visited = localStorage.getItem(localStorageKey);
         if (!visited) {
           fakeSite.style.display = "flex";
+          startBtn.textContent = "サイトを見る"; // フェイクサイトのボタンテキストを調整
         } else {
           showMainScreen();
           showShareButtons();
