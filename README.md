@@ -37,8 +37,7 @@
             justify-content: center;
             align-items: center;
             user-select: none;
-            overflow-x: hidden; /* Prevent horizontal scroll */
-            overflow-y: auto;
+            overflow: hidden; /* Prevent all scrolling for full-screen effect */
             transition: background-color 0.3s ease-in-out, opacity 0.5s ease-in-out;
             opacity: 0; /* JavaScriptでloadedクラスが付与されたら表示 */
         }
@@ -92,7 +91,6 @@
             max-width: 600px;
             line-height: 1.6;
         }
-
 
         /* Virus Screen styles */
         #virus-screen {
@@ -430,11 +428,9 @@
             const reliefScreen = document.getElementById("relief-screen");
             const mainScreen = document.getElementById("main");
 
-            // Buttons
-            // Removed showInitialBunkasaiInfoBtn from this list as it's no longer in the HTML
-            const triggerVirusBtn = document.getElementById("trigger-virus-btn"); // Button for virus animation
+            const triggerVirusBtn = document.getElementById("trigger-virus-btn");
             const repeatVirusBtn = document.getElementById("repeat-virus-btn");
-            const showBunkasaiInfoBtn = document.getElementById("show-bunkasai-info-btn"); // Button on main screen for Instagram
+            const showBunkasaiInfoBtn = document.getElementById("show-bunkasai-info-btn");
             const showQuizMinigameBtn = document.getElementById("show-quiz-minigame-btn");
 
             let synth = window.speechSynthesis;
@@ -444,23 +440,24 @@
             let countdownIntervalId = null;
             let isLineBrowserDetected = false;
 
-            // Jump destinations
             const QUIZ_SITE_URL = "https://miyashitt.github.io/Shit/";
             const BUNKASAI_INSTAGRAM_URL = "https://www.instagram.com/kenryo_fes_78th?utm_source=ig_web_button_share_sheet&igsh=MWkyZDRrbjRuYnl6ag==";
 
-            // Detect LINE browser
             isLineBrowserDetected = navigator.userAgent.includes("Line");
 
             // --- Core Functions ---
 
+            /**
+             * Starts the virus simulation sequence.
+             */
             function startVirusSimulation() {
                 body.classList.add("virus-active");
                 initialScreen.classList.add("hidden");
                 mainScreen.classList.add("hidden");
-                reliefScreen.classList.add("hidden"); // Ensure relief screen is hidden
+                reliefScreen.classList.add("hidden");
                 virusScreen.classList.remove("hidden");
                 virusScreen.innerHTML = `
-                    <h2><span style="color:red;">WARNING!!!</span> SYSTEM INTEGRITY COMPROMISED.</h2>
+                    <h2><span style="color:red;">警告!!!</span> システムの整合性が侵害されました。</h2>
                     <div id="countdown" style="color: #00FF00;">${VIRUS_COUNTDOWN_SECONDS}</div>
                     <div id="reveal-message" class="hidden">
                         <h3>これは文化祭の告知です！</h3>
@@ -471,15 +468,18 @@
                     </div>
                 `;
 
+                // Play audio only if not in LINE browser
                 if (!isLineBrowserDetected) {
                     speak(`デバイスはウイルスに感染しました`);
+                    startVoiceLoop();
+                    playAlarmSound();
                 }
 
                 let countdown = VIRUS_COUNTDOWN_SECONDS;
                 const countdownElement = document.getElementById("countdown");
                 const revealMessage = document.getElementById("reveal-message");
 
-                clearInterval(countdownIntervalId); // Clear any existing interval
+                clearInterval(countdownIntervalId);
                 countdownIntervalId = setInterval(() => {
                     countdown--;
                     if (countdownElement) {
@@ -494,35 +494,32 @@
                         if (revealMessage) {
                             revealMessage.classList.remove("hidden");
                         }
-                        if (!isLineBrowserDetected) {
-                            stopVoiceLoop();
-                            
-                        }
+                        stopVoiceLoop(); // Stop voice loop and alarm sound
+
                         virusScreen.style.pointerEvents = 'auto'; // Make clickable after reveal
 
                         setTimeout(() => {
                             virusScreen.classList.add("hidden");
                             reliefScreen.classList.remove("hidden");
-                            reliefScreen.style.display = 'flex';
+                            reliefScreen.style.display = 'flex'; // Explicitly set display for relief screen fade-in
 
                             setTimeout(() => {
                                 reliefScreen.classList.add("hidden");
-                                reliefScreen.style.display = 'none';
+                                reliefScreen.style.display = 'none'; // Hide relief screen
                                 mainScreen.classList.remove("hidden");
                                 mainScreen.classList.add("visible");
                                 body.classList.remove("virus-active");
                                 localStorage.setItem(localStorageKey, "true"); // Set flag that virus has played
-                            }, 2000); // Hide relief, show main
-                        }, 3000); // Show reveal message for a bit
+                            }, 2000); // Hide relief, show main after 2 seconds
+                        }, 3000); // Show reveal message for 3 seconds
                     }
                 }, 1000);
-
-                if (!isLineBrowserDetected) {
-                    startVoiceLoop();
-                    playAlarmSound();
-                }
             }
 
+            /**
+             * Uses SpeechSynthesis to speak the given text.
+             * @param {string} text - The text to speak.
+             */
             function speak(text) {
                 if (synth.speaking) {
                     synth.cancel();
@@ -535,11 +532,17 @@
                 synth.speak(utterance);
             }
 
+            /**
+             * Starts a continuous voice loop saying the virus message.
+             */
             function startVoiceLoop() {
                 voiceLoopRunning = true;
                 loopVoice();
             }
 
+            /**
+             * Stops the continuous voice loop and alarm sound.
+             */
             function stopVoiceLoop() {
                 voiceLoopRunning = false;
                 if (synth.speaking) {
@@ -551,16 +554,22 @@
                 }
             }
 
+            /**
+             * Recursive function to loop the voice message.
+             */
             function loopVoice() {
                 if (!voiceLoopRunning) return;
                 speak("デバイスはウイルスに感染しました");
                 utterance.onend = () => {
                     if (voiceLoopRunning) {
-                        setTimeout(loopVoice, 3000);
+                        setTimeout(loopVoice, 3000); // Wait 3 seconds before repeating
                     }
                 };
             }
 
+            /**
+             * Plays the alarm sound.
+             */
             function playAlarmSound() {
                 if (alarmAudio) {
                     alarmAudio.pause();
@@ -578,12 +587,10 @@
 
             // Determine which screen to show on initial load
             if (localStorage.getItem(localStorageKey) === "true") {
-                // If virus has been seen, go directly to main content
                 initialScreen.classList.add("hidden");
                 mainScreen.classList.remove("hidden");
                 mainScreen.classList.add("visible");
             } else {
-                // Otherwise, show the initial welcome screen
                 initialScreen.classList.remove("hidden");
             }
 
@@ -626,9 +633,6 @@
                             break;
                         case 'line':
                             shareUrl = `https://social-plugins.line.me/lineit/share?url=${url}&text=${text}`;
-                            if (isLineBrowserDetected) {
-                                alert("LINEアプリ以外で開くと共有がスムーズです。ブラウザを切り替えてお試しください。");
-                            }
                             break;
                     }
 
