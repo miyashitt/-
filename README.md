@@ -385,8 +385,8 @@
     </div>
 
     <div id="relief-screen" class="hidden" role="region" aria-live="polite" aria-atomic="true">
-        <p>...異常は検出されませんでした。</p>
-        <p>安心してご覧ください。</p>
+        <p>冗談だよ</p>
+        <p>文化祭を楽しんで</p>
     </div>
 
     <div id="initial-screen" role="region" aria-label="文化祭特設サイトへようこそ">
@@ -402,19 +402,19 @@
     <div id="main" role="main" aria-label="文化祭まとめコンテンツ" class="hidden">
         <div class="nav-buttons">
             <button id="repeat-virus-btn" type="button">
-                <span class="share-icon">🚨</span> もう一度ウイルス演出を見る
+                <span class="share-icon"></span> もう一度ウイルス演出を見る
             </button>
             <button id="show-bunkasai-info-btn" type="button">
-                <span class="share-icon">💡</span> 文化祭情報
+                <span class="share-icon"></span> 文化祭情報
             </button>
             <button id="show-quiz-minigame-btn" type="button">
-                <span class="share-icon">🎮</span> クイズ
+                <span class="share-icon"></span> クイズ
             </button>
             <button class="share-btn share-x" role="button" tabindex="0" data-sns="x" title="Xで共有" aria-label="Xで共有">
-                <span class="share-icon">🐦</span> Xで共有
+                <span class="share-icon"></span> 𝕏で共有
             </button>
             <button class="share-btn share-line" role="button" tabindex="0" data-sns="line" title="LINEで共有" aria-label="LINEで共有">
-                <span class="share-icon">💬</span> LINEで共有
+                <span class="share-icon"></span> LINEで共有
             </button>
         </div>
     </div>
