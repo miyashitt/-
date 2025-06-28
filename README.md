@@ -7,9 +7,9 @@
   <style>
     body {
       margin: 0;
-      font-family: 'Arial Black', Arial, sans-serif;
-      background: linear-gradient(135deg, #d5c4f1 0%, #aee3f8 100%);
-      color: #003300;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* より現代的なフォント */
+      background: #f4f4f4; /* 明るい背景 */
+      color: #333; /* ダークなテキスト */
       text-align: center;
       min-height: 100vh;
       display: flex;
@@ -18,7 +18,7 @@
       align-items: center;
       user-select: none;
       overflow-y: auto;
-      transition: background-color 0.3s ease-in-out; /* 背景色変化を滑らかに */
+      transition: background-color 0.3s ease-in-out;
     }
 
     /* ウイルス画面表示時のbodyスタイル */
@@ -33,39 +33,57 @@
       display: none !important;
     }
 
+    /* 初期は非表示だが、display: flex/block で上書きされる */
     #fake-site, #relief-screen, #main, #virus-screen {
-      /* 初期は非表示 */
+      /* display: none; */
     }
 
     #fake-site {
       display: flex;
       flex-direction: column;
       align-items: center;
+      background-color: #fff; /* 白い背景 */
+      padding: 3rem; /* 大きめのパディング */
+      border-radius: 12px; /* 角を丸く */
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* 控えめなシャドウ */
     }
 
     #fake-site h1 {
-      font-size: 3rem;
-      margin-bottom: 2rem;
-      text-shadow: 2px 2px 0 #fff, 4px 4px 8px #7744aa;
-      line-height: 1.4;
+      font-size: 3.5rem; /* 少し大きく */
+      margin-bottom: 2.5rem; /* 少し空ける */
+      text-shadow: 1px 1px 0 #eee, 2px 2px 4px rgba(0, 0, 0, 0.1); /* 控えめなテキストシャドウ */
+      line-height: 1.3;
+      color: #555; /* 少し落ち着いた色 */
+      font-weight: 700; /* 太字 */
+    }
+
+    #fake-site h1 span {
+      display: block;
+    }
+
+    #fake-site h1 span:first-child {
+      font-size: 2.2rem; /* 少し小さく */
+      color: #777; /* さらに落ち着いた色 */
+      font-weight: 500; /* 少し細く */
     }
 
     #fake-site button {
-      background-color: #0066aa;
+      background-color: #007bff; /* 青系のボタン */
       border: none;
-      padding: 1.2rem 3rem;
-      font-size: 1.6rem;
-      font-weight: bold;
-      border-radius: 10px;
+      padding: 1.5rem 3.5rem; /* 少し大きく */
+      font-size: 1.8rem; /* 少し大きく */
+      font-weight: 600; /* 少し太く */
+      border-radius: 8px; /* 角を丸く */
       color: #fff;
       cursor: pointer;
-      box-shadow: 0 6px #004488;
-      transition: background-color 0.3s;
-      margin-top: 1rem;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15); /* 控えめなシャドウ */
+      transition: background-color 0.2s ease-in-out, transform 0.1s ease-in-out; /* ホバーエフェクト */
+      margin-top: 1.5rem; /* 少し空ける */
     }
 
     #fake-site button:hover {
-      background-color: #0099dd;
+      background-color: #0056b3; /* ホバー時の色 */
+      transform: translateY(-2px); /* 少し持ち上げる */
     }
 
     #virus-screen {
@@ -74,24 +92,25 @@
       left: 0;
       right: 0;
       bottom: 0;
-      width: 100vw; /* 画面幅いっぱいに */
-      height: 100vh; /* 画面高さいっぱいに */
-      background: #000;
-      color: #f00;
+      width: 100vw;
+      height: 100vh;
+      background-color: #000; /* より深い黒 */
+      color: #ff3300; /* より強調された赤 */
       z-index: 999999;
-      /* padding: 1rem; ← paddingはコンテンツを縮める可能性があるので削除 */
-      font-family: monospace;
-      font-size: 1rem;
-      overflow-y: hidden; /* ウイルス画面ではスクロールなし */
-      text-align: center; /* 内部のテキストを中央寄せ */
+      font-family: 'Courier New', Courier, monospace; /* より機械的なフォント */
+      font-size: 1.2rem; /* 少し大きく */
+      overflow: hidden;
+      text-align: center;
+      display: flex;
       flex-direction: column;
-      display: flex; /* flexboxで中央寄せ */
-      position: relative;
-      align-items: center; /* 垂直方向の中央寄せ */
-      justify-content: center; /* 水平方向の中央寄せ */
-      box-sizing: border-box; /* paddingやborderを含めてwidth/heightを計算 */
+      align-items: center;
+      justify-content: center;
+      box-sizing: border-box;
+      pointer-events: none; /* 下の要素をクリックできるように */
+      animation: noise 0.1s infinite; /* ノイズアニメーションを適用 */
     }
 
+    /* ノイズ効果のための ::before 要素は、背景のパターンとして機能 */
     #virus-screen::before {
       content: '';
       position: absolute;
@@ -99,10 +118,10 @@
       left: 0;
       width: 100%;
       height: 100%;
-      background-color: rgba(255, 0, 0, 0.15);
-      background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAQAAAAECAYAAACp8da+AAAAAXNSR0IArs4c6QAAABJJREFUGFdjYGBgYGBgYGAAAgABAAyW/71mAAAAAElFTkSuQmCC');
+      background-color: rgba(255, 0, 0, 0.2); /* 赤のオーバーレイを少し強く */
+      background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAQAAAAECAYAAACp8da+AAAAAXNSR0IArs4c6QAAABJJREFUGFdjYGBgYGBgYGAAAgABAAyW/71mAAAAAElFTkSuQmCC'); /* 細かいパターン */
       background-size: 2px 2px;
-      opacity: 0.8;
+      opacity: 0.7; /* 少し強く */
       pointer-events: none;
       z-index: -1;
     }
@@ -112,44 +131,46 @@
     }
 
     #virus-screen h2 {
-      font-size: 2rem;
-      margin-bottom: 2rem;
-      animation: blink-fast 0.5s infinite alternate;
-      width: 100%; /* 親要素の幅いっぱいに広げる */
-      text-align: center; /* 念のためテキスト中央寄せ */
-      box-sizing: border-box; /* 追加: paddingなどでずれないように */
+      font-size: 2.5rem; /* 少し大きく */
+      margin-bottom: 1.5rem; /* 少し詰める */
+      animation: blink-fast 0.3s infinite alternate, glitch 0.5s infinite alternate; /* グリッチアニメーション追加 */
+      width: 90%; /* 少し幅を狭める */
+      text-align: center;
+      box-sizing: border-box;
     }
 
     /* カウントダウン表示のスタイル */
     #countdown { /* このIDを持つ要素はJSで生成されます */
-      font-size: 5rem;
+      font-size: 6rem; /* さらに大きく */
       font-weight: bold;
-      color: lime;
-      text-shadow: 0 0 10px lime, 0 0 20px lime;
-      margin-bottom: 2rem;
-      width: 100%; /* 親要素の幅いっぱいに広げる */
-      text-align: center; /* 念のためテキスト中央寄せ */
-      box-sizing: border-box; /* 追加: paddingなどでずれないように */
+      color: #00ff00; /* より鮮やかな緑 */
+      text-shadow: 0 0 5px #00ff00, 0 0 15px #00ff00; /* 強めのシャドウ */
+      margin-bottom: 1rem; /* さらに詰める */
+      width: 90%; /* 少し幅を狭める */
+      text-align: center;
+      box-sizing: border-box;
+      animation: glitch 0.3s infinite alternate; /* グリッチアニメーション追加 */
     }
 
     /* 種明かしメッセージのスタイル */
     #reveal-message { /* このIDを持つ要素はJSで生成されます */
-      font-size: 1.5rem;
-      color: white;
-      background-color: rgba(0, 0, 0, 0.7);
+      font-size: 1.3rem; /* 少し小さく */
+      color: #f0f0f0; /* 少し明るいグレー */
+      background-color: rgba(0, 0, 0, 0.8); /* より暗く */
       padding: 1rem;
-      border-radius: 10px;
+      border-radius: 5px; /* 少し角を丸く */
       display: none;
-      margin-top: 2rem;
-      animation: fade-in 1s forwards;
-      max-width: 90%; /* 画面幅の90%までに制限 */
-      box-sizing: border-box; /* paddingを含めて幅を計算 */
-      text-align: center; /* 念のためテキスト中央寄せ */
+      margin-top: 1.5rem; /* 少し詰める */
+      animation: fade-in 0.5s forwards; /* 少し速く */
+      max-width: 80%; /* さらに幅を狭める */
+      box-sizing: border-box;
+      text-align: center;
     }
 
+    /* アニメーションの定義 */
     @keyframes fade-in {
-        from { opacity: 0; }
-        to { opacity: 1; }
+      from { opacity: 0; }
+      to { opacity: 1; }
     }
 
     @keyframes blink-fast {
@@ -159,9 +180,33 @@
       100% { opacity: 1; }
     }
 
+    @keyframes glitch {
+      0% { transform: translate(0); }
+      20% { transform: translate(2px, -2px); }
+      40% { transform: translate(-1px, 1px); }
+      60% { transform: translate(-2px, -1px); }
+      80% { transform: translate(1px, 2px); }
+      100% { transform: translate(0); }
+    }
+
+    @keyframes noise { /* 画面全体にノイズをかけるアニメーション (CSSで制御するように変更) */
+      0% { opacity: 0.05; }
+      10% { opacity: 0.1; }
+      20% { opacity: 0.08; }
+      30% { opacity: 0.15; }
+      40% { opacity: 0.03; }
+      50% { opacity: 0.12; }
+      60% { opacity: 0.07; }
+      70% { opacity: 0.18; }
+      80% { opacity: 0.06; }
+      90% { opacity: 0.11; }
+      100% { opacity: 0.04; }
+    }
+
+    /* リリーフ画面 */
     #relief-screen {
-      background: #ccf;
-      color: #003;
+      background: linear-gradient(45deg, #e0f7fa, #b2ebf2); /* 水色系のグラデーション */
+      color: #006064; /* 濃いシアン */
       height: 100vh;
       width: 100vw;
       position: fixed;
@@ -171,72 +216,88 @@
       justify-content: center;
       align-items: center;
       flex-direction: column;
-      font-size: 1.5rem;
+      font-size: 1.8rem; /* 少し大きく */
       display: none;
       user-select: text;
+      animation: fade-in 0.5s ease-in-out; /* フェードイン */
+      font-weight: 500;
     }
 
+    #relief-screen p {
+        margin: 0.5rem 0;
+        text-shadow: 1px 1px 2px rgba(255,255,255,0.5);
+    }
+
+    /* メインコンテンツ */
     #main {
-      padding: 2rem;
-      background: linear-gradient(135deg, #f1eaff 0%, #b3f0ff 100%);
-      min-height: 100vh;
-      color: #333300;
+      padding: 3rem; /* 大きめのパディング */
+      background: #fff; /* 白い背景 */
+      min-height: auto;
+      color: #333; /* ダークなテキスト */
       user-select: none;
       display: none;
+      border-radius: 12px; /* 角を丸く */
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* 控えめなシャドウ */
+      max-width: 90%; /* 幅を制限 */
+      margin-top: 2rem; /* 少し空ける */
     }
 
     #main.visible {
       display: block;
+      animation: fade-in 0.3s ease-in-out; /* フェードインアニメーション */
     }
 
     #main h1 {
-      font-size: 2.8rem;
-      margin-bottom: 1.5rem;
-      text-shadow: 1px 1px 0 #fff, 2px 2px 6px #aa6600;
+      font-size: 3rem; /* 少し大きく */
+      margin-bottom: 2rem; /* 少し空ける */
+      text-shadow: 1px 1px 0 #eee, 2px 2px 4px rgba(0, 0, 0, 0.1); /* 控えめなテキストシャドウ */
+      color: #555; /* 少し落ち着いた色 */
+      font-weight: 700; /* 太字 */
     }
 
     #main button {
-      padding: 1rem 2rem;
-      font-size: 1.2rem;
-      margin: 1rem;
+      padding: 1.2rem 2.5rem; /* 少し大きく */
+      font-size: 1.4rem; /* 少し大きく */
+      margin: 0.8rem; /* 少し調整 */
       cursor: pointer;
-      background: #006600;
+      background-color: #28a745; /* 緑系のボタン */
       border: none;
-      border-radius: 10px;
+      border-radius: 8px; /* 角を丸く */
       color: #fff;
-      font-weight: bold;
-      box-shadow: 0 4px #004400;
-      transition: background-color 0.3s;
+      font-weight: 600; /* 少し太く */
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1); /* 控えめなシャドウ */
+      transition: background-color 0.2s ease-in-out, transform 0.1s ease-in-out; /* ホバーエフェクト */
     }
 
     #main button:hover {
-      background-color: #009900;
+      background-color: #1e7e34; /* ホバー時の色 */
+      transform: translateY(-1px); /* 少し持ち上げる */
     }
 
     #repeat-virus-btn {
-      background-color: #990000;
-      margin-bottom: 1rem;
-      box-shadow: 0 4px #660000;
+      background-color: #dc3545; /* 赤系のボタン */
+      margin-bottom: 1.5rem; /* 少し空ける */
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1); /* 控えめなシャドウ */
     }
 
     #repeat-virus-btn:hover {
-      background-color: #cc0000;
+      background-color: #c82333; /* ホバー時の色 */
     }
 
     #schedule img {
-      max-width: 90%;
-      max-height: 60vh;
-      border: 3px solid #774400;
-      border-radius: 15px;
-      box-shadow: 0 0 15px #aa6600;
-      margin-top: 1rem;
+      max-width: 95%; /* 少し広げる */
+      max-height: 70vh; /* 少し高く */
+      border: 2px solid #ddd; /* 薄いボーダー */
+      border-radius: 8px; /* 角を丸く */
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* 控えめなシャドウ */
+      margin-top: 1.5rem; /* 少し空ける */
     }
 
     #share-buttons {
-      margin-top: 2rem;
+      margin-top: 2.5rem; /* 少し空ける */
       display: none;
       justify-content: center;
-      gap: 1rem;
+      gap: 1.5rem; /* 少し広げる */
     }
 
     #share-buttons.visible {
@@ -245,16 +306,21 @@
 
     .share-btn {
       cursor: pointer;
-      padding: 0.8rem 1.5rem;
-      border-radius: 12px;
-      font-weight: bold;
-      font-size: 1.1rem;
+      padding: 1rem 2rem; /* 少し大きく */
+      border-radius: 10px; /* 角を丸く */
+      font-weight: 600; /* 少し太く */
+      font-size: 1.2rem; /* 少し大きく */
       color: white;
-      box-shadow: 0 4px #444;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1); /* 控えめなシャドウ */
       display: flex;
       align-items: center;
-      gap: 0.5rem;
+      gap: 0.8rem; /* 少し広げる */
       user-select: none;
+      transition: transform 0.1s ease-in-out; /* ホバーエフェクト */
+    }
+
+    .share-btn:hover {
+      transform: translateY(-1px); /* 少し持ち上げる */
     }
 
     .share-x {
@@ -274,7 +340,7 @@
     }
 
     .share-icon {
-      font-size: 1.3rem;
+      font-size: 1.4rem; /* 少し大きく */
     }
   </style>
 </head>
@@ -334,7 +400,7 @@
       let countdownIntervalId = null;
       let isLine = false;
 
-      // 新しく生成される要素への参照
+      // 新しく生成される要素への参照（グローバルスコープで保持）
       let virusTitle = null;
       let countdownElement = null;
       let revealMessageElement = null;
@@ -354,7 +420,7 @@
       }
 
       function startJapaneseVoiceLoop() {
-        if (isLine) return;
+        if (isLine) return; // LINEブラウザの場合は音声再生しない
 
         if (voiceLoopRunning) return;
         voiceLoopRunning = true;
@@ -377,7 +443,7 @@
         };
 
         try {
-          synth.cancel();
+          synth.cancel(); // 既存の音声を停止
           synth.speak(utterance);
         } catch (e) {
           console.error("Failed to speak utterance:", e);
@@ -386,7 +452,7 @@
       }
 
       function stopJapaneseVoiceLoop() {
-        if (isLine) return;
+        if (isLine) return; // LINEブラウザの場合は音声再生しないので停止も不要
 
         voiceLoopRunning = false;
         try {
@@ -397,9 +463,10 @@
       }
 
       async function playAlarmSound() {
-        if (isLine) return null;
+        if (isLine) return null; // LINEブラウザの場合は音声再生しない
 
         try {
+          // 音声ファイルのURLが正しいことを確認してください
           const audio = new Audio("https://upload.wikimedia.wikimedia.org/wikipedia/commons/b/b2/Sos-morse-code.ogg");
           audio.loop = true;
           audio.volume = 1.0;
@@ -426,7 +493,7 @@
         virusScreen.classList.remove("hidden");
         virusScreen.classList.add("visible");
 
-        // virusScreen の既存の子要素を全てクリア
+        // virusScreen の既存の子要素を全てクリア (これにより、前のノイズ要素などが確実に削除される)
         while (virusScreen.firstChild) {
           virusScreen.removeChild(virusScreen.firstChild);
         }
@@ -448,6 +515,27 @@
         revealMessageElement.innerHTML = "ご安心ください！これは文化祭の面白い仕掛けです。<br>あなたのデータは無事です！";
         virusScreen.appendChild(revealMessageElement);
         
+        // ノイズ効果の div 要素を動的に生成し、#virus-screen の子要素として追加 (CSSで制御)
+        // CSSの noise アニメーションが #virus-screen 自体に適用されているため、
+        // ここで個別のノイズ要素をJavaScriptで生成する必要はなくなりました。
+        // ただし、以前のコードでランダムなノイズ要素を配置していた場合の名残として
+        // もし必要なら以下のようなコードを再導入できますが、
+        // 現状のCSSアニメーションで十分な場合は不要です。
+        /*
+        for (let i = 0; i < 50; i++) { // ノイズの数を減らすなど調整可能
+            const noiseDot = document.createElement('div');
+            noiseDot.style.position = 'absolute';
+            noiseDot.style.width = '1px';
+            noiseDot.style.height = '1px';
+            noiseDot.style.backgroundColor = 'rgba(255, 255, 255, 0.8)'; // 白い点
+            noiseDot.style.top = Math.random() * 100 + '%';
+            noiseDot.style.left = Math.random() * 100 + '%';
+            noiseDot.style.opacity = Math.random();
+            noiseDot.classList.add('noise-dot'); // CSSでさらにアニメーションを適用するため
+            virusScreen.appendChild(noiseDot);
+        }
+        */
+
         if (!isLine) {
             startJapaneseVoiceLoop();
             playAlarmSound().then(audio => { alarmAudio = audio; });
@@ -486,17 +574,22 @@
 
             setTimeout(() => {
               showReliefScreen();
-            }, 2000);
+            }, 2000); // 2秒間種明かしを表示
           }
-        }, 1000);
+        }, 1000); // 1秒ごとにカウントダウン
       }
 
       function showReliefScreen() {
         virusScreen.classList.remove("visible");
         virusScreen.classList.add("hidden");
 
+        // virusScreen の子要素を削除してクリーンアップ
+        while (virusScreen.firstChild) {
+          virusScreen.removeChild(virusScreen.firstChild);
+        }
+
         reliefScreen.classList.remove("hidden");
-        reliefScreen.style.display = "flex";
+        reliefScreen.style.display = "flex"; // flexboxで中央表示
 
         setTimeout(() => {
           reliefScreen.style.display = "none";
@@ -504,7 +597,7 @@
           showMainScreen();
           showShareButtons();
           body.classList.remove('virus-active');
-        }, 3000);
+        }, 3000); // 3秒間「異常は検出されませんでした」を表示
       }
 
       function showMainScreen() {
@@ -522,28 +615,37 @@
           scheduleDiv.innerHTML = "<p>上記ボタンからスケジュールを選択してください。</p>";
           return;
         }
+        // 画像ファイルのパスが正しいことを確認してください。
+        // 例: 'junbi.png', 'day1.png', 'day2.png', 'kataduke.png' がHTMLファイルと同じディレクトリにあることを想定。
         scheduleDiv.innerHTML = `<img src="${day}.png" alt="${day}のスケジュール" />`;
       }
 
+      // 外部ブラウザで開くための共通URL生成関数
       function createExternalBrowserURL(originalUrl) {
         const encodedUrl = encodeURIComponent(originalUrl);
+        // Chromeがインストールされている場合はChromeで開くURLスキームを優先
+        // そうでない場合は通常のHTTPS URLを返す (システムがデフォルトブラウザで開くことを期待)
         return `googlechrome://navigate?url=${encodedUrl}`;
       }
 
+      // X(Twitter)共有
       function shareX() {
         const currentURL = location.href;
         const externalURL = createExternalBrowserURL(currentURL);
         const shareText = encodeURIComponent("文化祭まとめサイトをチェック！");
 
+        // Xの共有URLに外部ブラウザURLを組み込む
         const url = `https://twitter.com/intent/tweet?text=${shareText}%0A${encodeURIComponent(externalURL)}`;
         window.open(url, "_blank", "noopener");
       }
 
+      // LINE共有
       function shareLINE() {
         const currentURL = location.href;
         const externalURL = createExternalBrowserURL(currentURL);
         const shareText = encodeURIComponent("文化祭まとめサイトをチェック！");
 
+        // LINEの共有URLに外部ブラウザURLを組み込む
         const url = `https://line.me/R/msg/text/?${shareText}%0A${encodeURIComponent(externalURL)}`;
         window.open(url, "_blank", "noopener");
       }
@@ -552,7 +654,7 @@
         const visited = localStorage.getItem(localStorageKey);
         if (!visited) {
           fakeSite.classList.remove("hidden");
-          fakeSite.style.display = "flex";
+          fakeSite.style.display = "flex"; // 初期表示
         } else {
           showMainScreen();
           showShareButtons();
