@@ -7,9 +7,9 @@
   <style>
     body {
       margin: 0;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* より現代的なフォント */
-      background: #f4f4f4; /* 明るい背景 */
-      color: #333; /* ダークなテキスト */
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #f4f4f4;
+      color: #333;
       text-align: center;
       min-height: 100vh;
       display: flex;
@@ -18,43 +18,45 @@
       align-items: center;
       user-select: none;
       overflow-y: auto;
-      transition: background-color 0.3s ease-in-out;
+      transition: background-color 0.3s ease-in-out, opacity 0.5s ease-in-out; /* opacityのtransitionを追加 */
+      opacity: 0; /* 最初は非表示 */
+    }
+
+    /* bodyが準備できた時に表示する */
+    body.loaded {
+      opacity: 1;
     }
 
     /* ウイルス画面表示時のbodyスタイル */
     body.virus-active {
-      background-color: #000 !important; /* 強制的に黒背景に */
+      background-color: #000 !important;
       margin: 0 !important;
       padding: 0 !important;
-      overflow: hidden !important; /* スクロールを禁止 */
+      overflow: hidden !important;
+      opacity: 1 !important; /* ウイルス画面中は常に表示 */
     }
 
     .hidden {
       display: none !important;
     }
 
-    /* 初期は非表示だが、display: flex/block で上書きされる */
-    #fake-site, #relief-screen, #main, #virus-screen {
-      /* display: none; */
-    }
-
     #fake-site {
       display: flex;
       flex-direction: column;
       align-items: center;
-      background-color: #fff; /* 白い背景 */
-      padding: 3rem; /* 大きめのパディング */
-      border-radius: 12px; /* 角を丸く */
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* 控えめなシャドウ */
+      background-color: #fff;
+      padding: 3rem;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     }
 
     #fake-site h1 {
-      font-size: 3.5rem; /* 少し大きく */
-      margin-bottom: 2.5rem; /* 少し空ける */
-      text-shadow: 1px 1px 0 #eee, 2px 2px 4px rgba(0, 0, 0, 0.1); /* 控えめなテキストシャドウ */
+      font-size: 3.5rem;
+      margin-bottom: 2.5rem;
+      text-shadow: 1px 1px 0 #eee, 2px 2px 4px rgba(0, 0, 0, 0.1);
       line-height: 1.3;
-      color: #555; /* 少し落ち着いた色 */
-      font-weight: 700; /* 太字 */
+      color: #555;
+      font-weight: 700;
     }
 
     #fake-site h1 span {
@@ -62,28 +64,28 @@
     }
 
     #fake-site h1 span:first-child {
-      font-size: 2.2rem; /* 少し小さく */
-      color: #777; /* さらに落ち着いた色 */
-      font-weight: 500; /* 少し細く */
+      font-size: 2.2rem;
+      color: #777;
+      font-weight: 500;
     }
 
     #fake-site button {
-      background-color: #007bff; /* 青系のボタン */
+      background-color: #007bff;
       border: none;
-      padding: 1.5rem 3.5rem; /* 少し大きく */
-      font-size: 1.8rem; /* 少し大きく */
-      font-weight: 600; /* 少し太く */
-      border-radius: 8px; /* 角を丸く */
+      padding: 1.5rem 3.5rem;
+      font-size: 1.8rem;
+      font-weight: 600;
+      border-radius: 8px;
       color: #fff;
       cursor: pointer;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15); /* 控えめなシャドウ */
-      transition: background-color 0.2s ease-in-out, transform 0.1s ease-in-out; /* ホバーエフェクト */
-      margin-top: 1.5rem; /* 少し空ける */
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+      transition: background-color 0.2s ease-in-out, transform 0.1s ease-in-out;
+      margin-top: 1.5rem;
     }
 
     #fake-site button:hover {
-      background-color: #0056b3; /* ホバー時の色 */
-      transform: translateY(-2px); /* 少し持ち上げる */
+      background-color: #0056b3;
+      transform: translateY(-2px);
     }
 
     #virus-screen {
@@ -92,25 +94,24 @@
       left: 0;
       right: 0;
       bottom: 0;
-      width: 100vw; /* 確実にビューポートの幅に合わせる */
-      height: 100vh; /* 確実にビューポートの高さに合わせる */
-      background-color: #000; /* より深い黒 */
-      color: #ff3300; /* より強調された赤 */
+      width: 100vw;
+      height: 100vh;
+      background-color: #000;
+      color: #ff3300;
       z-index: 999999;
-      font-family: 'Courier New', Courier, monospace; /* より機械的なフォント */
-      font-size: 1.2rem; /* 少し大きく */
-      overflow: hidden; /* 横スクロール禁止を徹底 */
+      font-family: 'Courier New', Courier, monospace;
+      font-size: 1.2rem;
+      overflow: hidden;
       text-align: center;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
       box-sizing: border-box;
-      pointer-events: none; /* 下の要素をクリックできるように */
-      animation: noise 0.1s infinite, flicker 0.2s infinite alternate; /* flickerアニメーションを追加 */
+      pointer-events: none;
+      animation: noise 0.1s infinite, flicker 0.2s infinite alternate;
     }
 
-    /* ノイズ効果のための ::before 要素は、背景のパターンとして機能 */
     #virus-screen::before {
       content: '';
       position: absolute;
@@ -118,10 +119,10 @@
       left: 0;
       width: 100%;
       height: 100%;
-      background-color: rgba(255, 0, 0, 0.2); /* 赤のオーバーレイを少し強く */
-      background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAQAAAAECAYAAACp8da+AAAAAXNSR0IArs4c6QAAABJJREFUGFdjYGBgYGBgYGAAAgABAAyW/71mAAAAAElFTkSuQmCC'); /* 細かいパターン */
+      background-color: rgba(255, 0, 0, 0.2);
+      background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAQAAAAECAYAAACp8da+AAAAAXNSR0IArs4c6QAAABJJREFUGFdjYGBgYGBgYGAAAgABAAyW/71mAAAAAElFTkSuQmCC');
       background-size: 2px 2px;
-      opacity: 0.7; /* 少し強く */
+      opacity: 0.7;
       pointer-events: none;
       z-index: -1;
     }
@@ -131,44 +132,41 @@
     }
 
     #virus-screen h2 {
-      font-size: 2.5rem; /* 少し大きく */
-      margin-bottom: 1.5rem; /* 少し詰める */
-      animation: blink-fast 0.3s infinite alternate, glitch 0.5s infinite alternate; /* グリッチアニメーション追加 */
-      width: 90%; /* 少し幅を狭める */
+      font-size: 2.5rem;
+      margin-bottom: 1.5rem;
+      animation: blink-fast 0.3s infinite alternate, glitch 0.5s infinite alternate;
+      width: 90%;
       text-align: center;
       box-sizing: border-box;
-      text-shadow: 0 0 10px #f00, 0 0 20px #f00; /* より強い影 */
+      text-shadow: 0 0 10px #f00, 0 0 20px #f00;
     }
 
-    /* カウントダウン表示のスタイル */
-    #countdown { /* このIDを持つ要素はJSで生成されます */
-      font-size: 6rem; /* さらに大きく */
+    #countdown {
+      font-size: 6rem;
       font-weight: bold;
-      color: #00ff00; /* より鮮やかな緑 */
-      text-shadow: 0 0 5px #00ff00, 0 0 15px #00ff00; /* 強めのシャドウ */
-      margin-bottom: 1rem; /* さらに詰める */
-      width: 90%; /* 少し幅を狭める */
+      color: #00ff00;
+      text-shadow: 0 0 5px #00ff00, 0 0 15px #00ff00;
+      margin-bottom: 1rem;
+      width: 90%;
       text-align: center;
       box-sizing: border-box;
-      animation: glitch 0.3s infinite alternate, scanlines 0.1s infinite; /* グリッチアニメーション追加, scanlinesアニメーションを追加 */
+      animation: glitch 0.3s infinite alternate, scanlines 0.1s infinite;
     }
 
-    /* 種明かしメッセージのスタイル */
-    #reveal-message { /* このIDを持つ要素はJSで生成されます */
-      font-size: 1.3rem; /* 少し小さく */
-      color: #f0f0f0; /* 少し明るいグレー */
-      background-color: rgba(0, 0, 0, 0.8); /* より暗く */
+    #reveal-message {
+      font-size: 1.3rem;
+      color: #f0f0f0;
+      background-color: rgba(0, 0, 0, 0.8);
       padding: 1rem;
-      border-radius: 5px; /* 少し角を丸く */
+      border-radius: 5px;
       display: none;
-      margin-top: 1.5rem; /* 少し詰める */
-      animation: fade-in 0.5s forwards; /* 少し速く */
-      max-width: 80%; /* さらに幅を狭める */
+      margin-top: 1.5rem;
+      animation: fade-in 0.5s forwards;
+      max-width: 80%;
       box-sizing: border-box;
       text-align: center;
     }
 
-    /* アニメーションの定義 */
     @keyframes fade-in {
       from { opacity: 0; }
       to { opacity: 1; }
@@ -190,7 +188,7 @@
       100% { transform: translate(0); }
     }
 
-    @keyframes noise { /* 画面全体にノイズをかけるアニメーション (CSSで制御するように変更) */
+    @keyframes noise {
       0% { opacity: 0.05; }
       10% { opacity: 0.1; }
       20% { opacity: 0.08; }
@@ -204,23 +202,19 @@
       100% { opacity: 0.04; }
     }
 
-    /* 新しいアニメーション: 画面全体のフリッカー */
     @keyframes flicker {
         0%, 100% { opacity: 1; }
         50% { opacity: 0.8; }
     }
 
-    /* 新しいアニメーション: 走査線効果 */
     @keyframes scanlines {
         0% { background-position: 0 0; }
-        100% { background-position: 0 20px; } /* 20pxは適宜調整 */
+        100% { background-position: 0 20px; }
     }
 
-
-    /* リリーフ画面 */
     #relief-screen {
-      background: linear-gradient(45deg, #e0f7fa, #b2ebf2); /* 水色系のグラデーション */
-      color: #006064; /* 濃いシアン */
+      background: linear-gradient(45deg, #e0f7fa, #b2ebf2);
+      color: #006064;
       height: 100vh;
       width: 100vw;
       position: fixed;
@@ -230,10 +224,10 @@
       justify-content: center;
       align-items: center;
       flex-direction: column;
-      font-size: 1.8rem; /* 少し大きく */
+      font-size: 1.8rem;
       display: none;
       user-select: text;
-      animation: fade-in 0.5s ease-in-out; /* フェードイン */
+      animation: fade-in 0.5s ease-in-out;
       font-weight: 500;
     }
 
@@ -242,76 +236,75 @@
         text-shadow: 1px 1px 2px rgba(255,255,255,0.5);
     }
 
-    /* メインコンテンツ */
     #main {
-      padding: 3rem; /* 大きめのパディング */
-      background: #fff; /* 白い背景 */
+      padding: 3rem;
+      background: #fff;
       min-height: auto;
-      color: #333; /* ダークなテキスト */
+      color: #333;
       user-select: none;
       display: none;
-      border-radius: 12px; /* 角を丸く */
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* 控えめなシャドウ */
-      max-width: 90%; /* 幅を制限 */
-      margin-top: 2rem; /* 少し空ける */
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      max-width: 90%;
+      margin-top: 2rem;
     }
 
     #main.visible {
       display: block;
-      animation: fade-in 0.3s ease-in-out; /* フェードインアニメーション */
+      animation: fade-in 0.3s ease-in-out;
     }
 
     #main h1 {
-      font-size: 3rem; /* 少し大きく */
-      margin-bottom: 2rem; /* 少し空ける */
-      text-shadow: 1px 1px 0 #eee, 2px 2px 4px rgba(0, 0, 0, 0.1); /* 控えめなテキストシャドウ */
-      color: #555; /* 少し落ち着いた色 */
-      font-weight: 700; /* 太字 */
+      font-size: 3rem;
+      margin-bottom: 2rem;
+      text-shadow: 1px 1px 0 #eee, 2px 2px 4px rgba(0, 0, 0, 0.1);
+      color: #555;
+      font-weight: 700;
     }
 
     #main button {
-      padding: 1.2rem 2.5rem; /* 少し大きく */
-      font-size: 1.4rem; /* 少し大きく */
-      margin: 0.8rem; /* 少し調整 */
+      padding: 1.2rem 2.5rem;
+      font-size: 1.4rem;
+      margin: 0.8rem;
       cursor: pointer;
-      background-color: #28a745; /* 緑系のボタン */
+      background-color: #28a745;
       border: none;
-      border-radius: 8px; /* 角を丸く */
+      border-radius: 8px;
       color: #fff;
-      font-weight: 600; /* 少し太く */
-      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1); /* 控えめなシャドウ */
-      transition: background-color 0.2s ease-in-out, transform 0.1s ease-in-out; /* ホバーエフェクト */
+      font-weight: 600;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+      transition: background-color 0.2s ease-in-out, transform 0.1s ease-in-out;
     }
 
     #main button:hover {
-      background-color: #1e7e34; /* ホバー時の色 */
-      transform: translateY(-1px); /* 少し持ち上げる */
+      background-color: #1e7e34;
+      transform: translateY(-1px);
     }
 
     #repeat-virus-btn {
-      background-color: #dc3545; /* 赤系のボタン */
-      margin-bottom: 1.5rem; /* 少し空ける */
-      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1); /* 控えめなシャドウ */
+      background-color: #dc3545;
+      margin-bottom: 1.5rem;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
     }
 
     #repeat-virus-btn:hover {
-      background-color: #c82333; /* ホバー時の色 */
+      background-color: #c82333;
     }
 
     #schedule img {
-      max-width: 95%; /* 少し広げる */
-      max-height: 70vh; /* 少し高く */
-      border: 2px solid #ddd; /* 薄いボーダー */
-      border-radius: 8px; /* 角を丸く */
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* 控えめなシャドウ */
-      margin-top: 1.5rem; /* 少し空ける */
+      max-width: 95%;
+      max-height: 70vh;
+      border: 2px solid #ddd;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      margin-top: 1.5rem;
     }
 
     #share-buttons {
-      margin-top: 2.5rem; /* 少し空ける */
+      margin-top: 2.5rem;
       display: none;
       justify-content: center;
-      gap: 1.5rem; /* 少し広げる */
+      gap: 1.5rem;
     }
 
     #share-buttons.visible {
@@ -320,21 +313,21 @@
 
     .share-btn {
       cursor: pointer;
-      padding: 1rem 2rem; /* 少し大きく */
-      border-radius: 10px; /* 角を丸く */
-      font-weight: 600; /* 少し太く */
-      font-size: 1.2rem; /* 少し大きく */
+      padding: 1rem 2rem;
+      border-radius: 10px;
+      font-weight: 600;
+      font-size: 1.2rem;
       color: white;
-      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1); /* 控えめなシャドウ */
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
       display: flex;
       align-items: center;
-      gap: 0.8rem; /* 少し広げる */
+      gap: 0.8rem;
       user-select: none;
-      transition: transform 0.1s ease-in-out; /* ホバーエフェクト */
+      transition: transform 0.1s ease-in-out;
     }
 
     .share-btn:hover {
-      transform: translateY(-1px); /* 少し持ち上げる */
+      transform: translateY(-1px);
     }
 
     .share-x {
@@ -354,7 +347,7 @@
     }
 
     .share-icon {
-      font-size: 1.4rem; /* 少し大きく */
+      font-size: 1.4rem;
     }
   </style>
 </head>
@@ -414,7 +407,6 @@
       let countdownIntervalId = null;
       let isLine = false;
 
-      // 新しく生成される要素への参照（グローバルスコープで保持）
       let virusTitle = null;
       let countdownElement = null;
       let revealMessageElement = null;
@@ -434,7 +426,7 @@
       }
 
       function startJapaneseVoiceLoop() {
-        if (isLine) return; // LINEブラウザの場合は音声再生しない
+        if (isLine) return;
 
         if (voiceLoopRunning) return;
         voiceLoopRunning = true;
@@ -457,7 +449,7 @@
         };
 
         try {
-          synth.cancel(); // 既存の音声を停止
+          synth.cancel();
           synth.speak(utterance);
         } catch (e) {
           console.error("Failed to speak utterance:", e);
@@ -466,7 +458,7 @@
       }
 
       function stopJapaneseVoiceLoop() {
-        if (isLine) return; // LINEブラウザの場合は音声再生しないので停止も不要
+        if (isLine) return;
 
         voiceLoopRunning = false;
         try {
@@ -477,10 +469,9 @@
       }
 
       async function playAlarmSound() {
-        if (isLine) return null; // LINEブラウザの場合は音声再生しない
+        if (isLine) return null;
 
         try {
-          // 音声ファイルのURLが正しいことを確認してください
           const audio = new Audio("https://upload.wikimedia.wikimedia.org/wikipedia/commons/b/b2/Sos-morse-code.ogg");
           audio.loop = true;
           audio.volume = 1.0;
@@ -496,6 +487,7 @@
         isLine = isLineBrowser();
 
         body.classList.add('virus-active');
+        body.classList.remove('loaded'); // ウイルス画面中はフェードアウトしないようにloadedを削除
         requestFullscreen();
 
         fakeSite.classList.add("hidden");
@@ -503,26 +495,21 @@
         mainScreen.classList.remove("visible");
         mainScreen.classList.add("hidden");
         
-        // ウイルス画面を表示
         virusScreen.classList.remove("hidden");
         virusScreen.classList.add("visible");
 
-        // virusScreen の既存の子要素を全てクリア (これにより、前のノイズ要素などが確実に削除される)
         while (virusScreen.firstChild) {
           virusScreen.removeChild(virusScreen.firstChild);
         }
 
-        // <h2>要素を作成し追加
         virusTitle = document.createElement("h2");
-        virusTitle.textContent = "⚠ ウイルスに感染しました"; // ここでテキストをセット
+        virusTitle.textContent = "⚠ ウイルスに感染しました";
         virusScreen.appendChild(virusTitle);
 
-        // カウントダウン要素を作成し追加
         countdownElement = document.createElement("div");
         countdownElement.id = "countdown";
         virusScreen.appendChild(countdownElement);
 
-        // 種明かしメッセージ要素を作成し追加
         revealMessageElement = document.createElement("div");
         revealMessageElement.id = "reveal-message";
         revealMessageElement.classList.add("hidden");
@@ -567,22 +554,21 @@
 
             setTimeout(() => {
               showReliefScreen();
-            }, 2000); // 2秒間種明かしを表示
+            }, 2000);
           }
-        }, 1000); // 1秒ごとにカウントダウン
+        }, 1000);
       }
 
       function showReliefScreen() {
         virusScreen.classList.remove("visible");
         virusScreen.classList.add("hidden");
 
-        // virusScreen の子要素を削除してクリーンアップ
         while (virusScreen.firstChild) {
           virusScreen.removeChild(virusScreen.firstChild);
         }
 
         reliefScreen.classList.remove("hidden");
-        reliefScreen.style.display = "flex"; // flexboxで中央表示
+        reliefScreen.style.display = "flex";
 
         setTimeout(() => {
           reliefScreen.style.display = "none";
@@ -590,7 +576,8 @@
           showMainScreen();
           showShareButtons();
           body.classList.remove('virus-active');
-        }, 3000); // 3秒間「異常は検出されませんでした」を表示
+          body.classList.add('loaded'); // メイン画面表示時にフェードイン
+        }, 3000);
       }
 
       function showMainScreen() {
@@ -608,37 +595,28 @@
           scheduleDiv.innerHTML = "<p>上記ボタンからスケジュールを選択してください。</p>";
           return;
         }
-        // 画像ファイルのパスが正しいことを確認してください。
-        // 例: 'junbi.png', 'day1.png', 'day2.png', 'kataduke.png' がHTMLファイルと同じディレクトリにあることを想定。
         scheduleDiv.innerHTML = `<img src="${day}.png" alt="${day}のスケジュール" />`;
       }
 
-      // 外部ブラウザで開くための共通URL生成関数
       function createExternalBrowserURL(originalUrl) {
         const encodedUrl = encodeURIComponent(originalUrl);
-        // Chromeがインストールされている場合はChromeで開くURLスキームを優先
-        // そうでない場合は通常のHTTPS URLを返す (システムがデフォルトブラウザで開くことを期待)
         return `googlechrome://navigate?url=${encodedUrl}`;
       }
 
-      // X(Twitter)共有
       function shareX() {
         const currentURL = location.href;
         const externalURL = createExternalBrowserURL(currentURL);
         const shareText = encodeURIComponent("文化祭まとめサイトをチェック！");
 
-        // Xの共有URLに外部ブラウザURLを組み込む
         const url = `https://twitter.com/intent/tweet?text=${shareText}%0A${encodeURIComponent(externalURL)}`;
         window.open(url, "_blank", "noopener");
       }
 
-      // LINE共有
       function shareLINE() {
         const currentURL = location.href;
         const externalURL = createExternalBrowserURL(currentURL);
         const shareText = encodeURIComponent("文化祭まとめサイトをチェック！");
 
-        // LINEの共有URLに外部ブラウザURLを組み込む
         const url = `https://line.me/R/msg/text/?${shareText}%0A${encodeURIComponent(externalURL)}`;
         window.open(url, "_blank", "noopener");
       }
@@ -647,11 +625,12 @@
         const visited = localStorage.getItem(localStorageKey);
         if (!visited) {
           fakeSite.classList.remove("hidden");
-          fakeSite.style.display = "flex"; // 初期表示
+          fakeSite.style.display = "flex";
         } else {
           showMainScreen();
           showShareButtons();
         }
+        body.classList.add('loaded'); // ページロード完了後、bodyをフェードイン
       });
 
       startBtn.addEventListener("click", () => {
