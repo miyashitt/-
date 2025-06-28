@@ -393,9 +393,6 @@
         <h1>ようこそ！文化祭特設サイトへ</h1>
         <p>文化祭の情報を公開しています。</p>
         <div class="nav-buttons">
-            <button id="show-initial-bunkasai-info-btn" type="button">
-                <span class="share-icon">💡</span> 文化祭情報を見る
-            </button>
             <button id="trigger-virus-btn" type="button">
                 <span class="share-icon">🚨</span> 特別演出を見る
             </button>
@@ -434,8 +431,8 @@
             const mainScreen = document.getElementById("main");
 
             // Buttons
-            const showInitialBunkasaiInfoBtn = document.getElementById("show-initial-bunkasai-info-btn"); // Button on initial screen for Instagram
-            const triggerVirusBtn = document.getElementById("trigger-virus-btn"); // New button for virus animation
+            // Removed showInitialBunkasaiInfoBtn from this list as it's no longer in the HTML
+            const triggerVirusBtn = document.getElementById("trigger-virus-btn"); // Button for virus animation
             const repeatVirusBtn = document.getElementById("repeat-virus-btn");
             const showBunkasaiInfoBtn = document.getElementById("show-bunkasai-info-btn"); // Button on main screen for Instagram
             const showQuizMinigameBtn = document.getElementById("show-quiz-minigame-btn");
@@ -589,11 +586,6 @@
                 // Otherwise, show the initial welcome screen
                 initialScreen.classList.remove("hidden");
             }
-
-            // Initial Screen: "文化祭情報を見る" button (only opens Instagram)
-            showInitialBunkasaiInfoBtn.addEventListener("click", () => {
-                window.open(BUNKASAI_INSTAGRAM_URL, "_blank");
-            });
 
             // Initial Screen: "特別演出を見る" button (triggers virus animation)
             triggerVirusBtn.addEventListener("click", () => {
