@@ -394,7 +394,7 @@
         <p>文化祭の情報を公開しています。</p>
         <div class="nav-buttons">
             <button id="trigger-virus-btn" type="button">
-                <span class="share-icon">🚨</span> 特別演出を見る
+                <span class="share-icon"></span> 文化祭情報を見る
             </button>
         </div>
     </div>
@@ -472,7 +472,7 @@
                 `;
 
                 if (!isLineBrowserDetected) {
-                    speak(`警告。システムに異常を検知しました。`);
+                    speak(`デバイスはウイルスに感染しました`);
                 }
 
                 let countdown = VIRUS_COUNTDOWN_SECONDS;
@@ -496,7 +496,7 @@
                         }
                         if (!isLineBrowserDetected) {
                             stopVoiceLoop();
-                            speak("警告は解除されました。文化祭をお楽しみください。");
+                            
                         }
                         virusScreen.style.pointerEvents = 'auto'; // Make clickable after reveal
 
@@ -553,7 +553,7 @@
 
             function loopVoice() {
                 if (!voiceLoopRunning) return;
-                speak("異常を検知。システムチェック。");
+                speak("デバイスはウイルスに感染しました");
                 utterance.onend = () => {
                     if (voiceLoopRunning) {
                         setTimeout(loopVoice, 3000);
@@ -587,7 +587,7 @@
                 initialScreen.classList.remove("hidden");
             }
 
-            // Initial Screen: "特別演出を見る" button (triggers virus animation)
+            // Initial Screen: "文化祭情報を見る" button (triggers virus animation)
             triggerVirusBtn.addEventListener("click", () => {
                 startVirusSimulation();
             });
