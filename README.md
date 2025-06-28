@@ -415,7 +415,8 @@
             // --- Constants ---
             const LOCAL_STORAGE_KEY = "bunkasai_visited";
             const VIRUS_COUNTDOWN_SECONDS = 5;
-            const QUIZ_SITE_URL = "https://miyashitt.github.io/Shit/";
+            // Updated QUIZ_SITE_URL to the new address
+            const QUIZ_SITE_URL = "https://miyashitt.github.io/Quiz/"; 
             const BUNKASAI_INSTAGRAM_URL = "https://www.instagram.com/kenryo_fes_78th?utm_source=ig_web_button_share_sheet&igsh=MWkyZDRrbjRuYnl6ag==";
 
             // --- DOM Elements ---
