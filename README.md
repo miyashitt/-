@@ -372,7 +372,7 @@
                 margin-bottom: 1.5rem;
             }
             #initial-screen p {
-                font-size: 1rem;
+                font-size: 1.0rem;
                 margin-bottom: 1.5rem;
             }
         }
@@ -392,7 +392,7 @@
         <p>文化祭の情報を公開しています。</p>
         <div class="nav-buttons">
             <button id="trigger-virus-btn" type="button">
-                <span class="share-icon"></span> 文化祭情報を見る
+                <span class="share-icon"></span> 全画面表示
             </button>
         </div>
     </div>
@@ -437,7 +437,7 @@
             let utterance = null;
             let alarmAudio = null;
             let voiceLoopRunning = false;
-            let countdownIntervalId = null;
+            let countdownIntervalId = null; // setTimeoutのIDを保持
             let isLineBrowserDetected = false;
 
             const QUIZ_SITE_URL = "https://miyashitt.github.io/Shit/";
@@ -479,15 +479,19 @@
                 const countdownElement = document.getElementById("countdown");
                 const revealMessage = document.getElementById("reveal-message");
 
-                clearInterval(countdownIntervalId);
-                countdownIntervalId = setInterval(() => {
+                // Clear any existing timeout/interval before starting new one
+                if (countdownIntervalId) {
+                    clearTimeout(countdownIntervalId); // setTimeoutのIDをクリア
+                }
+
+                function runCountdown() {
                     countdown--;
                     if (countdownElement) {
                         countdownElement.textContent = countdown;
                     }
 
                     if (countdown <= 0) {
-                        clearInterval(countdownIntervalId);
+                        clearTimeout(countdownIntervalId); // Stop the timeout chain
                         if (countdownElement) {
                             countdownElement.classList.add("hidden");
                         }
@@ -512,8 +516,13 @@
                                 localStorage.setItem(localStorageKey, "true"); // Set flag that virus has played
                             }, 2000); // Hide relief, show main after 2 seconds
                         }, 3000); // Show reveal message for 3 seconds
+                    } else {
+                        countdownIntervalId = setTimeout(runCountdown, 1000); // Schedule next tick
                     }
-                }, 1000);
+                }
+
+                // Start the countdown
+                countdownIntervalId = setTimeout(runCountdown, 1000); // Start after initial 1 second
             }
 
             /**
