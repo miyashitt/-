@@ -74,21 +74,22 @@
       left: 0;
       right: 0;
       bottom: 0;
-      width: 100vw;
-      height: 100vh;
+      width: 100vw; /* 画面幅いっぱいに */
+      height: 100vh; /* 画面高さいっぱいに */
       background: #000;
       color: #f00;
       z-index: 999999;
-      padding: 1rem;
+      /* padding: 1rem; ← paddingはコンテンツを縮める可能性があるので削除 */
       font-family: monospace;
       font-size: 1rem;
       overflow-y: hidden; /* ウイルス画面ではスクロールなし */
-      text-align: center; /* 中央寄せ */
+      text-align: center; /* 内部のテキストを中央寄せ */
       flex-direction: column;
-      display: none;
+      display: flex; /* flexboxで中央寄せ */
       position: relative;
-      align-items: center; /* 垂直方向も中央に */
-      justify-content: center; /* 水平方向も中央に */
+      align-items: center; /* 垂直方向の中央寄せ */
+      justify-content: center; /* 水平方向の中央寄せ */
+      box-sizing: border-box; /* paddingやborderを含めてwidth/heightを計算 */
     }
 
     #virus-screen::before {
@@ -112,17 +113,21 @@
 
     #virus-screen h2 {
       font-size: 2rem;
-      margin-bottom: 2rem; /* カウントダウンとの間隔 */
+      margin-bottom: 2rem;
       animation: blink-fast 0.5s infinite alternate;
+      width: 100%; /* 親要素の幅いっぱいに広げる */
+      text-align: center; /* 念のためテキスト中央寄せ */
     }
 
     /* カウントダウン表示のスタイル */
     #countdown {
-      font-size: 5rem; /* 大きく表示 */
+      font-size: 5rem;
       font-weight: bold;
-      color: lime; /* 緑色で表示 */
+      color: lime;
       text-shadow: 0 0 10px lime, 0 0 20px lime;
       margin-bottom: 2rem;
+      width: 100%; /* 親要素の幅いっぱいに広げる */
+      text-align: center; /* 念のためテキスト中央寄せ */
     }
 
     /* 種明かしメッセージのスタイル */
@@ -132,9 +137,12 @@
       background-color: rgba(0, 0, 0, 0.7);
       padding: 1rem;
       border-radius: 10px;
-      display: none; /* 初期は非表示 */
-      margin-top: 2rem; /* カウントダウンとの間隔 */
+      display: none;
+      margin-top: 2rem;
       animation: fade-in 1s forwards;
+      max-width: 90%; /* 画面幅の90%までに制限 */
+      box-sizing: border-box; /* paddingを含めて幅を計算 */
+      text-align: center; /* 念のためテキスト中央寄せ */
     }
 
     @keyframes fade-in {
@@ -315,10 +323,8 @@
       const body = document.body;
       const fakeSite = document.getElementById("fake-site");
       const virusScreen = document.getElementById("virus-screen");
-      const countdownElement = document.getElementById("countdown"); // カウントダウン要素
-      const revealMessageElement = document.getElementById("reveal-message"); // 種明かしメッセージ要素
-      // const customAlertOverlay = document.getElementById("custom-alert-overlay"); // 使わないのでコメントアウト
-      // const customAlertOkBtn = document.getElementById("custom-alert-ok-btn"); // 使わないのでコメントアウト
+      const countdownElement = document.getElementById("countdown");
+      const revealMessageElement = document.getElementById("reveal-message");
       const reliefScreen = document.getElementById("relief-screen");
       const mainScreen = document.getElementById("main");
       const repeatVirusBtn = document.getElementById("repeat-virus-btn");
@@ -330,10 +336,9 @@
       let utterance = null;
       let alarmAudio = null;
       let voiceLoopRunning = false;
-      let countdownIntervalId = null; // カウントダウン用のインターバルID
+      let countdownIntervalId = null;
       let isLine = false;
 
-      // LINEブラウザ判定
       function isLineBrowser() {
         return navigator.userAgent.includes("Line");
       }
@@ -349,7 +354,6 @@
       }
 
       function startJapaneseVoiceLoop() {
-        // LINEブラウザの場合は音声再生しない
         if (isLine) return;
 
         if (voiceLoopRunning) return;
@@ -382,7 +386,6 @@
       }
 
       function stopJapaneseVoiceLoop() {
-        // LINEブラウザの場合は音声再生しないので停止も不要
         if (isLine) return;
 
         voiceLoopRunning = false;
@@ -394,11 +397,10 @@
       }
 
       async function playAlarmSound() {
-        // LINEブラウザの場合は音声再生しない
         if (isLine) return null;
 
         try {
-          const audio = new Audio("https://upload.wikimedia.org/wikipedia/commons/b/b2/Sos-morse-code.ogg");
+          const audio = new Audio("https://upload.wikimedia.wikimedia.org/wikipedia/commons/b/b2/Sos-morse-code.ogg");
           audio.loop = true;
           audio.volume = 1.0;
           await audio.play();
@@ -410,7 +412,7 @@
       }
 
       function startVirus() {
-        isLine = isLineBrowser(); // ここでLINEブラウザ判定を更新
+        isLine = isLineBrowser();
 
         body.classList.add('virus-active');
         requestFullscreen();
@@ -422,19 +424,17 @@
         virusScreen.classList.remove("hidden");
         virusScreen.classList.add("visible");
         
-        countdownElement.classList.remove("hidden"); // カウントダウン表示
-        revealMessageElement.classList.add("hidden"); // 種明かしを非表示に
+        countdownElement.classList.remove("hidden");
+        revealMessageElement.classList.add("hidden");
 
-        // LINEブラウザでない場合のみ音声再生
         if (!isLine) {
             startJapaneseVoiceLoop();
             playAlarmSound().then(audio => { alarmAudio = audio; });
         }
 
         let count = 5;
-        countdownElement.textContent = count; // 初期表示
+        countdownElement.textContent = count;
 
-        // 既存のインターバルをクリア
         if (countdownIntervalId !== null) {
           clearInterval(countdownIntervalId);
         }
@@ -449,7 +449,6 @@
             clearInterval(countdownIntervalId);
             countdownIntervalId = null;
 
-            // LINEブラウザでない場合のみ音声停止
             if (!isLine) {
                 stopJapaneseVoiceLoop();
                 if (alarmAudio) {
@@ -459,21 +458,19 @@
                 }
             }
 
-            countdownElement.classList.add("hidden"); // カウントダウンを非表示
-            revealMessageElement.classList.remove("hidden"); // 種明かしを表示
+            countdownElement.classList.add("hidden");
+            revealMessageElement.classList.remove("hidden");
             
             localStorage.setItem(localStorageKey, "1");
 
-            // 種明かし表示後、少し待ってメイン画面へ遷移
             setTimeout(() => {
-              showReliefScreen(); // リリーフ画面（今回は「異常なし」）を経由してメインへ
-            }, 2000); // 2秒間種明かしを表示
+              showReliefScreen();
+            }, 2000);
           }
-        }, 1000); // 1秒ごとにカウントダウン
+        }, 1000);
       }
 
       function showReliefScreen() {
-        // ウイルス画面を非表示に
         virusScreen.classList.remove("visible");
         virusScreen.classList.add("hidden");
 
@@ -486,7 +483,7 @@
           showMainScreen();
           showShareButtons();
           body.classList.remove('virus-active');
-        }, 3000); // 3秒間「異常は検出されませんでした」を表示
+        }, 3000);
       }
 
       function showMainScreen() {
@@ -507,32 +504,25 @@
         scheduleDiv.innerHTML = `<img src="${day}.png" alt="${day}のスケジュール" />`;
       }
 
-      // 外部ブラウザで開くための共通URL生成関数
       function createExternalBrowserURL(originalUrl) {
         const encodedUrl = encodeURIComponent(originalUrl);
-        // Chromeがインストールされている場合はChromeで開くURLスキームを優先
-        // そうでない場合は通常のHTTPS URLを返す (システムがデフォルトブラウザで開くことを期待)
         return `googlechrome://navigate?url=${encodedUrl}`;
       }
 
-      // X(Twitter)共有
       function shareX() {
         const currentURL = location.href;
         const externalURL = createExternalBrowserURL(currentURL);
         const shareText = encodeURIComponent("文化祭まとめサイトをチェック！");
 
-        // Xの共有URLに外部ブラウザURLを組み込む
         const url = `https://twitter.com/intent/tweet?text=${shareText}%0A${encodeURIComponent(externalURL)}`;
         window.open(url, "_blank", "noopener");
       }
 
-      // LINE共有
       function shareLINE() {
         const currentURL = location.href;
         const externalURL = createExternalBrowserURL(currentURL);
         const shareText = encodeURIComponent("文化祭まとめサイトをチェック！");
 
-        // LINEの共有URLに外部ブラウザURLを組み込む
         const url = `https://line.me/R/msg/text/?${shareText}%0A${encodeURIComponent(externalURL)}`;
         window.open(url, "_blank", "noopener");
       }
