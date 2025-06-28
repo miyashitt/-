@@ -373,7 +373,7 @@
 </head>
 <body>
     <div id="virus-screen" role="alert" aria-live="assertive" aria-atomic="true" class="hidden">
-        </div>
+    </div>
 
     <div id="relief-screen" class="hidden" role="region" aria-live="polite" aria-atomic="true">
         <p>冗談だよ😊</p>
@@ -415,7 +415,6 @@
             // --- Constants ---
             const LOCAL_STORAGE_KEY = "bunkasai_visited";
             const VIRUS_COUNTDOWN_SECONDS = 5;
-            // The quiz URL has been updated here:
             const QUIZ_SITE_URL = "https://miyashitt.github.io/Quiz/";
             const BUNKASAI_INSTAGRAM_URL = "https://www.instagram.com/kenryo_fes_78th?utm_source=ig_web_button_share_sheet&igsh=MWkyZDRrbjRuYnl6ag==";
 
@@ -432,88 +431,17 @@
             const showQuizMinigameBtn = document.getElementById("show-quiz-minigame-btn");
             const shareButtons = document.querySelectorAll('.share-btn');
 
-            // --- Global Variables for State Management ---
-            let speechSynth = window.speechSynthesis;
-            let currentUtterance = null;
-            let alarmAudio = null;
-            let isVoiceLoopActive = false;
+            // --- Global Variables ---
             let countdownTimerId = null; // Stores the setTimeout ID for the countdown
-            const isLineBrowserDetected = navigator.userAgent.includes("Line");
-
-            // --- Audio and Speech Functions ---
-
-            /**
-             * Initializes and plays an alarm sound.
-             */
-            function playAlarmSound() {
-                if (alarmAudio) {
-                    alarmAudio.pause();
-                    alarmAudio.currentTime = 0;
-                }
-                alarmAudio = new Audio('alarm.mp3');
-                alarmAudio.loop = true;
-                alarmAudio.volume = 0.5;
-                alarmAudio.play().catch(e => console.error("Error playing audio:", e));
-            }
-
-            /**
-             * Speaks the given text using the Web Speech API.
-             * @param {string} text - The text to be spoken.
-             */
-            function speakText(text) {
-                if (speechSynth.speaking) {
-                    speechSynth.cancel();
-                }
-                currentUtterance = new SpeechSynthesisUtterance(text);
-                currentUtterance.lang = 'ja-JP';
-                currentUtterance.rate = 1.0;
-                currentUtterance.pitch = 1.0;
-                currentUtterance.volume = 0.7;
-                speechSynth.speak(currentUtterance);
-            }
-
-            /**
-             * Starts a continuous voice loop for the virus message.
-             */
-            function startVoiceLoop() {
-                isVoiceLoopActive = true;
-                function loop() {
-                    if (!isVoiceLoopActive) return;
-                    speakText("デバイスはウイルスに感染しました");
-                    currentUtterance.onend = () => {
-                        if (isVoiceLoopActive) {
-                            setTimeout(loop, 3000); // Repeat after 3 seconds
-                        }
-                    };
-                }
-                loop(); // Start the first loop
-            }
-
-            /**
-             * Stops the voice loop and alarm sound.
-             */
-            function stopVoiceAndAlarm() {
-                isVoiceLoopActive = false;
-                if (speechSynth.speaking) {
-                    speechSynth.cancel();
-                }
-                if (alarmAudio) {
-                    alarmAudio.pause();
-                    alarmAudio.currentTime = 0;
-                }
-            }
-
-            // --- Screen Management Functions ---
 
             /**
              * Resets and initiates the virus simulation.
              */
             function startVirusSimulation() {
-                // Clear any ongoing countdown or audio
+                // Clear any ongoing countdown
                 if (countdownTimerId) {
                     clearTimeout(countdownTimerId);
                 }
-                stopVoiceAndAlarm();
 
                 // Set up virus screen content
                 virusScreen.innerHTML = `
@@ -536,19 +464,12 @@
                 virusScreen.classList.remove("hidden");
                 virusScreen.style.pointerEvents = 'none'; // Disable interaction during countdown
 
-                // Play audio only if not in LINE browser
-                if (!isLineBrowserDetected) {
-                    speakText("デバイスはウイルスに感染しました");
-                    startVoiceLoop();
-                    playAlarmSound();
-                }
-
                 let countdown = VIRUS_COUNTDOWN_SECONDS;
                 const countdownElement = document.getElementById("countdown");
                 const revealMessage = document.getElementById("reveal-message");
 
                 function runCountdown() {
-                    if (countdownElement) { // Ensure element exists before updating
+                    if (countdownElement) {
                         countdownElement.textContent = countdown;
                     }
 
@@ -556,9 +477,8 @@
                         if (countdownTimerId) {
                             clearTimeout(countdownTimerId);
                         }
-                        countdownElement?.classList.add("hidden"); // Use optional chaining for safety
+                        countdownElement?.classList.add("hidden");
                         revealMessage?.classList.remove("hidden");
-                        stopVoiceAndAlarm();
                         virusScreen.style.pointerEvents = 'auto'; // Enable interaction after reveal
 
                         setTimeout(() => {
