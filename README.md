@@ -59,62 +59,7 @@
       display: none !important;
     }
 
-    #fake-site {
-      display: none; /* 初期はJSで制御 */
-      flex-direction: column;
-      align-items: center;
-      background-color: var(--card-background);
-      padding: 4rem; /* Increased padding */
-      border-radius: 16px; /* Slightly larger border-radius */
-      box-shadow: 0 10px 30px var(--shadow-medium); /* Deeper shadow */
-      max-width: 90%;
-      box-sizing: border-box;
-      animation: fadeInScale 0.8s ease-out forwards;
-    }
-
-    @keyframes fadeInScale {
-      from { opacity: 0; transform: scale(0.9); }
-      to { opacity: 1; transform: scale(1); }
-    }
-
-    #fake-site h1 {
-      font-size: 3.8rem; /* Larger font size */
-      margin-bottom: 2.8rem;
-      color: #444;
-      font-weight: 700;
-      letter-spacing: -1px;
-      text-shadow: 2px 2px 5px var(--shadow-light);
-    }
-
-    #fake-site h1 span:first-child {
-      font-size: 2.5rem; /* Larger sub-heading */
-      color: #666;
-      font-weight: 500;
-      margin-bottom: 0.5rem;
-    }
-
-    #fake-site button {
-      background-color: var(--primary-color);
-      border: none;
-      padding: 1.8rem 4rem; /* Larger padding for button */
-      font-size: 2rem; /* Larger font size for button */
-      font-weight: 600;
-      border-radius: 10px; /* Slightly more rounded */
-      color: var(--text-light);
-      cursor: pointer;
-      box-shadow: 0 6px 12px var(--shadow-medium); /* Enhanced shadow */
-      transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
-      margin-top: 2rem;
-      letter-spacing: 0.5px;
-    }
-
-    #fake-site button:hover {
-      background-color: var(--primary-hover-color);
-      transform: translateY(-3px) scale(1.02); /* More pronounced hover */
-      box-shadow: 0 8px 16px var(--shadow-medium);
-    }
-
-    /* Virus Screen styles */
+    /* ウイルス画面のスタイル（変更なし） */
     #virus-screen {
       position: fixed;
       top: 0;
@@ -267,201 +212,78 @@
         margin: 0.8rem 0; /* More spacing */
     }
 
-    /* Main Content Styles */
+    /* Main Content Styles - ボタンのみにするため調整 */
     #main {
-      padding: 3.5rem; /* More padding */
-      background: var(--card-background);
+      padding: 2.5rem; /* 適度なパディング */
+      background: transparent; /* 背景を透明に */
       min-height: auto;
       color: var(--text-dark);
       user-select: none;
-      display: none;
-      border-radius: 16px; /* Consistent border-radius */
-      box-shadow: 0 10px 30px var(--shadow-medium); /* Consistent shadow */
+      display: none; /* 初期は非表示 */
+      border-radius: 16px;
+      box-shadow: none; /* 影も削除 */
       max-width: 90%;
-      margin-top: 2.5rem; /* More margin */
+      margin-top: 0; /* マージンを削除 */
       box-sizing: border-box;
       animation: fadeInScale 0.8s ease-out forwards;
+      justify-content: center; /* ボタン群を中央に */
+      align-items: center; /* ボタン群を中央に */
+      height: 100vh; /* 画面いっぱいにボタン群を中央配置 */
     }
 
     #main.visible {
-      display: block;
-      animation: fadeInScale 0.8s ease-out forwards;
+      display: flex; /* Flexboxに変更 */
+      flex-direction: column; /* 縦並びにするため */
     }
 
-    #main h1 {
-      font-size: 3.2rem; /* Consistent large heading */
-      margin-bottom: 2.5rem;
-      color: #444;
-      font-weight: 700;
-      letter-spacing: -0.5px;
-      text-shadow: 1px 1px 3px var(--shadow-light);
-    }
-
-    /* Main Navigation Buttons */
+    /* メインナビゲーションボタンのスタイル */
     .main-nav-buttons {
       display: flex;
+      flex-direction: column; /* ボタンを縦並びにする */
       justify-content: center;
-      gap: 1.5rem; /* Increased gap */
-      margin-bottom: 3rem; /* More margin */
-      flex-wrap: wrap;
+      align-items: center; /* ボタン群を中央寄せ */
+      gap: 1.5rem; /* ボタン間の間隔 */
+      width: 100%; /* 親要素の幅いっぱいに */
+      max-width: 400px; /* ボタン群の最大幅 */
     }
 
     .main-nav-buttons button {
-      padding: 1.4rem 3rem; /* Larger button */
-      font-size: 1.6rem; /* Larger font */
-      cursor: pointer;
-      background-color: var(--secondary-color); /* Use secondary color for these buttons */
+      width: 90%; /* スマホで押しやすいように幅を広く */
+      max-width: 300px; /* ボタンの最大幅を制限 */
+      background-color: var(--secondary-color); /* ボタンの色 */
       border: none;
-      border-radius: 10px;
-      color: var(--text-light);
+      padding: 1.4rem 2rem; /* パディング */
+      font-size: 1.6rem; /* フォントサイズ */
       font-weight: 600;
-      box-shadow: 0 4px 10px var(--shadow-light);
+      border-radius: 10px; /* 角丸 */
+      color: var(--text-light); /* 文字色 */
+      cursor: pointer;
+      box-shadow: 0 6px 12px var(--shadow-medium); /* 影 */
       transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
       letter-spacing: 0.5px;
+      display: flex; /* アイコンとテキストを中央揃えにするため */
+      align-items: center;
+      justify-content: center;
+      gap: 0.8rem; /* アイコンとテキストの間のスペース */
+      white-space: nowrap; /* ボタン内のテキストの折り返しを防ぐ */
+      box-sizing: border-box; /* パディングを幅に含める */
     }
 
     .main-nav-buttons button:hover {
       background-color: var(--secondary-hover-color);
-      transform: translateY(-2px) scale(1.01);
-      box-shadow: 0 6px 12px var(--shadow-medium);
+      transform: translateY(-3px) scale(1.02); /* ホバー時の動き */
+      box-shadow: 0 8px 16px var(--shadow-medium);
     }
     
-    /* スケジュール/Instagramフィードのコンテンツスタイル */
-    #schedule-content { /* ID名は schedule-content のままですが、内容が変わっています */
-      background: var(--card-background);
-      padding: 2.5rem; /* More padding */
-      border-radius: 12px; /* Consistent border-radius */
-      box-shadow: 0 4px 15px var(--shadow-light); /* Deeper shadow */
-      margin-top: 2rem;
-      min-height: 350px; /* Slightly larger min-height */
-      display: none;
-      width: 100%;
-      max-width: 800px; /* ある程度の最大幅 */
-      box-sizing: border-box;
-      border: 1px solid var(--border-color); /* Subtle border */
-      flex-direction: column; /* 内容を縦に並べる */
-      align-items: center; /* 中央揃え */
-    }
-
-    #schedule-content.active {
-      display: flex; /* Flexboxに変更 */
-    }
-
-    #schedule-content p {
-        margin-bottom: 1rem; /* パラグラフ間の余白 */
-        line-height: 1.6;
-        font-size: 1.1rem;
-    }
-
-    #instagram-feed-container {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 2rem; /* 間隔を追加 */
-        margin-top: 2rem;
-        width: 100%; /* 親要素の幅いっぱいに */
-    }
-
-    /* Instagram埋め込み投稿のスタイル調整 */
-    .instagram-media {
-        max-width: 100%; /* 親要素に収まるように */
-        width: 320px !important; /* Instagramの埋め込みのデフォルト幅に近づける */
-        min-width: 280px; /* 小さすぎないように */
-        margin: 0 auto !important; /* 中央寄せ */
-        border: 1px solid var(--border-color); /* 枠線を追加 */
-        border-radius: 8px; /* 角を丸く */
-        box-shadow: 0 4px 10px var(--shadow-light); /* 影を追加 */
-        overflow: hidden; /* はみ出しを防ぐ */
-    }
-
-    /* Share Buttons Styles */
-    #share-buttons {
-      margin-top: 3rem; /* More margin */
-      display: none;
-      justify-content: center;
-      gap: 1.8rem; /* Increased gap */
-      flex-wrap: wrap;
-    }
-
-    #share-buttons.visible {
-      display: flex;
-    }
-
-    .share-btn {
-      cursor: pointer;
-      padding: 1.2rem 2.5rem; /* Larger padding */
-      border-radius: 12px; /* More rounded */
-      font-weight: 600;
-      font-size: 1.3rem; /* Larger font */
-      color: var(--text-light);
-      box-shadow: 0 4px 10px var(--shadow-light);
-      display: flex;
-      align-items: center;
-      gap: 1rem; /* More space for icon */
-      user-select: none;
-      transition: transform 0.1s ease-in-out, box-shadow 0.2s ease;
-    }
-
-    .share-btn:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 6px 12px var(--shadow-medium);
-    }
-
-    .share-x {
-      background-color: #1a8cd8; /* Official X blue */
-    }
-
-    .share-x:hover {
-      background-color: #167ac7;
-    }
-
-    .share-line {
-      background-color: #00c300;
-    }
-
-    .share-line:hover {
-      background-color: #00a000;
-    }
-
     .share-icon {
-      font-size: 1.6rem; /* Larger icon */
+      font-size: 1.6rem; /* アイコンサイズ */
     }
 
-    /* Responsive Design */
+    /* レスポンシブデザイン */
     @media (max-width: 768px) {
-        #fake-site {
-            padding: 2.5rem;
-        }
-        #fake-site h1 {
-            font-size: 3rem;
-            margin-bottom: 2rem;
-        }
-        #fake-site h1 span:first-child {
-            font-size: 2rem;
-        }
-        #fake-site button {
-            padding: 1.2rem 2.5rem;
-            font-size: 1.6rem;
-        }
-        #main {
-            padding: 2rem;
-            margin-top: 1.5rem;
-        }
-        #main h1 {
-            font-size: 2.5rem;
-            margin-bottom: 2rem;
-        }
         .main-nav-buttons button {
-            padding: 1rem 2rem;
+            padding: 1.2rem 1.8rem;
             font-size: 1.4rem;
-        }
-        #schedule-content {
-            padding: 1.8rem;
-        }
-        .share-btn {
-            padding: 1rem 1.8rem;
-            font-size: 1.2rem;
-            gap: 0.8rem;
         }
         .share-icon {
             font-size: 1.4rem;
@@ -479,74 +301,33 @@
     }
 
     @media (max-width: 480px) {
-      #fake-site {
-          padding: 1.5rem;
-          margin: 1rem;
-      }
-      #fake-site h1 {
-          font-size: 2.2rem;
-          margin-bottom: 1.2rem;
-      }
-      #fake-site h1 span:first-child {
-          font-size: 1.6rem;
-      }
-      #fake-site button {
-          padding: 0.9rem 1.8rem;
-          font-size: 1.3rem;
-          margin-top: 1rem;
-      }
-      #main {
-          padding: 1.5rem;
-          margin-top: 1rem;
-      }
-      #main h1 {
-          font-size: 2rem;
-          margin-bottom: 1.5rem;
-      }
-      .main-nav-buttons {
-          flex-direction: column; /* Stack buttons vertically */
-          gap: 0.8rem;
-      }
-      .main-nav-buttons button {
-          width: 90%; /* Full width */
-          max-width: 300px;
-          padding: 0.8rem 1.5rem;
-          font-size: 1.2rem;
-      }
-      #schedule-content {
-          padding: 1rem;
-      }
-      .share-btn {
-          padding: 0.7rem 1.2rem;
-          font-size: 1rem;
-          gap: 0.5rem;
-      }
-      .share-icon {
-          font-size: 1.2rem;
-      }
-      #virus-screen h2 {
-          font-size: 1.5rem;
-          margin-bottom: 1rem;
-      }
-      #countdown {
-          font-size: 3.5rem;
-      }
-      #reveal-message {
-          font-size: 1rem;
-          padding: 0.8rem;
-      }
+        .main-nav-buttons {
+            gap: 1rem; /* スマホでより詰める */
+        }
+        .main-nav-buttons button {
+            width: 95%; /* より広く */
+            padding: 1rem 1.5rem;
+            font-size: 1.3rem;
+            max-width: none; /* スマホでは最大幅の制限をなくす */
+        }
+        .share-icon {
+            font-size: 1.3rem;
+        }
+        #virus-screen h2 {
+            font-size: 1.8rem;
+            margin-bottom: 0.8rem;
+        }
+        #countdown {
+            font-size: 4rem;
+        }
+        #reveal-message {
+            font-size: 1rem;
+            padding: 0.8rem;
+        }
     }
   </style>
 </head>
 <body>
-  <div id="fake-site" role="main" aria-label="ようこそ文化祭まとめサイトへ">
-    <h1>
-      <span style="display:block;">ようこそ</span>
-      <span style="display:block;">文化祭まとめサイトへ</span>
-    </h1>
-    <button id="start-btn" type="button">サイトを見る</button>
-  </div>
-
   <div id="virus-screen" role="alert" aria-live="assertive" aria-atomic="true" class="hidden">
   </div>
 
@@ -556,33 +337,25 @@
   </div>
 
   <div id="main" role="main" aria-label="文化祭まとめコンテンツ">
-    <button id="repeat-virus-btn" type="button">もう一度ウイルス演出を見る</button>
-    
     <div class="main-nav-buttons">
-      <button id="show-bunkasai-info-btn" type="button">文化祭情報</button>
-      <button id="show-quiz-minigame-btn" type="button">クイズ＆ミニゲーム</button>
-    </div>
-
-    <div id="schedule-content" class="active">
-      <h1>文化祭の最新情報</h1>
-      <p>文化祭の日程や見どころは、以下の公式Instagramアカウントで随時更新中！</p>
-      <p>すべての投稿をチェックして、文化祭を最大限に楽しもう！</p>
-      
-      <div id="instagram-feed-container" aria-live="polite" aria-atomic="true">
-        </div>
-    </div>
-
-    <div id="share-buttons" aria-label="SNS共有ボタン" aria-hidden="true">
-      <div class="share-btn share-x" role="button" tabindex="0" data-sns="x" title="Xで共有" aria-label="Xで共有">
+      <button id="repeat-virus-btn" type="button">
+        <span class="share-icon">🚨</span> もう一度ウイルス演出を見る
+      </button>
+      <button id="show-bunkasai-info-btn" type="button">
+        <span class="share-icon">💡</span> 文化祭情報
+      </button>
+      <button id="show-quiz-minigame-btn" type="button">
+        <span class="share-icon">🎮</span> クイズ
+      </button>
+      <button class="share-btn share-x" role="button" tabindex="0" data-sns="x" title="Xで共有" aria-label="Xで共有">
         <span class="share-icon">🐦</span> Xで共有
-      </div>
-      <div class="share-btn share-line" role="button" tabindex="0" data-sns="line" title="LINEで共有" aria-label="LINEで共有">
+      </button>
+      <button class="share-btn share-line" role="button" tabindex="0" data-sns="line" title="LINEで共有" aria-label="LINEで共有">
         <span class="share-icon">💬</span> LINEで共有
-      </div>
+      </button>
     </div>
-  </div>
 
-  <script async src="//www.instagram.com/embed.js"></script>
+    </div>
 
   <script>
     document.addEventListener("DOMContentLoaded", () => {
@@ -590,18 +363,19 @@
       const VIRUS_COUNTDOWN_SECONDS = 5;
 
       const body = document.body;
-      const fakeSite = document.getElementById("fake-site");
+      // const fakeSite = document.getElementById("fake-site"); // 削除
       const virusScreen = document.getElementById("virus-screen");
       const reliefScreen = document.getElementById("relief-screen");
       const mainScreen = document.getElementById("main");
       const repeatVirusBtn = document.getElementById("repeat-virus-btn");
-      const instagramFeedContainer = document.getElementById("instagram-feed-container"); // 新しいコンテナ
-      const shareButtons = document.getElementById("share-buttons");
-      const startBtn = document.getElementById("start-btn");
+      // const instagramFeedContainer = document.getElementById("instagram-feed-container"); // 削除
+      // const shareButtons = document.getElementById("share-buttons"); // 削除
 
-      const showBunkasaiInfoBtn = document.getElementById("show-bunkasai-info-btn"); // 新しい文化祭情報ボタン
+      // const startBtn = document.getElementById("start-btn"); // 削除
+
+      const showBunkasaiInfoBtn = document.getElementById("show-bunkasai-info-btn");
       const showQuizMinigameBtn = document.getElementById("show-quiz-minigame-btn");
-      const scheduleContent = document.getElementById("schedule-content"); // Instagramフィード表示用
+      // const scheduleContent = document.getElementById("schedule-content"); // 削除
 
       let synth = window.speechSynthesis;
       let utterance = null;
@@ -612,299 +386,194 @@
 
       // ジャンプ先のクイズサイトURL
       const QUIZ_SITE_URL = "https://miyashitt.github.io/Shit/";
-      // 文化祭公式InstagramアカウントのURL
-      const BUNKASAI_INSTAGRAM_URL = "https://www.instagram.com/kenryo_fes_78th?utm_source=ig_web_button_share_sheet&igsh=MWkyZDRrbjRuYnl6ag==";
+      // 文化祭公式InstagramアカウントのURL (ボタンからは直接リンクしないためコメントアウト)
+      // const BUNKASAI_INSTAGRAM_URL = "https://www.instagram.com/kenryo_fes_78th?utm_source=ig_web_button_share_sheet&igsh=MWkyZDRrbjRuYnl6ag==";
 
-      // ここに表示したいInstagram投稿の埋め込みHTMLを配列で追加します。
-      // 各投稿の埋め込みコードをInstagramから取得し、`<blockquote>` タグ部分をコピーして貼り付けてください。
-      // 例: <blockquote class="instagram-media" ... > ... </blockquote>
-      const instagramPosts = [
-        // 例示用のダミー投稿
-        `
-        <blockquote class="instagram-media" data-instgrm-permalink="https://www.instagram.com/p/C75uC2cSm2Z/?utm_source=ig_embed&amp;utm_campaign=loading" data-instgrm-version="14" style=" background:#FFF; border:0; border-radius:3px; box-shadow:0 0 1px 0 rgba(0,0,0,0.5),0 1px 10px 0 rgba(0,0,0,0.15); margin: 1px; max-width:540px; min-width:326px; padding:0; width:99.375%; width:-webkit-calc(100% - 2px); width:calc(100% - 2px);"><div style="padding:16px;"> <a href="https://www.instagram.com/p/C75uC2cSm2Z/?utm_source=ig_embed&amp;utm_campaign=loading" style=" background:#FFFFFF; line-height:0; padding:0 0; text-align:center; text-decoration:none; width:100%;" target="_blank"> <div style=" display: flex; flex-direction: row; align-items: center;"> <div style="background-color: #F4F4F4; border-radius: 50%; flex-grow: 0; height: 40px; margin-right: 14px; width: 40px;"></div> <div style="display: flex; flex-direction: column; flex-grow: 1; justify-content: center;"> <div style=" background-color: #F4F4F4; border-radius: 4px; height: 14px; margin-bottom: 6px; width: 100px;"></div> <div style=" background-color: #F4F4F4; border-radius: 4px; height: 14px; width: 60px;"></div></div></div><div style="padding: 19% 0;"></div> <div style="display:block; height:50px; margin:0 auto; width:50px;"><svg width="50px" height="50px" viewBox="0 0 60 60" version="1.1" xmlns="https://www.w3.org/2000/svg" xmlns:xlink="https://www.w3.org/1999/xlink"><g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g transform="translate(-511.000000, -20.000000)" fill="#000000"><g><path d="M556.869,30.41 C554.814,30.41 553.148,32.076 553.148,34.131 C553.148,36.186 554.814,37.852 556.869,37.852 C558.924,37.852 560.59,36.186 560.59,34.131 C560.59,32.076 558.924,30.41 556.869,30.41 M541,60.657 C535.114,60.657 530.342,55.887 530.342,50 C530.342,44.114 535.114,39.342 541,39.342 C546.887,39.342 551.658,44.114 551.658,50 C551.658,55.887 546.887,60.657 541,60.657 M541,33.886 C532.1,33.886 524.886,41.1 524.886,50 C524.886,58.9 532.1,66.113 541,66.113 C549.9,66.113 557.114,58.9 557.114,50 C557.114,41.1 549.9,33.886 541,33.886 M565.378,62.101 C565.244,65.045 564.756,66.654 564.346,67.663 C563.803,69.06 563.154,70.057 562.106,71.106 C561.058,72.155 560.06,72.803 558.662,73.347 C557.653,73.757 556.044,74.244 553.101,74.378 C549.404,74.536 548.283,74.556 541,74.556 C533.717,74.556 532.596,74.536 528.898,74.378 C525.955,74.244 524.346,73.757 523.338,73.347 C521.94,72.803 520.942,72.155 519.894,71.106 C518.846,70.057 518.197,69.06 517.654,67.663 C517.244,66.654 516.755,65.045 516.621,62.101 C516.463,58.404 516.484,57.283 516.484,50 C516.484,42.717 516.463,41.596 516.621,37.899 C516.755,34.955 517.244,33.346 517.654,32.338 C518.197,30.94 518.846,29.942 519.894,28.894 C520.942,27.846 521.94,27.196 523.338,26.654 C524.346,26.244 525.955,25.756 528.898,25.622 C532.596,25.464 533.717,25.444 541,25.444 C548.283,25.444 549.404,25.464 553.101,25.622 C556.045,25.756 557.654,26.244 558.662,26.654 C560.06,27.196 561.058,27.846 562.106,28.894 C563.154,29.942 563.803,30.94 564.346,32.338 C564.756,33.346 565.244,34.955 565.378,37.899 C565.536,41.596 565.556,42.717 565.556,50 C565.556,57.283 565.536,58.404 565.378,62.101 M570.82,37.631 C570.674,34.438 570.167,32.258 569.425,30.349 C568.659,28.377 567.633,26.702 565.965,25.035 C564.297,23.368 562.623,22.342 560.652,21.575 C558.743,20.834 556.562,20.326 553.369,20.18 C549.665,20.019 548.475,20 541,20 C533.525,20 532.335,20.019 528.631,20.18 C525.438,20.326 523.257,20.834 521.349,21.575 C519.376,22.342 517.703,23.368 516.035,25.035 C514.368,26.702 513.342,28.377 512.574,30.349 C511.834,32.258 511.326,34.438 511.181,37.631 C511.019,41.335 511,42.525 511,50 C511,57.474 511.019,58.665 511.181,62.369 C511.326,65.562 511.834,67.743 512.574,69.651 C513.342,71.625 514.368,73.296 516.035,74.965 C517.703,76.634 519.376,77.658 521.349,78.425 C523.257,79.167 525.438,79.673 528.631,79.82 C532.335,79.981 533.525,80 541,80 C548.475,80 549.665,79.981 553.369,79.82 C556.562,79.673 558.743,79.167 560.652,78.425 C562.623,77.658 564.297,76.634 565.965,74.965 C567.633,73.296 568.659,71.625 569.425,69.651 C570.167,67.743 570.674,65.562 570.82,62.369 C570.981,58.665 571,57.474 571,50 C571,42.525 570.981,41.335 570.82,37.631"></path></g></g></g></svg></div><div style="padding-top: 8px;"> <div style=" color:#3897f0; font-family:Arial,sans-serif; font-size:14px; font-style:normal; font-weight:550; line-height:18px;">この投稿をInstagramで見る</div></div><div style="padding: 12.5% 0;"></div> <div style="display: flex; flex-direction: row; margin-bottom: 14px; align-items: center;"><div> <div style="background-color: #F4F4F4; border-radius: 50%; height: 12.5px; width: 12.5px; transform: translateX(0px) translateY(7px);"></div> <div style="background-color: #F4F4F4; height: 12.5px; transform: rotate(-45deg) translateX(3px) translateY(1px); width: 12.5px; flex-grow: 0; margin-right: 14px; margin-left: 2px;"></div> <div style="background-color: #F4F4F4; border-radius: 50%; height: 12.5px; width: 12.5px; transform: translateX(9px) translateY(-18px);"></div></div><div style="margin-left: 8px;"> <div style=" background-color: #F4F4F4; border-radius: 4px; height: 12.5px; width: 150px;"></div> <div style=" background-color: #F4F4F4; border-radius: 4px; height: 12.5px; width: 100px;"></div></div></div><div style="padding-bottom: 12px;"> <div style=" background-color: #F4F4F4; border-radius: 4px; height: 12.5px; width: 100%;"></div> <div style=" background-color: #F4F4F4; border-radius: 4px; height: 12.5px; width: 80%;"></div></div></div></a> <p style=" color:#c9c8cd; font-family:Arial,sans-serif; font-size:14px; line-height:17px; margin-bottom:0; margin-top:8px; overflow:hidden; padding:8px 0 7px; text-align:center; text-overflow:ellipsis; white-space:nowrap;"><a href="https://www.instagram.com/p/C75uC2cSm2Z/?utm_source=ig_embed&amp;utm_campaign=loading" style=" color:#c9c8cd; font-family:Arial,sans-serif; font-size:14px; font-style:normal; font-weight:normal; line-height:17px; text-decoration:none;" target="_blank">example_bunkasai</a>がシェアした投稿</p></div></blockquote>
-        `,
-        `
-        <blockquote class="instagram-media" data-instgrm-permalink="https://www.instagram.com/p/C75e_S5yb2A/?utm_source=ig_embed&amp;utm_campaign=loading" data-instgrm-version="14" style=" background:#FFF; border:0; border-radius:3px; box-shadow:0 0 1px 0 rgba(0,0,0,0.5),0 1px 10px 0 rgba(0,0,0,0.15); margin: 1px; max-width:540px; min-width:326px; padding:0; width:99.375%; width:-webkit-calc(100% - 2px); width:calc(100% - 2px);"><div style="padding:16px;"> <a href="https://www.instagram.com/p/C75e_S5yb2A/?utm_source=ig_embed&amp;utm_campaign=loading" style=" background:#FFFFFF; line-height:0; padding:0 0; text-align:center; text-decoration:none; width:100%;" target="_blank"> <div style=" display: flex; flex-direction: row; align-items: center;"> <div style="background-color: #F4F4F4; border-radius: 50%; flex-grow: 0; height: 40px; margin-right: 14px; width: 40px;"></div> <div style="display: flex; flex-direction: column; flex-grow: 1; justify-content: center;"> <div style=" background-color: #F4F4F4; border-radius: 4px; height: 14px; margin-bottom: 6px; width: 100px;"></div> <div style=" background-color: #F4F4F4; border-radius: 4px; height: 14px; width: 60px;"></div></div></div><div style="padding: 19% 0;"></div> <div style="display:block; height:50px; margin:0 auto; width:50px;"><svg width="50px" height="50px" viewBox="0 0 60 60" version="1.1" xmlns="https://www.w3.org/2000/svg" xmlns:xlink="https://www.w3.org/1999/xlink"><g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g transform="translate(-511.000000, -20.000000)" fill="#000000"><g><path d="M556.869,30.41 C554.814,30.41 553.148,32.076 553.148,34.131 C553.148,36.186 554.814,37.852 556.869,37.852 C558.924,37.852 560.59,36.186 560.59,34.131 C560.59,32.076 558.924,30.41 556.869,30.41 M541,60.657 C535.114,60.657 530.342,55.887 530.342,50 C530.342,44.114 535.114,39.342 541,39.342 C546.887,39.342 551.658,44.114 551.658,50 C551.658,55.887 546.887,60.657 541,60.657 M541,33.886 C532.1,33.886 524.886,41.1 524.886,50 C524.886,58.9 532.1,66.113 541,66.113 C549.9,66.113 557.114,58.9 557.114,50 C557.114,41.1 549.9,33.886 541,33.886 M565.378,62.101 C565.244,65.045 564.756,66.654 564.346,67.663 C563.803,69.06 563.154,70.057 562.106,71.106 C561.058,72.155 560.06,72.803 558.662,73.347 C557.653,73.757 556.044,74.244 553.101,74.378 C549.404,74.536 548.283,74.556 541,74.556 C533.717,74.556 532.596,74.536 528.898,74.378 C525.955,74.244 524.346,73.757 523.338,73.338 C521.94,72.803 520.942,72.155 519.894,71.106 C518.846,70.057 518.197,69.06 517.654,67.663 C517.244,66.654 516.755,65.045 516.621,62.101 C516.463,58.404 516.484,57.283 516.484,50 C516.484,42.717 516.463,41.596 516.621,37.899 C516.755,34.955 517.244,33.346 517.654,32.338 C518.197,30.94 518.846,29.942 519.894,28.894 C520.942,27.846 521.94,27.196 523.338,26.654 C524.346,26.244 525.955,25.756 528.898,25.622 C532.596,25.464 533.717,25.444 541,25.444 C548.283,25.444 549.404,25.464 553.101,25.622 C556.045,25.756 557.654,26.244 558.662,26.654 C560.06,27.196 561.058,27.846 562.106,28.894 C563.154,29.942 563.803,30.94 564.346,32.338 C564.756,33.346 565.244,34.955 565.378,37.899 C565.536,41.596 565.556,42.717 565.556,50 C565.556,57.283 565.536,58.404 565.378,62.101 M570.82,37.631 C570.674,34.438 570.167,32.258 569.425,30.349 C568.659,28.377 567.633,26.702 565.965,25.035 C564.297,23.368 562.623,22.342 560.652,21.575 C558.743,20.834 556.562,20.326 553.369,20.18 C549.665,20.019 548.475,20 541,20 C533.525,20 532.335,20.019 528.631,20.18 C525.438,20.326 523.257,20.834 521.349,21.575 C519.376,22.342 517.703,23.368 516.035,25.035 C514.368,26.702 513.342,28.377 512.574,30.349 C511.834,32.258 511.326,34.438 511.181,37.631 C511.019,41.335 511,42.525 511,50 C511,57.474 511.019,58.665 511.181,62.369 C511.326,65.562 511.834,67.743 512.574,69.651 C513.342,71.625 514.368,73.296 516.035,74.965 C517.703,76.634 519.376,77.658 521.349,78.425 C523.257,79.167 525.438,79.673 528.631,79.82 C532.335,79.981 533.525,80 541,80 C548.475,80 549.665,79.981 553.369,79.82 C556.562,79.673 558.743,79.167 560.652,78.425 C562.623,77.658 564.297,76.634 565.965,74.965 C567.633,73.296 568.659,71.625 569.425,69.651 C570.167,67.743 570.674,65.562 570.82,62.369 C570.981,58.665 571,57.474 571,50 C571,42.525 570.981,41.335 570.82,37.631"></path></g></g></g></svg></div><div style="padding-top: 8px;"> <div style=" color:#3897f0; font-family:Arial,sans-serif; font-size:14px; font-style:normal; font-weight:550; line-height:18px;">この投稿をInstagramで見る</div></div><div style="padding: 12.5% 0;"></div> <div style="display: flex; flex-direction: row; margin-bottom: 14px; align-items: center;"><div> <div style="background-color: #F4F4F4; border-radius: 50%; height: 12.5px; width: 12.5px; transform: translateX(0px) translateY(7px);"></div> <div style="background-color: #F4F4F4; height: 12.5px; transform: rotate(-45deg) translateX(3px) translateY(1px); width: 12.5px; flex-grow: 0; margin-right: 14px; margin-left: 2px;"></div> <div style="background-color: #F4F4F4; border-radius: 50%; height: 12.5px; width: 12.5px; transform: translateX(9px) translateY(-18px);"></div></div><div style="margin-left: 8px;"> <div style=" background-color: #F4F4F4; border-radius: 4px; height: 12.5px; width: 150px;"></div> <div style=" background-color: #F4F4F4; border-radius: 4px; height: 12.5px; width: 100px;"></div></div></div><div style="padding-bottom: 12px;"> <div style=" background-color: #F4F4F4; border-radius: 4px; height: 12.5px; width: 100%;"></div> <div style=" background-color: #F4F4F4; border-radius: 4px; height: 12.5px; width: 80%;"></div></div></div></a> <p style=" color:#c9c8cd; font-family:Arial,sans-serif; font-size:14px; line-height:17px; margin-bottom:0; margin-top:8px; overflow:hidden; padding:8px 0 7px; text-align:center; text-overflow:ellipsis; white-space:nowrap;"><a href="https://www.instagram.com/p/C75e_S5yb2A/?utm_source=ig_embed&amp;utm_campaign=loading" style=" color:#c9c8cd; font-family:Arial,sans-serif; font-size:14px; font-style:normal; font-weight:normal; line-height:17px; text-decoration:none;" target="_blank">example_bunkasai</a>がシェアした投稿</p></div></blockquote>
-        `,
-        `
-        <blockquote class="instagram-media" data-instgrm-permalink="https://www.instagram.com/p/C75c-51Sj1X/?utm_source=ig_embed&amp;utm_campaign=loading" data-instgrm-version="14" style=" background:#FFF; border:0; border-radius:3px; box-shadow:0 0 1px 0 rgba(0,0,0,0.5),0 1px 10px 0 rgba(0,0,0,0.15); margin: 1px; max-width:540px; min-width:326px; padding:0; width:99.375%; width:-webkit-calc(100% - 2px); width:calc(100% - 2px);"><div style="padding:16px;"> <a href="https://www.instagram.com/p/C75c-51Sj1X/?utm_source=ig_embed&amp;utm_campaign=loading" style=" background:#FFFFFF; line-height:0; padding:0 0; text-align:center; text-decoration:none; width:100%;" target="_blank"> <div style=" display: flex; flex-direction: row; align-items: center;"> <div style="background-color: #F4F4F4; border-radius: 50%; flex-grow: 0; height: 40px; margin-right: 14px; width: 40px;"></div> <div style="display: flex; flex-direction: column; flex-grow: 1; justify-content: center;"> <div style=" background-color: #F4F4F4; border-radius: 4px; height: 14px; margin-bottom: 6px; width: 100px;"></div> <div style=" background-color: #F4F4F4; border-radius: 4px; height: 14px; width: 60px;"></div></div></div><div style="padding: 19% 0;"></div> <div style="display:block; height:50px; margin:0 auto; width:50px;"><svg width="50px" height="50px" viewBox="0 0 60 60" version="1.1" xmlns="https://www.w3.org/2000/svg" xmlns:xlink="https://www.w3.org/1999/xlink"><g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g transform="translate(-511.000000, -20.000000)" fill="#000000"><g><path d="M556.869,30.41 C554.814,30.41 553.148,32.076 553.148,34.131 C553.148,36.186 554.814,37.852 556.869,37.852 C558.924,37.852 560.59,36.186 560.59,34.131 C560.59,32.076 558.924,30.41 556.869,30.41 M541,60.657 C535.114,60.657 530.342,55.887 530.342,50 C530.342,44.114 535.114,39.342 541,39.342 C546.887,39.342 551.658,44.114 551.658,50 C551.658,55.887 546.887,60.657 541,60.657 M541,33.886 C532.1,33.886 524.886,41.1 524.886,50 C524.886,58.9 532.1,66.113 541,66.113 C549.9,66.113 557.114,58.9 557.114,50 C557.114,41.1 549.9,33.886 541,33.886 M565.378,62.101 C565.244,65.045 564.756,66.654 564.346,67.663 C563.803,69.06 563.154,70.057 562.106,71.106 C561.058,72.155 560.06,72.803 558.662,73.347 C557.653,73.757 556.044,74.244 553.101,74.378 C549.404,74.536 548.283,74.556 541,74.556 C533.717,74.556 532.596,74.536 528.898,74.378 C525.955,74.244 524.346,73.757 523.338,73.338 C521.94,72.803 520.942,72.155 519.894,71.106 C518.846,70.057 518.197,69.06 517.654,67.663 C517.244,66.654 516.755,65.045 516.621,62.101 C516.463,58.404 516.484,57.283 516.484,50 C516.484,42.717 516.463,41.596 516.621,37.899 C516.755,34.955 517.244,33.346 517.654,32.338 C518.197,30.94 518.846,29.942 519.894,28.894 C520.942,27.846 521.94,27.196 523.338,26.654 C524.346,26.244 525.955,25.756 528.898,25.622 C532.596,25.464 533.717,25.444 541,25.444 C548.283,25.444 549.404,25.464 553.101,25.622 C556.045,25.756 557.654,26.244 558.662,26.654 C560.06,27.196 561.058,27.846 562.106,28.894 C563.154,29.942 563.803,30.94 564.346,32.338 C564.756,33.346 565.244,34.955 565.378,37.899 C565.536,41.596 565.556,42.717 565.556,50 C565.556,57.283 565.536,58.404 565.378,62.101 M570.82,37.631 C570.674,34.438 570.167,32.258 569.425,30.349 C568.659,28.377 567.633,26.702 565.965,25.035 C564.297,23.368 562.623,22.342 560.652,21.575 C558.743,20.834 556.562,20.326 553.369,20.18 C549.665,20.019 548.475,20 541,20 C533.525,20 532.335,20.019 528.631,20.18 C525.438,20.326 523.257,20.834 521.349,21.575 C519.376,22.342 517.703,23.368 516.035,25.035 C514.368,26.702 513.342,28.377 512.574,30.349 C511.834,32.258 511.326,34.438 511.181,37.631 C511.019,41.335 511,42.525 511,50 C511,57.474 511.019,58.665 511.181,62.369 C511.326,65.562 511.834,67.743 512.574,69.651 C513.342,71.625 514.368,73.296 516.035,74.965 C517.703,76.634 519.376,77.658 521.349,78.425 C523.257,79.167 525.438,79.673 528.631,79.82 C532.335,79.981 533.525,80 541,80 C548.475,80 549.665,79.981 553.369,79.82 C556.562,79.673 558.743,79.167 560.652,78.425 C562.623,77.658 564.297,76.634 565.965,74.965 C567.633,73.296 568.659,71.625 569.425,69.651 C570.167,67.743 570.674,65.562 570.82,62.369 C570.981,58.665 571,57.474 571,50 C571,42.525 570.981,41.335 570.82,37.631"></path></g></g></g></svg></div><div style="padding-top: 8px;"> <div style=" color:#3897f0; font-family:Arial,sans-serif; font-size:14px; font-style:normal; font-weight:550; line-height:18px;">この投稿をInstagramで見る</div></div><div style="padding: 12.5% 0;"></div> <div style="display: flex; flex-direction: row; margin-bottom: 14px; align-items: center;"><div> <div style="background-color: #F4F4F4; border-radius: 50%; height: 12.5px; width: 12.5px; transform: translateX(0px) translateY(7px);"></div> <div style="background-color: #F4F4F4; height: 12.5px; transform: rotate(-45deg) translateX(3px) translateY(1px); width: 12.5px; flex-grow: 0; margin-right: 14px; margin-left: 2px;"></div> <div style="background-color: #F4F4F4; border-radius: 50%; height: 12.5px; width: 12.5px; transform: translateX(9px) translateY(-18px);"></div></div><div style="margin-left: 8px;"> <div style=" background-color: #F4F4F4; border-radius: 4px; height: 12.5px; width: 150px;"></div> <div style=" background-color: #F4F4F4; border-radius: 4px; height: 12.5px; width: 100px;"></div></div></div><div style="padding-bottom: 12px;"> <div style=" background-color: #F4F4F4; border-radius: 4px; height: 12.5px; width: 100%;"></div> <div style=" background-color: #F4F4F4; border-radius: 4px; height: 12.5px; width: 80%;"></div></div></div></a> <p style=" color:#c9c8cd; font-family:Arial,sans-serif; font-size:14px; line-height:17px; margin-bottom:0; margin-top:8px; overflow:hidden; padding:8px 0 7px; text-align:center; text-overflow:ellipsis; white-space:nowrap;"><a href="https://www.instagram.com/p/C75c-51Sj1X/?utm_source=ig_embed&amp;utm_campaign=loading" style=" color:#c9c8cd; font-family:Arial,sans-serif; font-size:14px; font-style:normal; font-weight:normal; line-height:17px; text-decoration:none;" target="_blank">example_bunkasai</a>がシェアした投稿</p></div></blockquote>
-        `
-        // 実際のInstagram埋め込みコードをここに追加してください
-      ];
+      // LINEブラウザ判定
+      isLineBrowserDetected = navigator.userAgent.includes("Line");
 
-      // --- Helper Functions ---
-      function isLineBrowser() {
-        return navigator.userAgent.includes("Line");
-      }
+      // ウイルス演出の関数 (変更なし)
+      function startVirusSimulation() {
+        body.classList.add("virus-active");
+        mainScreen.classList.add("hidden"); // mainScreenを非表示に
+        virusScreen.classList.remove("hidden");
+        virusScreen.innerHTML = `
+          <h2><span style="color:red;">WARNING!!!</span> SYSTEM INTEGRITY COMPROMISED.</h2>
+          <div id="countdown" style="color: #00FF00;">${VIRUS_COUNTDOWN_SECONDS}</div>
+          <div id="reveal-message" class="hidden">
+            <h3>これは文化祭の告知です！</h3>
+            <p><strong>文化祭の日程や見どころはInstagram公式アカウントをチェック！</strong></p>
+            <p>最新情報をGETして文化祭を楽しもう！</p>
+            <p>※偽のウイルス演出はこれで終了です。</p>
+            <a href="https://www.instagram.com/kenryo_fes_78th?utm_source=ig_web_button_share_sheet&igsh=MWkyZDRrbjRuYnl6ag==" target="_blank" style="color: #66ccff; text-decoration: underline; font-weight: bold;">Instagram公式アカウントへ</a>
+          </div>
+        `;
+        speak(`警告。システムに異常を検知しました。`);
 
-      function requestFullscreen() {
-        if (document.documentElement.requestFullscreen) {
-          document.documentElement.requestFullscreen().catch(e => {
-            console.warn("Fullscreen request failed:", e);
-          });
-        }
-      }
+        let countdown = VIRUS_COUNTDOWN_SECONDS;
+        const countdownElement = document.getElementById("countdown");
+        const revealMessage = document.getElementById("reveal-message");
 
-      function startJapaneseVoiceLoop() {
-        if (isLineBrowserDetected) return;
-        if (voiceLoopRunning) return;
-        voiceLoopRunning = true;
+        countdownIntervalId = setInterval(() => {
+          countdown--;
+          if (countdownElement) {
+            countdownElement.textContent = countdown;
+          }
 
-        utterance = new SpeechSynthesisUtterance("あなたのスマホはウイルスに感染しました。全てのデータを削除します。キャンセルはできません。");
-        utterance.lang = "ja-JP";
-        utterance.rate = 0.6;
-        utterance.pitch = 0.4;
-        utterance.volume = 1.0;
-
-        utterance.onend = () => {
-          if (voiceLoopRunning) {
-            try {
-                synth.speak(utterance);
-            } catch (e) {
-                console.error("Failed to re-speak utterance:", e);
-                voiceLoopRunning = false;
+          if (countdown <= 0) {
+            clearInterval(countdownIntervalId);
+            if (countdownElement) {
+              countdownElement.classList.add("hidden");
             }
-          }
-        };
+            if (revealMessage) {
+              revealMessage.classList.remove("hidden");
+            }
+            stopVoiceLoop();
+            speak("警告は解除されました。文化祭をお楽しみください。"); // 演出終了のメッセージ
+            virusScreen.style.pointerEvents = 'auto'; // クリック可能に
 
-        try {
-          synth.cancel();
-          synth.speak(utterance);
-        } catch (e) {
-          console.error("Failed to speak utterance:", e);
-          voiceLoopRunning = false;
-        }
+            // 一定時間後に自動で relief-screen を表示し、その後 mainScreen を表示する
+            setTimeout(() => {
+              virusScreen.classList.add("hidden");
+              reliefScreen.classList.remove("hidden");
+              reliefScreen.style.display = 'flex'; // Flexboxで表示
+
+              setTimeout(() => {
+                reliefScreen.classList.add("hidden");
+                reliefScreen.style.display = 'none';
+                mainScreen.classList.remove("hidden");
+                mainScreen.classList.add("visible");
+                body.classList.remove("virus-active");
+                localStorage.setItem(localStorageKey, "true"); // 演出完了フラグをセット
+              }, 2000); // 2秒後にリリーフ画面を非表示にしてメイン画面へ
+            }, 3000); // 3秒後に演出終了メッセージ表示
+          }
+        }, 1000);
+
+        startVoiceLoop();
+        playAlarmSound();
       }
 
-      function stopJapaneseVoiceLoop() {
-        if (isLineBrowserDetected) return;
+      // 音声読み上げの関数 (変更なし)
+      function speak(text) {
+        if (synth.speaking) {
+          synth.cancel();
+        }
+        utterance = new SpeechSynthesisUtterance(text);
+        utterance.lang = 'ja-JP';
+        utterance.rate = 1.0;
+        utterance.pitch = 1.0;
+        utterance.volume = 0.7;
+        synth.speak(utterance);
+      }
+
+      // 音声ループの開始と停止 (変更なし)
+      function startVoiceLoop() {
+        voiceLoopRunning = true;
+        loopVoice();
+      }
+
+      function stopVoiceLoop() {
         voiceLoopRunning = false;
-        try {
+        if (synth.speaking) {
           synth.cancel();
-        } catch (e) {
-            console.warn("Failed to cancel speech synthesis:", e);
         }
-      }
-
-      async function playAlarmSound() {
-        if (isLineBrowserDetected) return null;
-        try {
-          if (!alarmAudio) {
-              alarmAudio = new Audio("https://upload.wikimedia.org/wikipedia/commons/b/b2/Sos-morse-code.ogg");
-              alarmAudio.loop = true;
-              alarmAudio.volume = 1.0;
-              alarmAudio.preload = "auto";
-              await alarmAudio.load();
-          }
-          await alarmAudio.play();
-          return alarmAudio;
-        } catch (e) {
-          console.error("Failed to play alarm sound:", e);
-          return null;
-        }
-      }
-
-      function stopAlarmSound() {
         if (alarmAudio) {
           alarmAudio.pause();
           alarmAudio.currentTime = 0;
-          alarmAudio = null;
         }
       }
 
-      function startVirusSimulation() {
-        isLineBrowserDetected = isLineBrowser();
+      function loopVoice() {
+        if (!voiceLoopRunning) return;
+        speak("異常を検知。システムチェック。");
+        utterance.onend = () => {
+          if (voiceLoopRunning) {
+            setTimeout(loopVoice, 3000); // 3秒後に再度ループ
+          }
+        };
+      }
 
-        body.classList.add('virus-active');
-        body.classList.remove('loaded');
-        requestFullscreen();
+      // 警告音の再生 (変更なし)
+      function playAlarmSound() {
+        if (alarmAudio) {
+          alarmAudio.pause();
+          alarmAudio.currentTime = 0;
+        }
+        alarmAudio = new Audio('alarm.mp3'); // 警告音のパス
+        alarmAudio.loop = true;
+        alarmAudio.volume = 0.5;
+        alarmAudio.play().catch(e => console.error("音声再生エラー:", e));
+      }
 
-        fakeSite.classList.add("hidden");
-        reliefScreen.classList.add("hidden");
-        mainScreen.classList.remove("visible");
+      // ページ読み込み時に実行される処理
+      body.classList.add("loaded"); // ロード完了時にフェードイン
+
+      // 既存のstart-btnは削除されたため、ここでは直接mainScreenを表示する
+      // ただし、ウイルス演出は初回訪問時のみにしたいので、localStorageを確認
+      if (localStorage.getItem(localStorageKey) === "true") {
+          mainScreen.classList.remove("hidden");
+          mainScreen.classList.add("visible");
+          // scheduleContent.classList.add("active"); // Instagramフィードを表示
+          // loadInstagramPosts(); // Instagramフィードを読み込む
+      } else {
+          // 初回訪問時のみウイルス演出を開始
+          // body.style.display = 'flex'; // bodyをflexにする
+          // fakeSite.style.display = 'flex'; // フェイクサイトを表示 (今回は直接ウイルス演出へ)
+          startVirusSimulation(); // サイトを見るボタンクリックで演出開始だったが、今回は自動で開始
+      }
+
+      // 各ボタンのイベントリスナー
+      repeatVirusBtn.addEventListener("click", () => {
+        // 全画面を非表示にし、ボディのクラスをリセット
         mainScreen.classList.add("hidden");
-        
-        virusScreen.classList.remove("hidden");
-        virusScreen.classList.add("visible");
-
-        virusScreen.innerHTML = '';
-        const virusTitle = document.createElement("h2");
-        virusTitle.textContent = "⚠ ウイルスに感染しました";
-        virusScreen.appendChild(virusTitle);
-
-        const countdownElement = document.createElement("div");
-        countdownElement.id = "countdown";
-        virusScreen.appendChild(countdownElement);
-
-        const revealMessageElement = document.createElement("div");
-        revealMessageElement.id = "reveal-message";
-        revealMessageElement.classList.add("hidden");
-        revealMessageElement.innerHTML = "ご安心ください！これは文化祭の面白い仕掛けです。<br>あなたのデータは無事です！";
-        virusScreen.appendChild(revealMessageElement);
-        
-        if (!isLineBrowserDetected) {
-            startJapaneseVoiceLoop();
-            playAlarmSound();
-        }
-
-        let count = VIRUS_COUNTDOWN_SECONDS;
-        countdownElement.textContent = count;
-
-        if (countdownIntervalId !== null) {
-          clearInterval(countdownIntervalId);
-        }
-
-        countdownIntervalId = setInterval(() => {
-          count--;
-          if (count >= 0) {
-            countdownElement.textContent = count;
-          }
-
-          if (count === 0) {
-            clearInterval(countdownIntervalId);
-            countdownIntervalId = null;
-
-            if (!isLineBrowserDetected) {
-                stopJapaneseVoiceLoop();
-                stopAlarmSound();
-            }
-
-            countdownElement.classList.add("hidden");
-            revealMessageElement.classList.remove("hidden");
-            
-            localStorage.setItem(localStorageKey, "1");
-
-            setTimeout(() => {
-              showReliefScreen();
-            }, 2000);
-          }
-        }, 1000);
-      }
-
-      function showReliefScreen() {
-        virusScreen.classList.remove("visible");
+        reliefScreen.classList.add("hidden");
         virusScreen.classList.add("hidden");
-        virusScreen.innerHTML = '';
+        body.classList.remove("virus-active");
 
-        reliefScreen.classList.remove("hidden");
-        reliefScreen.style.display = "flex";
+        // localStorage のフラグを削除して、再度演出が実行されるようにする
+        localStorage.removeItem(localStorageKey);
 
-        setTimeout(() => {
-          reliefScreen.style.display = "none";
-          reliefScreen.classList.add("hidden");
-          showMainScreen();
-          showShareButtons();
-          body.classList.remove('virus-active');
-          body.classList.add('loaded');
-        }, 3000);
-      }
+        // ウイルス演出を再度開始
+        startVirusSimulation();
+      });
 
-      function showMainScreen() {
-        mainScreen.classList.remove("hidden");
-        mainScreen.classList.add("visible");
-        showContent('schedule'); // 初期表示はInstagramフィード (スケジュールコンテンツ)
-      }
-
-      function showShareButtons() {
-        shareButtons.classList.add("visible");
-        shareButtons.setAttribute("aria-hidden", "false");
-      }
-      
-      // Instagramフィードを埋め込む関数
-      function loadInstagramFeed() {
-        instagramFeedContainer.innerHTML = ''; // 既存のコンテンツをクリア
-
-        if (instagramPosts.length === 0) {
-            instagramFeedContainer.innerHTML = "<p>表示できるInstagram投稿がありません。</p>";
-            return;
-        }
-
-        instagramPosts.forEach(postHtml => {
-          const div = document.createElement('div');
-          div.innerHTML = postHtml;
-          instagramFeedContainer.appendChild(div);
-        });
-
-        // Instagramの埋め込みスクリプトを再実行して、新しく追加された投稿をレンダリング
-        // window.instgrm.Embeds が利用可能になるまで待つ必要があるため、setTimeout で遅延させる
-        setTimeout(() => {
-            if (window.instgrm && window.instgrm.Embeds) {
-                window.instgrm.Embeds.process();
-            } else {
-                console.warn("Instagram Embeds script not loaded yet.");
-            }
-        }, 500); // 少し遅延させて確実に読み込まれるのを待つ
-      }
-
-      function createExternalBrowserURL(originalUrl) {
-        return `googlechrome://navigate?url=${encodeURIComponent(originalUrl)}`;
-      }
-
-      function shareOnSNS(platform) {
-        const currentURL = window.location.href;
-        const shareText = "文化祭まとめサイトをチェック！";
-        let url = "";
-
-        if (platform === 'x') {
-          url = `https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}%0A${encodeURIComponent(currentURL)}`;
-        } else if (platform === 'line') {
-          const externalURL = createExternalBrowserURL(currentURL);
-          url = `https://line.me/R/msg/text/?${encodeURIComponent(shareText)}%0A${encodeURIComponent(externalURL)}`;
-        }
-        window.open(url, "_blank", "noopener");
-      }
-
-      function showContent(contentId) {
-        // 現在、表示するメインコンテンツはInstagramフィードのみなので、常にそれを表示する
-        // 将来的に他のコンテンツを追加する場合は、ここで切り替えるロジックを実装
-        const contents = [scheduleContent]; // scheduleContent は Instagramフィードのコンテナとして使用
-
-        contents.forEach(content => {
-          content.classList.remove('active');
-          content.classList.add('hidden');
-        });
-
-        if (contentId === 'schedule') { // contentId が 'schedule' の場合に Instagramフィードを表示
-          scheduleContent.classList.add('active');
-          scheduleContent.classList.remove('hidden');
-          loadInstagramFeed(); // Instagramフィードを読み込む
-        }
-      }
-
-      // --- Event Listeners ---
-      startBtn.addEventListener("click", startVirusSimulation);
-      repeatVirusBtn.addEventListener("click", startVirusSimulation);
-      
-      // 新しい「文化祭情報」ボタンの挙動（Instagramアカウントへジャンプ）
       showBunkasaiInfoBtn.addEventListener("click", () => {
-        window.open(BUNKASAI_INSTAGRAM_URL, "_blank", "noopener");
+        // 文化祭情報はInstagram公式アカウントへ誘導
+        window.open("https://www.instagram.com/kenryo_fes_78th?utm_source=ig_web_button_share_sheet&igsh=MWkyZDRrbjRuYnl6ag==", "_blank");
       });
 
-      // クイズ＆ミニゲームボタンの挙動
       showQuizMinigameBtn.addEventListener("click", () => {
-        window.open(QUIZ_SITE_URL, "_blank", "noopener");
+        window.open(QUIZ_SITE_URL, "_blank");
       });
 
+      // 共有ボタンのイベントリスナー
       document.querySelectorAll('.share-btn').forEach(button => {
-        button.addEventListener('click', (event) => {
-          const sns = event.currentTarget.dataset.sns;
-          shareOnSNS(sns);
+        button.addEventListener('click', () => {
+          const sns = button.dataset.sns;
+          const url = encodeURIComponent(window.location.href);
+          const text = encodeURIComponent("私たちの文化祭の特設サイトを見てね！\n#文化祭 #高校生活"); // 共有するテキスト
+          let shareUrl = '';
+
+          switch (sns) {
+            case 'x':
+              shareUrl = `https://twitter.com/intent/tweet?url=${url}&text=${text}`;
+              break;
+            case 'line':
+              // LINEの共有URLは特殊。LINEアプリがインストールされている環境でのみ動作する。
+              // PCやLINEアプリがない場合は、ただのURL共有になるか、エラーになる。
+              shareUrl = `https://social-plugins.line.me/lineit/share?url=${url}&text=${text}`;
+              if (isLineBrowserDetected) {
+                // LINEブラウザの場合、直接外部ブラウザで開くよう促すメッセージ
+                alert("LINEアプリ以外で開くと共有がスムーズです。ブラウザを切り替えてお試しください。");
+              }
+              break;
+          }
+
+          if (shareUrl) {
+            window.open(shareUrl, '_blank');
+          }
         });
-      });
-
-      // --- Initial Load Logic ---
-      window.addEventListener("load", () => {
-        isLineBrowserDetected = isLineBrowser();
-
-        const visited = localStorage.getItem(localStorageKey);
-        if (!visited) {
-          fakeSite.style.display = "flex";
-          startBtn.textContent = "サイトを見る"; // フェイクサイトのボタンテキストを調整
-        } else {
-          showMainScreen();
-          showShareButtons();
-        }
-        body.classList.add('loaded');
       });
     });
   </script>
