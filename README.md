@@ -117,10 +117,11 @@
       animation: blink-fast 0.5s infinite alternate;
       width: 100%; /* 親要素の幅いっぱいに広げる */
       text-align: center; /* 念のためテキスト中央寄せ */
+      box-sizing: border-box; /* 追加: paddingなどでずれないように */
     }
 
     /* カウントダウン表示のスタイル */
-    #countdown {
+    #countdown { /* このIDを持つ要素はJSで生成されます */
       font-size: 5rem;
       font-weight: bold;
       color: lime;
@@ -128,10 +129,11 @@
       margin-bottom: 2rem;
       width: 100%; /* 親要素の幅いっぱいに広げる */
       text-align: center; /* 念のためテキスト中央寄せ */
+      box-sizing: border-box; /* 追加: paddingなどでずれないように */
     }
 
     /* 種明かしメッセージのスタイル */
-    #reveal-message {
+    #reveal-message { /* このIDを持つ要素はJSで生成されます */
       font-size: 1.5rem;
       color: white;
       background-color: rgba(0, 0, 0, 0.7);
@@ -286,12 +288,7 @@
   </div>
 
   <div id="virus-screen" role="alert" aria-live="assertive" aria-atomic="true" class="hidden">
-    <h2>⚠ ウイルスに感染しました</h2>
-    <div id="countdown">5</div>
-    <div id="reveal-message" class="hidden">
-      ご安心ください！これは文化祭の面白い仕掛けです。<br>あなたのデータは無事です！
     </div>
-  </div>
 
   <div id="relief-screen" class="hidden" role="region" aria-live="polite" aria-atomic="true">
     <p>...異常は検出されませんでした。</p>
@@ -323,8 +320,6 @@
       const body = document.body;
       const fakeSite = document.getElementById("fake-site");
       const virusScreen = document.getElementById("virus-screen");
-      const countdownElement = document.getElementById("countdown");
-      const revealMessageElement = document.getElementById("reveal-message");
       const reliefScreen = document.getElementById("relief-screen");
       const mainScreen = document.getElementById("main");
       const repeatVirusBtn = document.getElementById("repeat-virus-btn");
@@ -338,6 +333,11 @@
       let voiceLoopRunning = false;
       let countdownIntervalId = null;
       let isLine = false;
+
+      // 新しく生成される要素への参照
+      let virusTitle = null;
+      let countdownElement = null;
+      let revealMessageElement = null;
 
       function isLineBrowser() {
         return navigator.userAgent.includes("Line");
@@ -421,12 +421,33 @@
         reliefScreen.classList.add("hidden");
         mainScreen.classList.remove("visible");
         mainScreen.classList.add("hidden");
+        
+        // ウイルス画面を表示
         virusScreen.classList.remove("hidden");
         virusScreen.classList.add("visible");
-        
-        countdownElement.classList.remove("hidden");
-        revealMessageElement.classList.add("hidden");
 
+        // virusScreen の既存の子要素を全てクリア
+        while (virusScreen.firstChild) {
+          virusScreen.removeChild(virusScreen.firstChild);
+        }
+
+        // <h2>要素を作成し追加
+        virusTitle = document.createElement("h2");
+        virusTitle.textContent = "⚠ ウイルスに感染しました";
+        virusScreen.appendChild(virusTitle);
+
+        // カウントダウン要素を作成し追加
+        countdownElement = document.createElement("div");
+        countdownElement.id = "countdown";
+        virusScreen.appendChild(countdownElement);
+
+        // 種明かしメッセージ要素を作成し追加
+        revealMessageElement = document.createElement("div");
+        revealMessageElement.id = "reveal-message";
+        revealMessageElement.classList.add("hidden");
+        revealMessageElement.innerHTML = "ご安心ください！これは文化祭の面白い仕掛けです。<br>あなたのデータは無事です！";
+        virusScreen.appendChild(revealMessageElement);
+        
         if (!isLine) {
             startJapaneseVoiceLoop();
             playAlarmSound().then(audio => { alarmAudio = audio; });
