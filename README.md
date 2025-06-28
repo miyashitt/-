@@ -391,10 +391,13 @@
 
     <div id="initial-screen" role="region" aria-label="文化祭特設サイトへようこそ">
         <h1>ようこそ！文化祭特設サイトへ</h1>
-        <p>文化祭の情報を公開しています。<br>「文化祭情報を見る」ボタンを押して、文化祭の世界へどうぞ！</p>
+        <p>文化祭の情報を公開しています。</p>
         <div class="nav-buttons">
             <button id="show-initial-bunkasai-info-btn" type="button">
                 <span class="share-icon">💡</span> 文化祭情報を見る
+            </button>
+            <button id="trigger-virus-btn" type="button">
+                <span class="share-icon">🚨</span> 特別演出を見る
             </button>
         </div>
     </div>
@@ -425,14 +428,16 @@
             const VIRUS_COUNTDOWN_SECONDS = 5;
 
             const body = document.body;
-            const initialScreen = document.getElementById("initial-screen"); // Added initial screen
+            const initialScreen = document.getElementById("initial-screen");
             const virusScreen = document.getElementById("virus-screen");
             const reliefScreen = document.getElementById("relief-screen");
             const mainScreen = document.getElementById("main");
 
-            const showInitialBunkasaiInfoBtn = document.getElementById("show-initial-bunkasai-info-btn"); // Button on initial screen
+            // Buttons
+            const showInitialBunkasaiInfoBtn = document.getElementById("show-initial-bunkasai-info-btn"); // Button on initial screen for Instagram
+            const triggerVirusBtn = document.getElementById("trigger-virus-btn"); // New button for virus animation
             const repeatVirusBtn = document.getElementById("repeat-virus-btn");
-            const showBunkasaiInfoBtn = document.getElementById("show-bunkasai-info-btn");
+            const showBunkasaiInfoBtn = document.getElementById("show-bunkasai-info-btn"); // Button on main screen for Instagram
             const showQuizMinigameBtn = document.getElementById("show-quiz-minigame-btn");
 
             let synth = window.speechSynthesis;
@@ -442,19 +447,20 @@
             let countdownIntervalId = null;
             let isLineBrowserDetected = false;
 
-            // ジャンプ先のクイズサイトURL
+            // Jump destinations
             const QUIZ_SITE_URL = "https://miyashitt.github.io/Shit/";
-            // 文化祭公式InstagramアカウントのURL
             const BUNKASAI_INSTAGRAM_URL = "https://www.instagram.com/kenryo_fes_78th?utm_source=ig_web_button_share_sheet&igsh=MWkyZDRrbjRuYnl6ag==";
 
-            // LINEブラウザ判定
+            // Detect LINE browser
             isLineBrowserDetected = navigator.userAgent.includes("Line");
 
-            // ウイルス演出の関数
+            // --- Core Functions ---
+
             function startVirusSimulation() {
                 body.classList.add("virus-active");
-                initialScreen.classList.add("hidden"); // Hide initial screen
-                mainScreen.classList.add("hidden"); // Hide main screen
+                initialScreen.classList.add("hidden");
+                mainScreen.classList.add("hidden");
+                reliefScreen.classList.add("hidden"); // Ensure relief screen is hidden
                 virusScreen.classList.remove("hidden");
                 virusScreen.innerHTML = `
                     <h2><span style="color:red;">WARNING!!!</span> SYSTEM INTEGRITY COMPROMISED.</h2>
@@ -468,7 +474,7 @@
                     </div>
                 `;
 
-                if (!isLineBrowserDetected) { // LINEブラウザでない場合のみ音声再生
+                if (!isLineBrowserDetected) {
                     speak(`警告。システムに異常を検知しました。`);
                 }
 
@@ -476,6 +482,7 @@
                 const countdownElement = document.getElementById("countdown");
                 const revealMessage = document.getElementById("reveal-message");
 
+                clearInterval(countdownIntervalId); // Clear any existing interval
                 countdownIntervalId = setInterval(() => {
                     countdown--;
                     if (countdownElement) {
@@ -490,17 +497,16 @@
                         if (revealMessage) {
                             revealMessage.classList.remove("hidden");
                         }
-                        if (!isLineBrowserDetected) { // LINEブラウザでない場合のみ音声停止
+                        if (!isLineBrowserDetected) {
                             stopVoiceLoop();
-                            speak("警告は解除されました。文化祭をお楽しみください。"); // 演出終了のメッセージ
+                            speak("警告は解除されました。文化祭をお楽しみください。");
                         }
-                        virusScreen.style.pointerEvents = 'auto'; // クリック可能に
+                        virusScreen.style.pointerEvents = 'auto'; // Make clickable after reveal
 
-                        // 一定時間後に自動で relief-screen を表示し、その後 mainScreen を表示する
                         setTimeout(() => {
                             virusScreen.classList.add("hidden");
                             reliefScreen.classList.remove("hidden");
-                            reliefScreen.style.display = 'flex'; // Flexboxで表示
+                            reliefScreen.style.display = 'flex';
 
                             setTimeout(() => {
                                 reliefScreen.classList.add("hidden");
@@ -508,19 +514,18 @@
                                 mainScreen.classList.remove("hidden");
                                 mainScreen.classList.add("visible");
                                 body.classList.remove("virus-active");
-                                localStorage.setItem(localStorageKey, "true"); // 演出完了フラグをセット
-                            }, 2000); // 2秒後にリリーフ画面を非表示にしてメイン画面へ
-                        }, 3000); // 3秒後に演出終了メッセージ表示
+                                localStorage.setItem(localStorageKey, "true"); // Set flag that virus has played
+                            }, 2000); // Hide relief, show main
+                        }, 3000); // Show reveal message for a bit
                     }
                 }, 1000);
 
-                if (!isLineBrowserDetected) { // LINEブラウザでない場合のみ音声ループとアラーム音
+                if (!isLineBrowserDetected) {
                     startVoiceLoop();
                     playAlarmSound();
                 }
             }
 
-            // 音声読み上げの関数
             function speak(text) {
                 if (synth.speaking) {
                     synth.cancel();
@@ -533,7 +538,6 @@
                 synth.speak(utterance);
             }
 
-            // 音声ループの開始と停止
             function startVoiceLoop() {
                 voiceLoopRunning = true;
                 loopVoice();
@@ -555,73 +559,73 @@
                 speak("異常を検知。システムチェック。");
                 utterance.onend = () => {
                     if (voiceLoopRunning) {
-                        setTimeout(loopVoice, 3000); // 3秒後に再度ループ
+                        setTimeout(loopVoice, 3000);
                     }
                 };
             }
 
-            // 警告音の再生
             function playAlarmSound() {
                 if (alarmAudio) {
                     alarmAudio.pause();
                     alarmAudio.currentTime = 0;
                 }
-                alarmAudio = new Audio('alarm.mp3'); // 警告音のパス
+                alarmAudio = new Audio('alarm.mp3');
                 alarmAudio.loop = true;
                 alarmAudio.volume = 0.5;
                 alarmAudio.play().catch(e => console.error("音声再生エラー:", e));
             }
 
-            // ページ読み込み時に実行される処理
-            body.classList.add("loaded"); // ロード完了時にフェードイン
+            // --- Event Listeners and Initial Load ---
 
-            // 初回訪問時またはリセット時のみ初期画面を表示
+            body.classList.add("loaded"); // Fade in body on load
+
+            // Determine which screen to show on initial load
             if (localStorage.getItem(localStorageKey) === "true") {
+                // If virus has been seen, go directly to main content
                 initialScreen.classList.add("hidden");
                 mainScreen.classList.remove("hidden");
                 mainScreen.classList.add("visible");
             } else {
+                // Otherwise, show the initial welcome screen
                 initialScreen.classList.remove("hidden");
             }
 
-            // Initial Screenの「文化祭情報を見る」ボタン
+            // Initial Screen: "文化祭情報を見る" button (only opens Instagram)
             showInitialBunkasaiInfoBtn.addEventListener("click", () => {
-                // 音声再生が目的のため、まずInstagramへ誘導
                 window.open(BUNKASAI_INSTAGRAM_URL, "_blank");
-                // その後、ウイルス演出を開始
+            });
+
+            // Initial Screen: "特別演出を見る" button (triggers virus animation)
+            triggerVirusBtn.addEventListener("click", () => {
                 startVirusSimulation();
             });
 
-            // 各ボタンのイベントリスナー
+            // Main Screen: "もう一度ウイルス演出を見る" button
             repeatVirusBtn.addEventListener("click", () => {
-                // 全画面を非表示にし、ボディのクラスをリセット
                 mainScreen.classList.add("hidden");
                 reliefScreen.classList.add("hidden");
                 virusScreen.classList.add("hidden");
                 body.classList.remove("virus-active");
-
-                // localStorage のフラグを削除して、再度演出が実行されるようにする
-                localStorage.removeItem(localStorageKey);
-
-                // ウイルス演出を再度開始
+                localStorage.removeItem(localStorageKey); // Remove flag to allow re-play
                 startVirusSimulation();
             });
 
+            // Main Screen: "文化祭情報" button (only opens Instagram)
             showBunkasaiInfoBtn.addEventListener("click", () => {
-                // 文化祭情報はInstagram公式アカウントへ誘導
                 window.open(BUNKASAI_INSTAGRAM_URL, "_blank");
             });
 
+            // Main Screen: "クイズ" button
             showQuizMinigameBtn.addEventListener("click", () => {
                 window.open(QUIZ_SITE_URL, "_blank");
             });
 
-            // 共有ボタンのイベントリスナー
+            // Share buttons
             document.querySelectorAll('.share-btn').forEach(button => {
                 button.addEventListener('click', () => {
                     const sns = button.dataset.sns;
                     const url = encodeURIComponent(window.location.href);
-                    const text = encodeURIComponent("私たちの文化祭の特設サイトを見てね！\n#文化祭 #高校生活"); // 共有するテキスト
+                    const text = encodeURIComponent("私たちの文化祭の特設サイトを見てね！\n#文化祭 #高校生活");
                     let shareUrl = '';
 
                     switch (sns) {
@@ -629,11 +633,8 @@
                             shareUrl = `https://twitter.com/intent/tweet?url=${url}&text=${text}`;
                             break;
                         case 'line':
-                            // LINEの共有URLは特殊。LINEアプリがインストールされている環境でのみ動作する。
-                            // PCやLINEアプリがない場合は、ただのURL共有になるか、エラーになる。
                             shareUrl = `https://social-plugins.line.me/lineit/share?url=${url}&text=${text}`;
                             if (isLineBrowserDetected) {
-                                // LINEブラウザの場合、直接外部ブラウザで開くよう促すメッセージ
                                 alert("LINEアプリ以外で開くと共有がスムーズです。ブラウザを切り替えてお試しください。");
                             }
                             break;
