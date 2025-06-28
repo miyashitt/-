@@ -276,7 +276,7 @@
       cursor: pointer;
       background-color: #28a745; /* 緑系のボタン */
       border: none;
-      border-radius: 8倍; /* 角を丸く */
+      border-radius: 8px; /* 角を丸く */
       color: #fff;
       font-weight: 600; /* 少し太く */
       box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1); /* 控えめなシャドウ */
@@ -514,7 +514,7 @@
 
         // <h2>要素を作成し追加
         virusTitle = document.createElement("h2");
-        virusTitle.textContent = "⚠ ウイルスに感染しました"; // ここを修正
+        virusTitle.textContent = "⚠ ウイルスに感染しました"; // ここでテキストをセット
         virusScreen.appendChild(virusTitle);
 
         // カウントダウン要素を作成し追加
