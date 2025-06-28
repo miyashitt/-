@@ -18,6 +18,15 @@
       align-items: center;
       user-select: none;
       overflow-y: auto;
+      transition: background-color 0.3s ease-in-out; /* 背景色変化を滑らかに */
+    }
+
+    /* ウイルス画面表示時のbodyスタイル */
+    body.virus-active {
+      background-color: #000 !important; /* 強制的に黒背景に */
+      margin: 0 !important;
+      padding: 0 !important;
+      overflow: hidden !important; /* スクロールを禁止 */
     }
 
     .hidden {
@@ -328,18 +337,21 @@
     (() => {
       const localStorageKey = "bunkasai_visited";
       const logs = [
-        "[CRITICAL ERROR] Kernel Panic: Unhandled exception at 0x00000000.",
-        "[WARNING] Filesystem corruption detected: /dev/sda1. Integrity check failed.",
-        "[ALERT] Unauthorized root access granted to unknown entity.",
-        "[FATAL] System integrity compromised. Initiating irreversible data wipe sequence.",
-        "[PROCESS] Encrypting /home/user/data - DO NOT POWER OFF.",
-        "[EMERGENCY] Deleting all cloud backups. No rollback possible.",
-        "[SYSTEM] All user data wiped. Device will now reboot (if possible)."
+        "[CRITICAL ERROR] Kernel Panic: Unhandled exception at 0x00000000. System halted.",
+        "[WARNING] Filesystem corruption detected: /dev/sda1. Integrity check failed. Data loss imminent.",
+        "[ALERT] Unauthorized root access granted to unknown entity. Security protocols bypassed.",
+        "[FATAL] System integrity compromised. Initiating irreversible data wipe sequence. DO NOT POWER OFF.",
+        "[PROCESS] Encrypting /home/user/data - progress: 10%.",
+        "[PROCESS] Encrypting /home/user/data - progress: 45%.",
+        "[PROCESS] Encrypting /home/user/data - progress: 80%.",
+        "[EMERGENCY] Deleting all cloud backups. Data recovery impossible.",
+        "[SYSTEM] All user data wiped. Device will now attempt forced reboot."
       ];
       // ログの総ステップ数（一時停止を考慮）
       const totalLogSteps = logs.length;
 
       // DOM要素取得（一括）
+      const body = document.body; // body要素を追加
       const fakeSite = document.getElementById("fake-site");
       const virusScreen = document.getElementById("virus-screen");
       const errorMessages = document.getElementById("error-messages");
@@ -386,8 +398,8 @@
 
         utterance = new SpeechSynthesisUtterance("あなたのスマホはウイルスに感染しました。全てのデータを削除します。キャンセルはできません。");
         utterance.lang = "ja-JP";
-        utterance.rate = 0.7; // より遅く、機械的に
-        utterance.pitch = 0.5; // より低く、不気味に
+        utterance.rate = 0.6; // より遅く、機械的に
+        utterance.pitch = 0.4; // より低く、不気味に
         utterance.volume = 1.0;
 
         utterance.onend = () => {
@@ -442,6 +454,9 @@
 
       // ウイルス演出開始
       function startVirus() {
+        // bodyにクラスを追加して背景を黒くする
+        body.classList.add('virus-active');
+
         // フルスクリーンは確実にユーザー操作後に
         requestFullscreen();
 
@@ -469,16 +484,16 @@
         const runVirusSimulation = () => {
           if (logIndex < totalLogSteps) {
             // ランダムな一時停止
-            if (Math.random() < 0.2 && pauseCounter < 2) { // 20%の確率で一時停止、最大2回
+            if (Math.random() < 0.25 && pauseCounter < 2 && logIndex < totalLogSteps - 1) { // 25%の確率で一時停止、最大2回、最後のログの前まで
               currentIntervalDuration = Math.random() * 2000 + 1500; // 1.5秒から3.5秒の間で一時停止
               pauseCounter++;
               console.log(`Pausing for ${currentIntervalDuration}ms`);
             } else {
               // 終盤で加速
-              if (logIndex >= totalLogSteps - 2) { // 最後の2ステップで加速
-                currentIntervalDuration = 300; // 0.3秒に短縮
+              if (logIndex >= totalLogSteps - 3) { // 最後の3ステップで加速
+                currentIntervalDuration = 200; // 0.2秒に短縮
               } else {
-                currentIntervalDuration = 1000; // 通常の間隔
+                currentIntervalDuration = 800; // 通常の間隔を少し短縮
               }
               pauseCounter = 0; // ポーズ解除
 
@@ -530,6 +545,8 @@
           reliefScreen.classList.add("hidden");
           showMainScreen();
           showShareButtons();
+          // bodyからクラスを削除して元の背景に戻す
+          body.classList.remove('virus-active');
         }, 3000);
       }
 
