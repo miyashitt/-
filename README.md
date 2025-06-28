@@ -5,22 +5,30 @@
   <title>文化祭まとめサイト</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="icon" href="favicon.ico" type="image/x-icon">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&display=swap" rel="stylesheet">
   <style>
+    /* CSS Variables for a cohesive design */
     :root {
-        --primary-color: #007bff;
-        --primary-hover-color: #0056b3;
-        --success-color: #4CAF50;
-        --success-hover-color: #45a049;
-        --background-light: #f4f4f4;
+        --primary-color: #4CAF50; /* Greenish */
+        --primary-hover-color: #45a049;
+        --secondary-color: #007bff; /* Blueish */
+        --secondary-hover-color: #0056b3;
         --text-dark: #333;
+        --text-light: #f8f8f8;
+        --background-light: #e0f2f7; /* Light cyan background */
+        --background-gradient-start: #e0f7fa;
+        --background-gradient-end: #c8e6c9;
+        --card-background: #ffffff;
         --shadow-light: rgba(0, 0, 0, 0.1);
-        --shadow-medium: rgba(0, 0, 0, 0.15);
+        --shadow-medium: rgba(0, 0, 0, 0.2);
+        --border-color: #e0e0e0;
+        --accent-color: #ff9800; /* Orange for highlights */
     }
 
     body {
       margin: 0;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: var(--background-light);
+      font-family: 'Noto Sans JP', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, var(--background-gradient-start) 0%, var(--background-gradient-end) 100%);
       color: var(--text-dark);
       text-align: center;
       min-height: 100vh;
@@ -29,6 +37,7 @@
       justify-content: center;
       align-items: center;
       user-select: none;
+      overflow-x: hidden; /* Prevent horizontal scroll */
       overflow-y: auto;
       transition: background-color 0.3s ease-in-out, opacity 0.5s ease-in-out;
       opacity: 0; /* JavaScriptでloadedクラスが付与されたら表示 */
@@ -54,50 +63,58 @@
       display: none; /* 初期はJSで制御 */
       flex-direction: column;
       align-items: center;
-      background-color: #fff;
-      padding: 3rem;
-      border-radius: 12px;
-      box-shadow: 0 4px 12px var(--shadow-light);
+      background-color: var(--card-background);
+      padding: 4rem; /* Increased padding */
+      border-radius: 16px; /* Slightly larger border-radius */
+      box-shadow: 0 10px 30px var(--shadow-medium); /* Deeper shadow */
+      max-width: 90%;
+      box-sizing: border-box;
+      animation: fadeInScale 0.8s ease-out forwards;
+    }
+
+    @keyframes fadeInScale {
+      from { opacity: 0; transform: scale(0.9); }
+      to { opacity: 1; transform: scale(1); }
     }
 
     #fake-site h1 {
-      font-size: 3.5rem;
-      margin-bottom: 2.5rem;
-      text-shadow: 1px 1px 0 #eee, 2px 2px 4px var(--shadow-light);
-      line-height: 1.3;
-      color: #555;
+      font-size: 3.8rem; /* Larger font size */
+      margin-bottom: 2.8rem;
+      color: #444;
       font-weight: 700;
-    }
-
-    #fake-site h1 span {
-      display: block;
+      letter-spacing: -1px;
+      text-shadow: 2px 2px 5px var(--shadow-light);
     }
 
     #fake-site h1 span:first-child {
-      font-size: 2.2rem;
-      color: #777;
+      font-size: 2.5rem; /* Larger sub-heading */
+      color: #666;
       font-weight: 500;
+      margin-bottom: 0.5rem;
     }
 
     #fake-site button {
       background-color: var(--primary-color);
       border: none;
-      padding: 1.5rem 3.5rem;
-      font-size: 1.8rem;
+      padding: 1.8rem 4rem; /* Larger padding for button */
+      font-size: 2rem; /* Larger font size for button */
       font-weight: 600;
-      border-radius: 8px;
-      color: #fff;
+      border-radius: 10px; /* Slightly more rounded */
+      color: var(--text-light);
       cursor: pointer;
-      box-shadow: 0 4px 8px var(--shadow-medium);
-      transition: background-color 0.2s ease-in-out, transform 0.1s ease-in-out;
-      margin-top: 1.5rem;
+      box-shadow: 0 6px 12px var(--shadow-medium); /* Enhanced shadow */
+      transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+      margin-top: 2rem;
+      letter-spacing: 0.5px;
     }
 
     #fake-site button:hover {
       background-color: var(--primary-hover-color);
-      transform: translateY(-2px);
+      transform: translateY(-3px) scale(1.02); /* More pronounced hover */
+      box-shadow: 0 8px 16px var(--shadow-medium);
     }
 
+    /* Virus Screen styles */
     #virus-screen {
       position: fixed;
       top: 0;
@@ -118,8 +135,9 @@
       align-items: center;
       justify-content: center;
       box-sizing: border-box;
-      pointer-events: none; /* クリックや選択を無効化 */
+      pointer-events: none;
       animation: noise 0.1s infinite, flicker 0.2s infinite alternate;
+      text-shadow: 0 0 5px #ff0000, 0 0 15px #ff0000;
     }
 
     #virus-screen::before {
@@ -142,21 +160,21 @@
     }
 
     #virus-screen h2 {
-      font-size: 2.5rem;
-      margin-bottom: 1.5rem;
+      font-size: 2.8rem;
+      margin-bottom: 2rem;
       animation: blink-fast 0.3s infinite alternate, glitch 0.5s infinite alternate;
       width: 90%;
       text-align: center;
       box-sizing: border-box;
-      text-shadow: 0 0 10px #f00, 0 0 20px #f00;
+      text-shadow: 0 0 15px #f00, 0 0 30px #f00; /* Stronger shadow */
     }
 
     #countdown {
-      font-size: 6rem;
+      font-size: 7rem; /* Larger countdown */
       font-weight: bold;
       color: #00ff00;
-      text-shadow: 0 0 5px #00ff00, 0 0 15px #00ff00;
-      margin-bottom: 1rem;
+      text-shadow: 0 0 8px #00ff00, 0 0 25px #00ff00; /* Stronger shadow */
+      margin-bottom: 1.5rem;
       width: 90%;
       text-align: center;
       box-sizing: border-box;
@@ -164,17 +182,19 @@
     }
 
     #reveal-message {
-      font-size: 1.3rem;
+      font-size: 1.5rem; /* Larger reveal message */
       color: #f0f0f0;
-      background-color: rgba(0, 0, 0, 0.8);
-      padding: 1rem;
-      border-radius: 5px;
+      background-color: rgba(0, 0, 0, 0.85); /* Slightly darker background */
+      padding: 1.5rem;
+      border-radius: 8px; /* More rounded */
       display: none;
-      margin-top: 1.5rem;
-      animation: fade-in 0.5s forwards;
-      max-width: 80%;
+      margin-top: 2rem;
+      animation: fade-in 0.8s forwards;
+      max-width: 85%;
       box-sizing: border-box;
       text-align: center;
+      line-height: 1.6;
+      border: 1px solid rgba(255, 255, 255, 0.2);
     }
 
     @keyframes fade-in {
@@ -222,8 +242,9 @@
         100% { background-position: 0 20px; }
     }
 
+    /* Relief Screen Styles */
     #relief-screen {
-      background: linear-gradient(45deg, #e0f7fa, #b2ebf2);
+      background: linear-gradient(45deg, #e0f7fa, #b2ebf2); /* Brighter gradient */
       color: #006064;
       height: 100vh;
       width: 100vw;
@@ -234,119 +255,139 @@
       justify-content: center;
       align-items: center;
       flex-direction: column;
-      font-size: 1.8rem;
+      font-size: 2rem; /* Larger font */
+      font-weight: 500;
       display: none;
       user-select: text;
-      animation: fade-in 0.5s ease-in-out;
-      font-weight: 500;
+      animation: fade-in 0.8s ease-in-out;
+      text-shadow: 1px 1px 3px rgba(0,0,0,0.1); /* Subtle text shadow */
     }
 
     #relief-screen p {
-        margin: 0.5rem 0;
-        text-shadow: 1px 1px 2px rgba(255,255,255,0.5);
+        margin: 0.8rem 0; /* More spacing */
     }
 
+    /* Main Content Styles */
     #main {
-      padding: 3rem;
-      background: #fff;
+      padding: 3.5rem; /* More padding */
+      background: var(--card-background);
       min-height: auto;
       color: var(--text-dark);
       user-select: none;
-      display: none; /* 初期はJSで制御 */
-      border-radius: 12px;
-      box-shadow: 0 4px 12px var(--shadow-light);
+      display: none;
+      border-radius: 16px; /* Consistent border-radius */
+      box-shadow: 0 10px 30px var(--shadow-medium); /* Consistent shadow */
       max-width: 90%;
-      margin-top: 2rem;
-      box-sizing: border-box; /* paddingを含めて幅を計算 */
+      margin-top: 2.5rem; /* More margin */
+      box-sizing: border-box;
+      animation: fadeInScale 0.8s ease-out forwards;
     }
 
     #main.visible {
       display: block;
-      animation: fade-in 0.3s ease-in-out;
+      animation: fadeInScale 0.8s ease-out forwards;
     }
 
     #main h1 {
-      font-size: 3rem;
-      margin-bottom: 2rem;
-      text-shadow: 1px 1px 0 #eee, 2px 2px 4px var(--shadow-light);
-      color: #555;
+      font-size: 3.2rem; /* Consistent large heading */
+      margin-bottom: 2.5rem;
+      color: #444;
       font-weight: 700;
+      letter-spacing: -0.5px;
+      text-shadow: 1px 1px 3px var(--shadow-light);
     }
 
-    /* メインナビゲーションボタン */
+    /* Main Navigation Buttons (only for Quiz button now) */
     .main-nav-buttons {
       display: flex;
       justify-content: center;
-      gap: 1rem;
-      margin-bottom: 2rem;
-      flex-wrap: wrap; /* スマホ対応 */
+      gap: 1.5rem; /* Increased gap */
+      margin-bottom: 3rem; /* More margin */
+      flex-wrap: wrap;
     }
 
     .main-nav-buttons button {
-      padding: 1.2rem 2.5rem;
-      font-size: 1.4rem;
+      padding: 1.4rem 3rem; /* Larger button */
+      font-size: 1.6rem; /* Larger font */
       cursor: pointer;
-      background-color: var(--primary-color);
+      background-color: var(--secondary-color); /* Use secondary color for this button */
       border: none;
-      border-radius: 8px;
-      color: #fff;
+      border-radius: 10px;
+      color: var(--text-light);
       font-weight: 600;
-      box-shadow: 0 2px 6px var(--shadow-light);
-      transition: background-color 0.2s ease-in-out, transform 0.1s ease-in-out;
+      box-shadow: 0 4px 10px var(--shadow-light);
+      transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+      letter-spacing: 0.5px;
     }
 
     .main-nav-buttons button:hover {
-      background-color: var(--primary-hover-color);
-      transform: translateY(-1px);
+      background-color: var(--secondary-hover-color);
+      transform: translateY(-2px) scale(1.01);
+      box-shadow: 0 6px 12px var(--shadow-medium);
     }
 
-    /* 各コンテンツエリアのスタイル */
+    /* Schedule Content Styles */
     #schedule-content {
-      background: #fff;
-      padding: 2rem;
-      border-radius: 8px;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-      margin-top: 1rem;
-      min-height: 300px;
-      display: none; /* 初期はJSで制御 */
+      background: var(--card-background);
+      padding: 2.5rem; /* More padding */
+      border-radius: 12px; /* Consistent border-radius */
+      box-shadow: 0 4px 15px var(--shadow-light); /* Deeper shadow */
+      margin-top: 2rem;
+      min-height: 350px; /* Slightly larger min-height */
+      display: none;
       width: 100%;
       max-width: 800px;
       box-sizing: border-box;
+      border: 1px solid var(--border-color); /* Subtle border */
     }
 
     #schedule-content.active {
       display: block;
     }
 
-    #schedule-content .schedule-nav-buttons button { /* スケジュールの日付選択ボタン */
-        background-color: #6c757d; /* グレー系 */
+    #schedule-content .schedule-nav-buttons {
+        margin-bottom: 2rem; /* More margin */
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 0.8rem; /* Consistent gap */
+    }
+
+    #schedule-content .schedule-nav-buttons button {
+        background-color: #78909c; /* Blue-grey for schedule buttons */
         color: white;
         border: none;
-        padding: 0.8rem 1.5rem;
-        margin: 0.5rem;
-        border-radius: 5px;
+        padding: 0.9rem 1.8rem; /* Larger padding */
+        border-radius: 6px;
         cursor: pointer;
-        font-size: 1.1rem;
-        transition: background-color 0.2s ease;
+        font-size: 1.2rem; /* Larger font */
+        font-weight: 500;
+        transition: background-color 0.2s ease, transform 0.1s ease;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
     }
     #schedule-content .schedule-nav-buttons button:hover {
-        background-color: #5a6268;
+        background-color: #607d8b;
+        transform: translateY(-1px);
     }
 
     #schedule-image-container img {
-      max-width: 95%;
-      max-height: 70vh;
-      border: 2px solid #ddd;
-      border-radius: 8px;
-      box-shadow: 0 2px 8px var(--shadow-light);
-      margin-top: 1.5rem;
+      max-width: 100%; /* Ensure it fits container */
+      height: auto; /* Maintain aspect ratio */
+      max-height: 75vh; /* Allow it to be taller */
+      border: 3px solid var(--border-color); /* Thicker border */
+      border-radius: 10px; /* More rounded */
+      box-shadow: 0 5px 15px var(--shadow-light); /* Deeper shadow */
+      margin-top: 2rem;
+      object-fit: contain; /* Ensure image fits without cropping */
     }
 
+    /* Share Buttons Styles */
     #share-buttons {
-      margin-top: 2.5rem;
+      margin-top: 3rem; /* More margin */
       display: none;
       justify-content: center;
-      gap: 1.5rem;
+      gap: 1.8rem; /* Increased gap */
+      flex-wrap: wrap;
     }
 
     #share-buttons.visible {
@@ -355,29 +396,30 @@
 
     .share-btn {
       cursor: pointer;
-      padding: 1rem 2rem;
-      border-radius: 10px;
+      padding: 1.2rem 2.5rem; /* Larger padding */
+      border-radius: 12px; /* More rounded */
       font-weight: 600;
-      font-size: 1.2rem;
-      color: white;
-      box-shadow: 0 2px 6px var(--shadow-light);
+      font-size: 1.3rem; /* Larger font */
+      color: var(--text-light);
+      box-shadow: 0 4px 10px var(--shadow-light);
       display: flex;
       align-items: center;
-      gap: 0.8rem;
+      gap: 1rem; /* More space for icon */
       user-select: none;
-      transition: transform 0.1s ease-in-out;
+      transition: transform 0.1s ease-in-out, box-shadow 0.2s ease;
     }
 
     .share-btn:hover {
-      transform: translateY(-1px);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 12px var(--shadow-medium);
     }
 
     .share-x {
-      background-color: #1DA1F2;
+      background-color: #1a8cd8; /* Official X blue */
     }
 
     .share-x:hover {
-      background-color: #0d8ddb;
+      background-color: #167ac7;
     }
 
     .share-line {
@@ -389,63 +431,139 @@
     }
 
     .share-icon {
-      font-size: 1.4rem;
+      font-size: 1.6rem; /* Larger icon */
     }
 
-    /* レスポンシブデザイン */
+    /* Responsive Design */
     @media (max-width: 768px) {
         #fake-site {
-            padding: 1.5rem;
+            padding: 2.5rem;
         }
         #fake-site h1 {
-            font-size: 2.5rem;
-            margin-bottom: 1.5rem;
+            font-size: 3rem;
+            margin-bottom: 2rem;
         }
         #fake-site h1 span:first-child {
-            font-size: 1.8rem;
+            font-size: 2rem;
         }
         #fake-site button {
+            padding: 1.2rem 2.5rem;
+            font-size: 1.6rem;
+        }
+        #main {
+            padding: 2rem;
+            margin-top: 1.5rem;
+        }
+        #main h1 {
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
+        }
+        .main-nav-buttons button {
             padding: 1rem 2rem;
             font-size: 1.4rem;
         }
-        #main {
-            padding: 1.5rem;
-            max-width: 95%;
-        }
-        #main h1 {
-            font-size: 2.2rem;
-            margin-bottom: 1.5rem;
-        }
-        .main-nav-buttons button {
-            padding: 1rem 1.8rem;
-            font-size: 1.2rem;
-        }
         #schedule-content {
-            padding: 1.5rem;
+            padding: 1.8rem;
+        }
+        #schedule-content .schedule-nav-buttons button {
+            padding: 0.7rem 1.4rem;
+            font-size: 1rem;
         }
         .share-btn {
-            padding: 0.8rem 1.5rem;
-            font-size: 1.1rem;
-            gap: 0.5rem;
+            padding: 1rem 1.8rem;
+            font-size: 1.2rem;
+            gap: 0.8rem;
+        }
+        .share-icon {
+            font-size: 1.4rem;
         }
         #virus-screen h2 {
-            font-size: 1.8rem;
+            font-size: 2.2rem;
         }
         #countdown {
-            font-size: 4rem;
+            font-size: 5rem;
         }
         #reveal-message {
-            font-size: 1.1rem;
-            padding: 0.8rem;
+            font-size: 1.2rem;
+            padding: 1.2rem;
         }
+    }
+
+    @media (max-width: 480px) {
+      #fake-site {
+          padding: 1.5rem;
+          margin: 1rem;
+      }
+      #fake-site h1 {
+          font-size: 2.2rem;
+          margin-bottom: 1.2rem;
+      }
+      #fake-site h1 span:first-child {
+          font-size: 1.6rem;
+      }
+      #fake-site button {
+          padding: 0.9rem 1.8rem;
+          font-size: 1.3rem;
+          margin-top: 1rem;
+      }
+      #main {
+          padding: 1.5rem;
+          margin-top: 1rem;
+      }
+      #main h1 {
+          font-size: 2rem;
+          margin-bottom: 1.5rem;
+      }
+      .main-nav-buttons {
+          flex-direction: column; /* Stack buttons vertically */
+          gap: 0.8rem;
+      }
+      .main-nav-buttons button {
+          width: 90%; /* Full width */
+          max-width: 300px;
+          padding: 0.8rem 1.5rem;
+          font-size: 1.2rem;
+      }
+      #schedule-content {
+          padding: 1rem;
+      }
+      #schedule-content .schedule-nav-buttons {
+          flex-direction: row; /* Keep schedule day buttons horizontal if space allows */
+          flex-wrap: wrap;
+          justify-content: center;
+          gap: 0.5rem;
+      }
+      #schedule-content .schedule-nav-buttons button {
+          padding: 0.6rem 1.1rem;
+          font-size: 0.95rem;
+      }
+      .share-btn {
+          padding: 0.7rem 1.2rem;
+          font-size: 1rem;
+          gap: 0.5rem;
+      }
+      .share-icon {
+          font-size: 1.2rem;
+      }
+      #virus-screen h2 {
+          font-size: 1.5rem;
+          margin-bottom: 1rem;
+      }
+      #countdown {
+          font-size: 3.5rem;
+      }
+      #reveal-message {
+          font-size: 1rem;
+          padding: 0.8rem;
+      }
     }
   </style>
 </head>
 <body>
   <div id="fake-site" role="main" aria-label="ようこそ文化祭まとめサイトへ">
     <h1>
-      <span style="display:block; font-size:2rem;">ようこそ</span>
-      <span style="display:block; font-size:3rem;">文化祭まとめサイトへ</span>
+      <span style="display:block;">ようこそ</span>
+      <span style="display:block;">文化祭まとめサイトへ</span>
     </h1>
     <button id="start-btn" type="button">スケジュールを見る</button>
   </div>
@@ -462,7 +580,6 @@
     <button id="repeat-virus-btn" type="button">もう一度ウイルス演出を見る</button>
     
     <div class="main-nav-buttons">
-      <button id="show-schedule-btn" type="button">文化祭スケジュール</button>
       <button id="show-quiz-minigame-btn" type="button">クイズ＆ミニゲーム</button>
     </div>
 
@@ -502,7 +619,7 @@
       const shareButtons = document.getElementById("share-buttons");
       const startBtn = document.getElementById("start-btn");
 
-      const showScheduleBtn = document.getElementById("show-schedule-btn");
+      // const showScheduleBtn = document.getElementById("show-schedule-btn"); // スケジュールボタンは削除
       const showQuizMinigameBtn = document.getElementById("show-quiz-minigame-btn");
 
       const scheduleContent = document.getElementById("schedule-content");
@@ -753,7 +870,8 @@
       document.getElementById('schedule-day2').addEventListener('click', () => showScheduleImage('day2'));
       document.getElementById('schedule-kataduke').addEventListener('click', () => showScheduleImage('kataduke'));
 
-      showScheduleBtn.addEventListener("click", () => showContent('schedule'));
+      // スケジュールボタンは削除されたため、このイベントリスナーは不要
+      // showScheduleBtn.addEventListener("click", () => showContent('schedule')); 
       
       // クイズ＆ミニゲームボタンの挙動をサイトジャンプに変更
       showQuizMinigameBtn.addEventListener("click", () => {
