@@ -94,7 +94,7 @@
 
         /* Virus Screen styles */
         #virus-screen {
-            position: fixed; /* 全画面表示 */
+            position: fixed; /* 文化祭情報を見る */
             top: 0;
             left: 0;
             right: 0;
