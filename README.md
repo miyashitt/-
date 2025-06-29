@@ -9,17 +9,17 @@
     <style>
         /* CSS Variables for a cohesive design */
         :root {
-            --primary-color: #4CAF50; /* Greenish */
-            --primary-hover-color: #45a049;
-            --secondary-color: #007bff; /* Blueish */
-            --secondary-hover-color: #0056b3;
+            --primary-color: #4CAF50; /* Greenish - not directly used by new colors, but kept for consistency */
+            --primary-hover-color: #45a049; /* not directly used by new colors, but kept for consistency */
+            --secondary-color: #ce91ea; /* Purple for buttons */
+            --secondary-hover-color: #b37ace; /* Darker purple for button hover */
             --text-dark: #333;
             --text-light: #f8f8f8;
-            --background-gradient-start: #e0f7fa;
-            --background-gradient-end: #c8e6c9;
+            --background-gradient-start: #9cdeef; /* Light blue */
+            --background-gradient-end: #87ceeb; /* Slightly darker light blue for gradient end */
             --shadow-light: rgba(0, 0, 0, 0.1);
             --shadow-medium: rgba(0, 0, 0, 0.2);
-            --accent-color: #ff9800; /* Orange for highlights */
+            --accent-color: #ff9800; /* Orange for highlights - not changed */
         }
 
         body {
@@ -76,7 +76,7 @@
 
         #initial-screen h1 {
             font-size: 2.8rem;
-            color: var(--primary-color);
+            color: var(--primary-color); /* Changed to use var for better consistency */
             margin-bottom: 2.5rem;
             text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
             line-height: 1.3;
@@ -215,7 +215,7 @@
 
         /* Relief Screen Styles */
         #relief-screen {
-            background: linear-gradient(45deg, #e0f7fa, #b2ebf2); /* Brighter gradient */
+            background: linear-gradient(45deg, var(--background-gradient-start), var(--background-gradient-end)); /* Brighter gradient */
             color: #006064;
             height: 100vh;
             width: 100vw;
