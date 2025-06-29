@@ -499,6 +499,7 @@
                         revealMessage?.classList.remove("hidden");
                         virusScreen.style.pointerEvents = 'auto'; // Enable interaction after reveal
 
+                        // ここを修正しました: 種明かしメッセージの表示時間を0msへ
                         setTimeout(() => {
                             virusScreen.classList.add("hidden");
                             reliefScreen.classList.remove("hidden");
@@ -512,7 +513,7 @@
                                 body.classList.remove("virus-active");
                                 localStorage.setItem(LOCAL_STORAGE_KEY, "true"); // Set flag that virus has played
                             }, 2000); // Hide relief, show main after 2 seconds
-                        }, 3000); // Show reveal message for 3 seconds
+                        }, 0); // ここが変更点: 種明かしメッセージの表示時間を0秒に設定
                     } else {
                         countdown--;
                         countdownTimerId = setTimeout(runCountdown, 1000); // Schedule next tick
